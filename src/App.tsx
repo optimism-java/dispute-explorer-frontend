@@ -1,5 +1,5 @@
-import { Routes, Route } from "react-router-dom";
-import { Dashboard } from "./pages";
+import { Route, Routes } from 'react-router-dom';
+import { Dashboard } from './pages';
 
 function App() {
   return (
