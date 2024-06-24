@@ -8,6 +8,7 @@ const useGames = (params: Pager = {page: 1, size: 10}) => {
             url: '/disputegames',
             params
         })
+        return response.data
     })
     return state
 }
