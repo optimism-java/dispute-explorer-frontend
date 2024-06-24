@@ -1,51 +1,20 @@
-import { Table, TableProps } from 'antd';
+import { Table } from 'antd';
 import { SearchProps } from 'antd/es/input';
 import Search from 'antd/es/input/Search';
+import useCreditRank from '../../hooks/useCreditRank';
 import useGames from '../../hooks/useGames';
-import { GameStatus } from '../../lib/constants';
 import { Game } from '../../lib/types';
-import { calculateDate, formatAddress } from '../../lib/utils';
+import { creditRankColumns, gameColumns } from './columns';
 
 const Dashboard = () => {
   const onSearch: SearchProps['onSearch'] = (value, _e, info) =>
     console.log(info?.source, value);
   const state = useGames();
-
-  const columns: TableProps<Game>['columns'] = [
-    {
-      title: 'Index',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: 'Game type',
-      dataIndex: 'game_type',
-      // key: 'game_type',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'game_contract',
-      key: 'game_contract',
-      render: (val) => formatAddress(val),
-    },
-    {
-      title: 'L2 block',
-      dataIndex: 'l_2_block_number',
-      key: 'l_2_block_number',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (val) => calculateDate(val),
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (val) => GameStatus[val],
-    },
-  ];
+  const credit = useCreditRank();
+  // TODO
+  const gameDetail = (record: Game) => {
+    console.log(record);
+  };
 
   return (
     <div className="mx-auto mt-8 flex w-11/12 flex-col gap-8">
@@ -58,11 +27,22 @@ const Dashboard = () => {
         />
       </section>
       <section></section>
-      <section>
+      <section className="flex items-center justify-center max-md:flex-col">
         {
           <Table
-            columns={columns}
+            columns={gameColumns}
             dataSource={state.value}
+            pagination={false}
+            loading={state.loading}
+            onRow={(record) => ({
+              onClick: () => gameDetail(record),
+            })}
+          />
+        }
+        {
+          <Table
+            columns={creditRankColumns}
+            dataSource={credit.value}
             pagination={false}
             loading={state.loading}
           />

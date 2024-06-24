@@ -33,3 +33,8 @@ export interface ClaimData {
   claim: string;
   position: number;
 }
+
+export interface Credit {
+  address: string;
+  amount: string;
+}
