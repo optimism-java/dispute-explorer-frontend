@@ -19,7 +19,7 @@ export interface Game {
   game_contract: string;
   l_2_block_number: number;
   status: string;
-  created_at: number;
+  created_at: string;
 }
 
 export interface ClaimData {
