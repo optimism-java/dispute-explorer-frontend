@@ -18,7 +18,7 @@ export interface Game {
   game_type: number;
   game_contract: string;
   l_2_block_number: number;
-  status: string;
+  status: number;
   created_at: string;
 }
 
