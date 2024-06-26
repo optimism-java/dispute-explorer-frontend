@@ -8,7 +8,7 @@ interface GameCardProp {
 
 const GameCard: FC<GameCardProp> = ({ header, children }) => {
   return (
-    <div className="border shadow-md">
+    <div className="h-full border shadow-md">
       {header && <div className="border-b py-2"> {header}</div>}
       {children ?? <Empty />}
     </div>
