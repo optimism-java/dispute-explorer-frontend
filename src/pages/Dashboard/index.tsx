@@ -28,13 +28,13 @@ const Dashboard = () => {
 
   const creditHeader = () => (
     <div className="flex items-center justify-between p-2 font-mono text-lg font-bold">
-      <p className="">Latest Credits</p>{' '}
-      <div
+      <p className="p-2">Latest Credits</p>{' '}
+      {/* <div
         className="cursor-pointer border border-cyan-300 bg-transparent p-2"
         onClick={() => nav('/credits')}
       >
         View All Credits
-      </div>
+      </div> */}
     </div>
   );
 
@@ -52,7 +52,7 @@ const Dashboard = () => {
       <section className="flex-start flex justify-around gap-2 max-lg:flex-col">
         <div className="w-full">
           <GameCard header={gameHeader()}>
-            {state.value?.map((item) => (
+            {state.value?.records?.map((item) => (
               <GameItem key={item.id} game={item}></GameItem>
             ))}
           </GameCard>

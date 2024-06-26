@@ -17,7 +17,7 @@ const CreditItem: FC<{ credit: Credit; index: number }> = ({
       </div>
       <div>
         <span className="text-green-500">
-          {ethers.formatEther(credit.amount)}
+          {ethers.formatEther(credit.amount).substring(0, 5)}
         </span>
         ETH
       </div>

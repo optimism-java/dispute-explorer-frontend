@@ -38,3 +38,12 @@ export interface Credit {
   address: string;
   amount: string;
 }
+
+export interface CreditDetail {
+  address: string;
+  credit: string;
+  game_contract: string;
+  id: number;
+  create_at: string;
+  updated_at: string;
+}
