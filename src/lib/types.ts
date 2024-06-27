@@ -44,6 +44,6 @@ export interface CreditDetail {
   credit: string;
   game_contract: string;
   id: number;
-  create_at: string;
+  created_at: string;
   updated_at: string;
 }
