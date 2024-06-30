@@ -32,6 +32,7 @@ export interface ClaimData {
   bond: number;
   claim: string;
   position: number;
+  clock: BigInt;
 }
 
 export interface Credit {
