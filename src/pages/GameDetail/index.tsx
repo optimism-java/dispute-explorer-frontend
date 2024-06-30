@@ -28,8 +28,11 @@ const Index: FC = () => {
   }, [gameData, playing]);
   return (
     <Box>
-      <Box onClick={() => setPlaying(!playing)}>
-        {playing ? <NotStartedIcon /> : <PauseCircleIcon />}
+      <Box
+        onClick={() => setPlaying(!playing)}
+        sx={{ color: 'primary.main', height: 32 }}
+      >
+        {playing ? <PauseCircleIcon /> : <NotStartedIcon />}
       </Box>
       <GameGraph data={gameData} upTo={upTo} />
     </Box>
