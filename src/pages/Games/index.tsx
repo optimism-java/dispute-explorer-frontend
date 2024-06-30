@@ -10,13 +10,11 @@ import {
   TableRow,
 } from '@mui/material';
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useGames from '../../hooks/useGames';
 import { GameStatus } from '../../lib/constants';
 import { calculateDate, formatAddress } from '../../lib/utils';
 
 const Index: FC = () => {
-  const nav = useNavigate();
   const state = useGames();
   return (
     <Stack spacing={2}>
@@ -33,13 +31,15 @@ const Index: FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {state.value?.records?.map((item) => (
+            {state.value?.hits?.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.game_type}</TableCell>
                 <TableCell>{formatAddress(item.game_contract)}</TableCell>
-                <TableCell>{item.l_2_block_number}</TableCell>
-                <TableCell>{calculateDate(item.created_at)}</TableCell>
+                <TableCell>{item.l2_block_number}</TableCell>
+                <TableCell>
+                  {calculateDate(new Date(item.block_time * 1000))}
+                </TableCell>
                 <TableCell>{GameStatus[item.status]}</TableCell>
               </TableRow>
             ))}

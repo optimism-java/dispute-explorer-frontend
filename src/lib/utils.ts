@@ -9,8 +9,7 @@ import {
   isSameYear,
 } from 'date-fns';
 
-export const calculateDate = (timeStr: string): string => {
-  const time = new Date(timeStr);
+export const calculateDate = (time: Date): string => {
   const now = new Date();
   if (isSameMinute(now, time)) {
     return 'a few seconds ago';

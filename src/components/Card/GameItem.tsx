@@ -23,13 +23,15 @@ const GameItem: FC<{ game: Game }> = ({ game }) => {
           className="cursor-pointer text-blue-400"
           onClick={() =>
             window.open(
-              `https://goerli-optimism.etherscan.io/block/${game.l_2_block_number}`
+              `https://goerli-optimism.etherscan.io/block/${game.l2_block_number}`
             )
           }
         >
-          {game.l_2_block_number}
+          {game.l2_block_number}
         </div>
-        <div className="text-xs italic">{calculateDate(game.created_at)}</div>
+        <div className="text-xs italic">
+          {calculateDate(new Date(game.block_time * 1000))}
+        </div>
       </div>
       <div className="flex flex-1 flex-col items-center justify-center">
         <div>Game Address</div>

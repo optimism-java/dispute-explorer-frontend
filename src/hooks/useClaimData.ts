@@ -1,5 +1,5 @@
 import { useAsync } from 'react-use';
-import request from '../lib/request';
+import request from '../lib/axios/request';
 import { ClaimData } from '../lib/types';
 
 const useClaimData = (address: string) => {

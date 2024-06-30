@@ -1,5 +1,4 @@
 import { Box, Button, OutlinedInput } from '@mui/material';
-import { SearchProps } from 'antd/es/input';
 import { useNavigate } from 'react-router-dom';
 import GameCard from '../../components/Card/Card';
 import useCreditRank from '../../hooks/useCreditRank';
@@ -9,8 +8,8 @@ import GameList from './GameList';
 
 const Dashboard = () => {
   const nav = useNavigate();
-  const onSearch: SearchProps['onSearch'] = (value, _e, info) =>
-    console.log(info?.source, value);
+  // const onSearch: SearchProps['onSearch'] = (value, _e, info) =>
+  //   console.log(info?.source, value);
   const state = useGames();
   const credit = useCreditRank();
 
@@ -57,7 +56,7 @@ const Dashboard = () => {
       <section className="flex-start flex justify-around gap-2 max-lg:flex-col">
         <div className="w-full">
           <GameCard header={gameHeader()}>
-            <GameList games={state.value?.records} />
+            <GameList games={state.value?.hits} />
             {/* {state.value?.records?.map((item) => (
               <GameItem key={item.id} game={item}></GameItem>
             ))} */}

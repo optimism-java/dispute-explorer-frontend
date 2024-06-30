@@ -10,6 +10,8 @@ import { List } from 'antd';
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gameImg from '../../assets/images/game.png';
+import shield from '../../assets/images/shield.png';
+import sword from '../../assets/images/sword.png';
 import { Game } from '../../lib/types';
 import { formatAddress } from '../../lib/utils';
 
@@ -27,7 +29,7 @@ const GameList: FC<GameListProps> = ({ games }) => {
             <Avatar alt="game" src={gameImg} />
           </ListItemAvatar>
           <ListItemText
-            primary={game.l_2_block_number}
+            primary={game.l2_block_number}
             secondary={
               <React.Fragment>
                 <Typography>a few minutes ago</Typography>
@@ -45,7 +47,15 @@ const GameList: FC<GameListProps> = ({ games }) => {
             }
           ></ListItemText>
           <ListItemAvatar>
-            <CircularProgress color="primary" disableShrink />
+            {game.status === 0 && (
+              <CircularProgress color="primary" disableShrink />
+            )}
+            {game.status === 1 && (
+              <img src={shield} width={48} height={48} alt="shield" />
+            )}
+            {game.status === 2 && (
+              <img src={sword} width={48} height={48} alt="sword" />
+            )}
           </ListItemAvatar>
         </ListItem>
       ))}

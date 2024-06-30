@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Response } from './types';
+import { Response } from '../types';
 
 export class Request {
   instance: AxiosInstance;
