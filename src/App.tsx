@@ -8,7 +8,7 @@ function App() {
       <header>
         <Header />
       </header>
-      <main className="container mx-auto h-screen">
+      <main className="container mx-auto pt-4">
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/games" element={<Games />} />

@@ -21,7 +21,7 @@ const CreditList: FC<CreditListProps> = ({ credits }) => {
   return (
     <List>
       {credits?.map((item, index) => (
-        <ListItem alignItems="flex-start">
+        <ListItem alignItems="flex-start" key={item.address}>
           <ListItemAvatar>
             <Avatar alt="game" src={bonus} />
           </ListItemAvatar>

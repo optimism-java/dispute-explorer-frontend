@@ -49,11 +49,9 @@ export interface Credit {
 
 export interface CreditDetail {
   address: string;
-  credit: string;
+  credit: BigInt;
   game_contract: string;
   id: number;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface SearchParams {

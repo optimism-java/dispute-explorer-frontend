@@ -5,14 +5,14 @@ module.exports = function (app) {
     '/index',
     createProxyMiddleware({
       target: 'http://144.76.97.175:7700',
-      changeOrigin: true,
+      // changeOrigin: true,
     })
   );
   app.use(
     '/api',
     createProxyMiddleware({
       target: 'http://144.76.97.175:8080',
-      changeOrigin: true,
+      // changeOrigin: true,
     })
   );
 };

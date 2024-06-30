@@ -7,7 +7,7 @@ export class Request {
   constructor() {
     this.instance = axios.create({
       baseURL: '/api',
-      timeout: 6000,
+      timeout: 10000,
     });
   }
 

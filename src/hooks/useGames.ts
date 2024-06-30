@@ -9,7 +9,7 @@ const useGames = (params: SearchParams = { limit: 10 }) => {
       params,
     });
     return response;
-  });
+  }, [params]);
   return state;
 };
 

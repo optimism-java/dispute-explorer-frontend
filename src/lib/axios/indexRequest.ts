@@ -7,7 +7,7 @@ export class IndexRequest {
   constructor() {
     this.instance = axios.create({
       baseURL: '/index',
-      timeout: 6000,
+      timeout: 10000,
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
       },

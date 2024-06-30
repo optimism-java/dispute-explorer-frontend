@@ -5,18 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import GameCard from '../../components/Card/Card';
 import useCreditRank from '../../hooks/useCreditRank';
 import useGames from '../../hooks/useGames';
+import { SearchParams } from '../../lib/types';
 import CreditList from './CreditList';
 import GameList from './GameList';
 
 const Dashboard = () => {
   const nav = useNavigate();
-  // const onSearch: SearchProps['onSearch'] = (value, _e, info) =>
-  //   console.log(info?.source, value);
-  const state = useGames();
+  const [params] = useState<SearchParams>({ limit: 10 });
+  const state = useGames(params);
   const credit = useCreditRank();
 
   const [searchValue, setSearchValue] = useState<string>('');
-
   const gameHeader = () => (
     <div className="flex items-center justify-between p-2 font-mono text-lg font-bold">
       <p className="">Latest Games</p>
@@ -50,7 +49,12 @@ const Dashboard = () => {
           />
           <SearchIcon
             onClick={() => nav(`/games/${searchValue}`)}
-            sx={{ height: 48, width: 48, color: 'primary.main' }}
+            sx={{
+              height: 48,
+              width: 48,
+              color: 'primary.main',
+              cursor: 'pointer',
+            }}
           />
         </div>
       </section>
@@ -59,21 +63,11 @@ const Dashboard = () => {
         <div className="w-full">
           <GameCard header={gameHeader()}>
             <GameList games={state.value?.hits} />
-            {/* {state.value?.records?.map((item) => (
-              <GameItem key={item.id} game={item}></GameItem>
-            ))} */}
           </GameCard>
         </div>
         <div className="w-full">
           <GameCard header={creditHeader()}>
             {<CreditList credits={credit.value} />}
-            {/* {credit.value?.map((item, index) => (
-              <CreditItem
-                key={item.address}
-                credit={item}
-                index={index + 1}
-              ></CreditItem>
-            ))} */}
           </GameCard>
         </div>
       </section>

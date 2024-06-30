@@ -24,7 +24,7 @@ const GameList: FC<GameListProps> = ({ games }) => {
   return (
     <List>
       {games?.map((game) => (
-        <ListItem alignItems="flex-start">
+        <ListItem alignItems="flex-start" key={game.id}>
           <ListItemAvatar>
             <Avatar alt="game" src={gameImg} />
           </ListItemAvatar>
@@ -32,7 +32,7 @@ const GameList: FC<GameListProps> = ({ games }) => {
             primary={game.l2_block_number}
             secondary={
               <React.Fragment>
-                <Typography>a few minutes ago</Typography>
+                <Typography component={'span'}>a few minutes ago</Typography>
               </React.Fragment>
             }
           ></ListItemText>
@@ -40,7 +40,10 @@ const GameList: FC<GameListProps> = ({ games }) => {
             primary="Game Address"
             secondary={
               <React.Fragment>
-                <Typography onClick={() => nav(`/games/${game.game_contract}`)}>
+                <Typography
+                  component={'span'}
+                  onClick={() => nav(`/games/${game.game_contract}`)}
+                >
                   {formatAddress(game.game_contract)}
                 </Typography>
               </React.Fragment>
