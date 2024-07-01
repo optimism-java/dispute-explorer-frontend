@@ -5,8 +5,6 @@ import {
   isSameDay,
   isSameHour,
   isSameMinute,
-  isSameMonth,
-  isSameYear,
 } from 'date-fns';
 
 export const calculateDate = (time: Date): string => {
@@ -27,22 +25,18 @@ export const calculateDate = (time: Date): string => {
     } else {
       return `${hours} hours ago`;
     }
-  } else if (isSameMonth(now, time)) {
+  } else {
     const days = differenceInDays(now, time);
     if (days === 1) {
       return 'a day ago';
-    } else {
+    } else if (days <= 30) {
       return `${days} days ago`;
-    }
-  } else if (isSameYear(now, time)) {
-    const months = differenceInMinutes(now, time);
-    if (months === 1) {
-      return 'a month ago';
+    } else if (days <= 365) {
+      return `${Math.floor(days / 30)} months ago`;
     } else {
-      return `${months} months ago`;
+      return `${Math.floor(days / 365)} years ago`;
     }
   }
-  return '';
 };
 
 export const formatAddress = (addr: string): string => {

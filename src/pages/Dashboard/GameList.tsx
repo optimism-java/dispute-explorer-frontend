@@ -13,7 +13,7 @@ import gameImg from '../../assets/images/game.png';
 import shield from '../../assets/images/shield.png';
 import sword from '../../assets/images/sword.png';
 import { Game } from '../../lib/types';
-import { formatAddress } from '../../lib/utils';
+import { calculateDate, formatAddress } from '../../lib/utils';
 
 interface GameListProps {
   games?: Game[];
@@ -32,7 +32,9 @@ const GameList: FC<GameListProps> = ({ games }) => {
             primary={game.l2_block_number}
             secondary={
               <React.Fragment>
-                <Typography component={'span'}>a few minutes ago</Typography>
+                <Typography component={'span'}>
+                  {calculateDate(new Date(game.block_time * 1000))}
+                </Typography>
               </React.Fragment>
             }
           ></ListItemText>
@@ -54,10 +56,10 @@ const GameList: FC<GameListProps> = ({ games }) => {
               <CircularProgress color="primary" disableShrink />
             )}
             {game.status === 1 && (
-              <img src={shield} width={48} height={48} alt="shield" />
+              <img src={sword} width={48} height={48} alt="sword" />
             )}
             {game.status === 2 && (
-              <img src={sword} width={48} height={48} alt="sword" />
+              <img src={shield} width={48} height={48} alt="shield" />
             )}
           </ListItemAvatar>
         </ListItem>
