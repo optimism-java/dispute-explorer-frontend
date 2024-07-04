@@ -75,3 +75,9 @@ export interface IndexResponse<T> {
 export interface TwoIndexResponse<T, U> {
   results: [IndexResponse<T>, IndexResponse<U>];
 }
+
+export interface Overview {
+  disputeGameProxy: string;
+  totalCredit: string;
+  totalGames: number;
+}

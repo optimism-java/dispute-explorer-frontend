@@ -1,15 +1,19 @@
 import NotStartedIcon from '@mui/icons-material/NotStarted';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useClaimData from '../../hooks/useClaimData';
 import { transform } from '../../hooks/useGameData';
+import useOverview from '../../hooks/useOverview';
+import ClaimDataTable from './ClaimDataTable';
 import GameGraph from './GameGraph';
+import Overview from './OverviewCards';
 
 const Index: FC = () => {
   const { gameId } = useParams();
   const state = useClaimData(gameId || '');
+  const overview = useOverview();
   const gameData = transform(state.value || []);
   const [upTo, setUpTo] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -27,15 +31,24 @@ const Index: FC = () => {
     }
   }, [gameData, playing]);
   return (
-    <Box>
-      <Box
-        onClick={() => setPlaying(!playing)}
-        sx={{ color: 'primary.main', height: 32 }}
-      >
-        {playing ? <PauseCircleIcon /> : <NotStartedIcon />}
+    <Stack gap={4}>
+      <Overview />
+      <Box>
+        <Box
+          onClick={() => setPlaying(!playing)}
+          sx={{ color: 'primary.main', height: 96, position: 'absolute' }}
+        >
+          {playing ? (
+            <PauseCircleIcon sx={{ fontSize: '30px' }} />
+          ) : (
+            <NotStartedIcon sx={{ fontSize: '30px' }} />
+          )}
+        </Box>
+        <GameGraph data={gameData} upTo={upTo} />
       </Box>
-      <GameGraph data={gameData} upTo={upTo} />
-    </Box>
+
+      <ClaimDataTable data={state.value} loading={state.loading} />
+    </Stack>
   );
 };
 
