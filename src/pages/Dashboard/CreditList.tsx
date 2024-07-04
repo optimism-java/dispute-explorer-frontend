@@ -1,17 +1,16 @@
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {
   Avatar,
+  Link,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Snackbar,
   Stack,
-  Typography,
+  Tooltip,
 } from '@mui/material';
 import { ethers } from 'ethers';
 import React, { FC, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNavigate } from 'react-router-dom';
 import bonus from '../../assets/images/bonus.png';
 import { Credit } from '../../lib/types';
@@ -47,7 +46,12 @@ const CreditList: FC<CreditListProps> = ({ credits }) => {
               secondary={
                 <React.Fragment>
                   <Stack direction={'row'} gap={2}>
-                    <Typography
+                    <Tooltip title={item.address} placement="top">
+                      <Link href={`/credits/${item.address}`} underline="hover">
+                        {formatAddress(item.address)}
+                      </Link>
+                    </Tooltip>
+                    {/* <Typography
                       component={'span'}
                       onClick={() => nav(`/games/${item.address}`)}
                       sx={{ color: 'primary.main', cursor: 'pointer' }}
@@ -59,7 +63,7 @@ const CreditList: FC<CreditListProps> = ({ credits }) => {
                       onCopy={(text, res) => setOpen(res)}
                     >
                       <ContentCopyIcon sx={{ color: 'black' }} />
-                    </CopyToClipboard>
+                    </CopyToClipboard> */}
                   </Stack>
                 </React.Fragment>
               }

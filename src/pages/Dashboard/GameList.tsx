@@ -1,17 +1,17 @@
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {
   Avatar,
   CircularProgress,
+  Link,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Snackbar,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { List } from 'antd';
 import React, { FC, useState } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useNavigate } from 'react-router-dom';
 import gameImg from '../../assets/images/game.png';
 import shield from '../../assets/images/shield.png';
@@ -42,7 +42,18 @@ const GameList: FC<GameListProps> = ({ games }) => {
               <Avatar alt="game" src={gameImg} />
             </ListItemAvatar>
             <ListItemText
-              primary={game.l2_block_number}
+              primary={
+                <>
+                  <Link underline="hover">
+                    <a
+                      target="_blank"
+                      href={`https://sepolia-optimism.etherscan.io/block/${game.l2_block_number}`}
+                    >
+                      {game.l2_block_number}
+                    </a>
+                  </Link>
+                </>
+              }
               secondary={
                 <React.Fragment>
                   <Typography component={'span'}>
@@ -56,19 +67,20 @@ const GameList: FC<GameListProps> = ({ games }) => {
               secondary={
                 <React.Fragment>
                   <Stack direction={'row'} gap={2}>
-                    <Typography
-                      component={'span'}
-                      onClick={() => nav(`/games/${game.game_contract}`)}
-                      sx={{ color: 'primary.main', cursor: 'pointer' }}
-                    >
-                      {formatAddress(game.game_contract)}
-                    </Typography>
-                    <CopyToClipboard
+                    <Tooltip title={game.game_contract} placement="top">
+                      <Link
+                        href={`/games/${game.game_contract}`}
+                        underline="hover"
+                      >
+                        {formatAddress(game.game_contract)}
+                      </Link>
+                    </Tooltip>
+                    {/* <CopyToClipboard
                       text={game.game_contract}
                       onCopy={(text, res) => setOpen(res)}
                     >
                       <ContentCopyIcon sx={{ color: 'black' }} />
-                    </CopyToClipboard>
+                    </CopyToClipboard> */}
                   </Stack>
                 </React.Fragment>
               }
