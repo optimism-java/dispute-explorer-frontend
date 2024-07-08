@@ -6,15 +6,17 @@ import { useParams } from 'react-router-dom';
 import useClaimData from '../../hooks/useClaimData';
 import { transform } from '../../hooks/useGameData';
 import useOverview from '../../hooks/useOverview';
+import type { ClaimData, Overview } from '../../lib/types';
 import ClaimDataTable from './ClaimDataTable';
 import GameGraph from './GameGraph';
-import Overview from './OverviewCards';
+import OverviewCards from './OverviewCards';
 
 const Index: FC = () => {
   const { gameId } = useParams();
   const state = useClaimData(gameId || '');
   const overview = useOverview();
-  const gameData = transform(state.value || []);
+  const claimData = state.value as ClaimData[];
+  const gameData = transform(claimData);
   const [upTo, setUpTo] = useState(0);
   const [playing, setPlaying] = useState(false);
 
@@ -32,7 +34,7 @@ const Index: FC = () => {
   }, [gameData, playing]);
   return (
     <Stack gap={4}>
-      <Overview />
+      <OverviewCards data={overview.value as Overview} />
       <Box>
         <Box
           onClick={() => setPlaying(!playing)}
@@ -47,7 +49,7 @@ const Index: FC = () => {
         <GameGraph data={gameData} upTo={upTo} />
       </Box>
 
-      <ClaimDataTable data={state.value} loading={state.loading} />
+      <ClaimDataTable data={claimData} loading={state.loading} />
     </Stack>
   );
 };

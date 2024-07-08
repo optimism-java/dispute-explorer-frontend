@@ -3,9 +3,10 @@ import { Button, OutlinedInput } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameCard from '../../components/Card/Card';
+import useAmountPerday from '../../hooks/useAmountPerDay';
 import useCreditRank from '../../hooks/useCreditRank';
 import useGames from '../../hooks/useGames';
-import { SearchParams } from '../../lib/types';
+import { Credit, SearchParams } from '../../lib/types';
 import CreditList from './CreditList';
 import GameList from './GameList';
 
@@ -14,6 +15,7 @@ const Dashboard = () => {
   const [params] = useState<SearchParams>({ limit: 10 });
   const state = useGames(params);
   const credit = useCreditRank();
+  const lineChart = useAmountPerday();
 
   const [searchValue, setSearchValue] = useState<string>('');
   const gameHeader = () => (
@@ -67,7 +69,7 @@ const Dashboard = () => {
         </div>
         <div className="w-full">
           <GameCard header={creditHeader()}>
-            {<CreditList credits={credit.value} />}
+            {<CreditList credits={credit.value as Credit[]} />}
           </GameCard>
         </div>
       </section>

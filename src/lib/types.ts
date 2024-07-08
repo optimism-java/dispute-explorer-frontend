@@ -4,7 +4,7 @@ export interface Response<T> {
   records?: T[];
   totalCounts: number;
   totalPage: number;
-  data?: T[];
+  data?: T[] | T;
   [propname: string]: any;
 }
 
@@ -80,4 +80,9 @@ export interface Overview {
   disputeGameProxy: string;
   totalCredit: string;
   totalGames: number;
+}
+
+export interface Amountperday {
+  amount: string;
+  date: string;
 }
