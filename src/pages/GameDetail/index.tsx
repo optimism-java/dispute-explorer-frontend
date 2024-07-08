@@ -16,7 +16,7 @@ const Index: FC = () => {
   const state = useClaimData(gameId || '');
   const overview = useOverview();
   const claimData = state.value as ClaimData[];
-  const gameData = transform(claimData);
+  const gameData = transform(claimData || []);
   const [upTo, setUpTo] = useState(0);
   const [playing, setPlaying] = useState(false);
 
@@ -34,7 +34,7 @@ const Index: FC = () => {
   }, [gameData, playing]);
   return (
     <Stack gap={4}>
-      <OverviewCards data={overview.value as Overview} />
+      <OverviewCards data={(overview.value as Overview) || {}} />
       <Box>
         <Box
           onClick={() => setPlaying(!playing)}

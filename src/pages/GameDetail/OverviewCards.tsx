@@ -11,7 +11,7 @@ const OverviewCards = ({ data }: OverviewProps) => {
     <Grid container spacing={4}>
       <Grid item xs={6}>
         <p className="font-palanquin text-center text-4xl font-bold">
-          {ethers.formatEther(data.totalCredit)} ETH
+          {ethers.formatEther(data?.totalCredit || '0')} ETH
         </p>
         <p className="font-montserrat text-slate-gray text-center leading-7">
           Total Credits
@@ -19,7 +19,7 @@ const OverviewCards = ({ data }: OverviewProps) => {
       </Grid>
       <Grid item xs={6}>
         <p className="font-palanquin text-center text-4xl font-bold">
-          {data.totalGames}
+          {data?.totalGames}
         </p>
         <p className="font-montserrat text-slate-gray text-center leading-7">
           Total Games

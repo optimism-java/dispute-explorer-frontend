@@ -13,7 +13,7 @@ import CreditList from './CreditList';
 import GameList from './GameList';
 
 interface lineChartDataType {
-  label: string[];
+  label: Date[];
   data: number[];
 }
 
@@ -30,9 +30,9 @@ const Dashboard = () => {
     data: [],
   };
   chartData?.forEach((data) => {
-    lineChartData.label.push(data.date);
+    lineChartData.label.push(new Date(data.date));
     const amount = ethers.formatEther(data.amount);
-    lineChartData.data.push(Number(amount));
+    lineChartData.data.push(parseFloat(amount));
   });
 
   const [searchValue, setSearchValue] = useState<string>('');
@@ -60,43 +60,58 @@ const Dashboard = () => {
   return (
     <div className="mx-auto mt-8 flex w-11/12 flex-col gap-8">
       <section className="flex flex-col items-center justify-center gap-12 sm:gap-20">
-        <div className="flex h-12 w-full">
+        <div className="flex h-12 w-full md:w-8/12">
           <OutlinedInput
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, backgroundColor: 'white' }}
             placeholder="Search game address"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-          <SearchIcon
-            onClick={() => nav(`/games/${searchValue}`)}
-            sx={{
-              height: 48,
-              width: 48,
-              color: 'primary.main',
-              cursor: 'pointer',
-            }}
-          />
+          <div className="bg-accent-light flex w-12 items-center justify-center">
+            <SearchIcon
+              onClick={() => nav(`/games/${searchValue}`)}
+              sx={{
+                height: 24,
+                width: 24,
+                color: 'white',
+                cursor: 'pointer',
+              }}
+            />
+          </div>
         </div>
       </section>
-      <section>
+      <section className="bg-background-surface-light rounded-lg">
         <LineChart
-          xAxis={[{ data: lineChartData.label }]}
+          title="Total credits per day"
+          xAxis={[
+            {
+              id: 'time',
+              scaleType: 'time',
+              data: lineChartData.label,
+              valueFormatter: (date) => date?.toISOString()?.split('T')[0],
+            },
+          ]}
           series={[
             {
               data: lineChartData.data,
             },
           ]}
-          width={500}
+          yAxis={[
+            {
+              id: 'ETH',
+              label: 'ETH',
+            },
+          ]}
           height={300}
         />
       </section>
       <section className="flex-start flex justify-around gap-2 max-lg:flex-col">
-        <div className="w-full">
+        <div className="bg-background-surface-light w-full rounded-lg">
           <GameCard header={gameHeader()}>
             <GameList games={state.value?.hits} />
           </GameCard>
         </div>
-        <div className="w-full">
+        <div className="bg-background-surface-light w-full rounded-lg">
           <GameCard header={creditHeader()}>
             {<CreditList credits={credit.value as Credit[]} />}
           </GameCard>

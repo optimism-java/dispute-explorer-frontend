@@ -1,10 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
+import Footer from './components/Footer';
 import Header from './components/Header';
 import { CreditDetail, Dashboard, GameDetail, Games } from './pages';
 
 function App() {
   return (
-    <>
+    <div className="bg-background-light">
       <header>
         <Header />
       </header>
@@ -16,8 +17,10 @@ function App() {
           <Route path="/credits/:addr" element={<CreditDetail />} />
         </Routes>
       </main>
-      <footer></footer>
-    </>
+      <footer>
+        <Footer />
+      </footer>
+    </div>
   );
 }
 
