@@ -1,14 +1,21 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, OutlinedInput } from '@mui/material';
+import { LineChart } from '@mui/x-charts/LineChart';
+import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameCard from '../../components/Card/Card';
 import useAmountPerday from '../../hooks/useAmountPerDay';
 import useCreditRank from '../../hooks/useCreditRank';
 import useGames from '../../hooks/useGames';
-import { Credit, SearchParams } from '../../lib/types';
+import { Amountperday, Credit, SearchParams } from '../../lib/types';
 import CreditList from './CreditList';
 import GameList from './GameList';
+
+interface lineChartDataType {
+  label: string[];
+  data: number[];
+}
 
 const Dashboard = () => {
   const nav = useNavigate();
@@ -16,6 +23,17 @@ const Dashboard = () => {
   const state = useGames(params);
   const credit = useCreditRank();
   const lineChart = useAmountPerday();
+  const chartData = lineChart.value as Amountperday[];
+
+  const lineChartData: lineChartDataType = {
+    label: [],
+    data: [],
+  };
+  chartData?.forEach((data) => {
+    lineChartData.label.push(data.date);
+    const amount = ethers.formatEther(data.amount);
+    lineChartData.data.push(Number(amount));
+  });
 
   const [searchValue, setSearchValue] = useState<string>('');
   const gameHeader = () => (
@@ -60,7 +78,18 @@ const Dashboard = () => {
           />
         </div>
       </section>
-      <section></section>
+      <section>
+        <LineChart
+          xAxis={[{ data: lineChartData.label }]}
+          series={[
+            {
+              data: lineChartData.data,
+            },
+          ]}
+          width={500}
+          height={300}
+        />
+      </section>
       <section className="flex-start flex justify-around gap-2 max-lg:flex-col">
         <div className="w-full">
           <GameCard header={gameHeader()}>
