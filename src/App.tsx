@@ -5,7 +5,7 @@ import { CreditDetail, Dashboard, GameDetail, Games } from './pages';
 
 function App() {
   return (
-    <div className="bg-background-light">
+    <div className="bg-background-light font-dogica">
       <header>
         <Header />
       </header>

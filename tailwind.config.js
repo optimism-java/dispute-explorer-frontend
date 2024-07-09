@@ -8,6 +8,9 @@ module.exports = {
         'background-surface-light': 'rgb(255 255 255 / 1)',
         'accent-light': 'rgb(93 37 212/1)',
       },
+      fontFamily: {
+        dogica: ['Dogica', 'sans-serif'],
+      },
     },
   },
   plugins: [],
