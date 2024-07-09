@@ -67,7 +67,7 @@ const Dashboard = () => {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-          <div className="bg-accent-light flex w-12 items-center justify-center">
+          <div className="flex w-12 items-center justify-center bg-accent-light">
             <SearchIcon
               onClick={() => nav(`/games/${searchValue}`)}
               sx={{
@@ -80,7 +80,7 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-      <section className="bg-background-surface-light rounded-lg">
+      <section className="rounded-lg bg-background-surface-light">
         <LineChart
           title="Total credits per day"
           xAxis={[
@@ -106,12 +106,12 @@ const Dashboard = () => {
         />
       </section>
       <section className="flex-start flex justify-around gap-2 max-lg:flex-col">
-        <div className="bg-background-surface-light w-full rounded-lg">
+        <div className="w-full rounded-lg bg-background-surface-light">
           <GameCard header={gameHeader()}>
             <GameList games={state.value?.hits} />
           </GameCard>
         </div>
-        <div className="bg-background-surface-light w-full rounded-lg">
+        <div className="w-full rounded-lg bg-background-surface-light">
           <GameCard header={creditHeader()}>
             {<CreditList credits={credit.value as Credit[]} />}
           </GameCard>
