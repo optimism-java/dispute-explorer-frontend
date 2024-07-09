@@ -5,11 +5,11 @@ import { CreditDetail, Dashboard, GameDetail, Games } from './pages';
 
 function App() {
   return (
-    <div className="bg-background-light font-dogica">
+    <div className="flex h-screen flex-col bg-background-light font-dogica">
       <header>
         <Header />
       </header>
-      <main className="container mx-auto pt-4">
+      <main className="container mx-auto flex-1 pt-4">
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/games" element={<Games />} />
@@ -17,7 +17,7 @@ function App() {
           <Route path="/credits/:addr" element={<CreditDetail />} />
         </Routes>
       </main>
-      <footer>
+      <footer className="min-h-10 bg-slate-50">
         <Footer />
       </footer>
     </div>

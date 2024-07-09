@@ -1,10 +1,8 @@
-import { Box } from '@mui/material';
-
 const Header = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <span className="font-dogica">Dispute Game</span>
-    </Box>
+    <div className="flex h-10 items-center bg-slate-50 px-6">
+      <div className="font-dogica">Dispute Game</div>
+    </div>
   );
 };
 
