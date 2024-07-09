@@ -1,6 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, OutlinedInput } from '@mui/material';
-import { LineChart } from '@mui/x-charts/LineChart';
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -61,7 +60,7 @@ const Dashboard = () => {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-          <div className="flex w-12 items-center justify-center bg-accent-light">
+          <div className="flex w-12 items-center justify-center rounded-lg bg-accent-light">
             <SearchIcon
               onClick={() => nav(`/games/${searchValue}`)}
               sx={{
@@ -75,7 +74,7 @@ const Dashboard = () => {
         </div>
       </section>
       <section className="rounded-lg bg-background-surface-light">
-        <LineChart
+        {/* <LineChart
           title="Total credits per day"
           xAxis={[
             {
@@ -97,7 +96,7 @@ const Dashboard = () => {
             },
           ]}
           height={300}
-        />
+        /> */}
       </section>
       <section className="flex-start flex justify-around gap-6 max-lg:flex-col">
         <div className="w-full rounded-lg bg-background-surface-light">
