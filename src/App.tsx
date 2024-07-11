@@ -5,7 +5,7 @@ import { CreditDetail, Dashboard, GameDetail, Games } from './pages';
 
 function App() {
   return (
-    <div className="flex h-screen flex-col bg-background-light font-dogica">
+    <div className="flex min-h-screen flex-col bg-background-light font-dogica">
       <header>
         <Header />
       </header>
@@ -17,7 +17,7 @@ function App() {
           <Route path="/credits/:addr" element={<CreditDetail />} />
         </Routes>
       </main>
-      <footer className="min-h-10 bg-slate-50">
+      <footer className="mt-6 bg-slate-50">
         <Footer />
       </footer>
     </div>

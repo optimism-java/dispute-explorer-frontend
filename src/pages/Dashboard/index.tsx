@@ -1,5 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, OutlinedInput } from '@mui/material';
+import type { EChartsOption } from 'echarts';
+import ReactECharts from 'echarts-for-react';
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,14 +9,11 @@ import GameCard from '../../components/Card/Card';
 import useAmountPerday from '../../hooks/useAmountPerDay';
 import useCreditRank from '../../hooks/useCreditRank';
 import useGames from '../../hooks/useGames';
-import { Amountperday, Credit, SearchParams } from '../../lib/types';
+import useOverview from '../../hooks/useOverview';
+import { Amountperday, Credit, Overview, SearchParams } from '../../lib/types';
 import CreditList from './CreditList';
 import GameList from './GameList';
-
-interface lineChartDataType {
-  label: Date[];
-  data: number[];
-}
+import OverviewCards from './OverviewCards';
 
 const Dashboard = () => {
   const nav = useNavigate();
@@ -23,21 +22,46 @@ const Dashboard = () => {
   const credit = useCreditRank();
   const lineChart = useAmountPerday();
   const chartData = lineChart.value as Amountperday[];
+  const overview = useOverview();
 
-  const lineChartData: lineChartDataType = {
-    label: [],
-    data: [],
+  const options: EChartsOption = {
+    title: {
+      text: 'Total credits per day',
+      left: '3%',
+      textStyle: {
+        fontFamily: 'dogica',
+        fontSize: '12px',
+      },
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+    },
+    xAxis: {
+      type: 'time',
+    },
+    yAxis: {
+      type: 'value',
+    },
+    series: [
+      {
+        data: chartData?.map((item) => [
+          item.date,
+          ethers.formatEther(item.amount),
+        ]),
+        type: 'line',
+        smooth: true,
+      },
+    ],
+    tooltip: {
+      trigger: 'axis',
+    },
   };
-  chartData?.forEach((data) => {
-    lineChartData.label.push(new Date(data.date));
-    const amount = ethers.formatEther(data.amount);
-    lineChartData.data.push(parseFloat(amount));
-  });
 
   const [searchValue, setSearchValue] = useState<string>('');
   const gameHeader = () => (
-    <div className="flex items-center justify-between p-2 font-mono text-lg font-bold">
-      <p className="">Latest Games</p>
+    <div className="flex items-center justify-between pb-2 font-dogica text-sm font-bold">
+      <p className="font-dogica">Latest Games</p>
       <Button onClick={() => nav('/games')} variant="outlined">
         View All Games
       </Button>
@@ -45,7 +69,7 @@ const Dashboard = () => {
   );
 
   const creditHeader = () => (
-    <div className="flex items-center justify-between p-2 font-mono text-lg font-bold">
+    <div className="flex items-center justify-between pb-2 font-dogica text-sm font-bold">
       <p className="p-2">Latest Credits</p>{' '}
     </div>
   );
@@ -73,30 +97,11 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-      <section className="rounded-lg bg-background-surface-light">
-        {/* <LineChart
-          title="Total credits per day"
-          xAxis={[
-            {
-              id: 'time',
-              scaleType: 'time',
-              data: lineChartData.label,
-              valueFormatter: (date) => date?.toISOString()?.split('T')[0],
-            },
-          ]}
-          series={[
-            {
-              data: lineChartData.data,
-            },
-          ]}
-          yAxis={[
-            {
-              id: 'ETH',
-              label: 'ETH',
-            },
-          ]}
-          height={300}
-        /> */}
+      <section className="flex rounded-lg bg-background-surface-light p-6">
+        <OverviewCards data={(overview.value as Overview) || {}} />
+        <div className="relative flex-1">
+          <ReactECharts option={options} />
+        </div>
       </section>
       <section className="flex-start flex justify-around gap-6 max-lg:flex-col">
         <div className="w-full rounded-lg bg-background-surface-light">

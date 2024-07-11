@@ -5,16 +5,13 @@ import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useClaimData from '../../hooks/useClaimData';
 import { transform } from '../../hooks/useGameData';
-import useOverview from '../../hooks/useOverview';
-import type { ClaimData, Overview } from '../../lib/types';
+import type { ClaimData } from '../../lib/types';
 import ClaimDataTable from './ClaimDataTable';
 import GameGraph from './GameGraph';
-import OverviewCards from './OverviewCards';
 
 const Index: FC = () => {
   const { gameId } = useParams();
   const state = useClaimData(gameId || '');
-  const overview = useOverview();
   const claimData = state.value as ClaimData[];
   const gameData = transform(claimData || []);
   const [upTo, setUpTo] = useState(0);
@@ -34,7 +31,6 @@ const Index: FC = () => {
   }, [gameData, playing]);
   return (
     <Stack gap={4}>
-      <OverviewCards data={(overview.value as Overview) || {}} />
       <Box>
         <Box
           onClick={() => setPlaying(!playing)}
