@@ -8,11 +8,9 @@ import {
   Snackbar,
   Stack,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import { List } from 'antd';
 import React, { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import gameImg from '../../assets/images/game.png';
 import shield from '../../assets/images/shield.png';
 import sword from '../../assets/images/sword.png';
@@ -24,7 +22,6 @@ interface GameListProps {
 }
 
 const GameList: FC<GameListProps> = ({ games }) => {
-  const nav = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
@@ -48,6 +45,7 @@ const GameList: FC<GameListProps> = ({ games }) => {
                     <a
                       target="_blank"
                       href={`https://sepolia-optimism.etherscan.io/block/${game.l2_block_number}`}
+                      className="font-dogica text-sm"
                     >
                       {game.l2_block_number}
                     </a>
@@ -56,14 +54,16 @@ const GameList: FC<GameListProps> = ({ games }) => {
               }
               secondary={
                 <React.Fragment>
-                  <Typography component={'span'}>
+                  <span className="font-dogica text-sm">
                     {calculateDate(new Date(game.block_time * 1000))}
-                  </Typography>
+                  </span>
                 </React.Fragment>
               }
             ></ListItemText>
             <ListItemText
-              primary="Game Address"
+              primary={
+                <span className="font-dogica text-sm">Game Address</span>
+              }
               secondary={
                 <React.Fragment>
                   <Stack direction={'row'} gap={2}>
@@ -72,15 +72,11 @@ const GameList: FC<GameListProps> = ({ games }) => {
                         href={`/games/${game.game_contract}`}
                         underline="hover"
                       >
-                        {formatAddress(game.game_contract)}
+                        <span className="font-dogica text-sm">
+                          {formatAddress(game.game_contract)}
+                        </span>
                       </Link>
                     </Tooltip>
-                    {/* <CopyToClipboard
-                      text={game.game_contract}
-                      onCopy={(text, res) => setOpen(res)}
-                    >
-                      <ContentCopyIcon sx={{ color: 'black' }} />
-                    </CopyToClipboard> */}
                   </Stack>
                 </React.Fragment>
               }

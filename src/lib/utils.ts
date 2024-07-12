@@ -40,5 +40,5 @@ export const calculateDate = (time: Date): string => {
 };
 
 export const formatAddress = (addr: string): string => {
-  return addr.substr(0, 8) + '...' + addr.substr(addr.length - 8, 8);
+  return addr.substr(0, 6) + '...' + addr.substr(addr.length - 6, 8);
 };

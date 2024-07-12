@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { ethers } from 'ethers';
 import React, { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import bonus from '../../assets/images/bonus.png';
 import { Credit } from '../../lib/types';
 import { formatAddress } from '../../lib/utils';
@@ -20,7 +19,6 @@ interface CreditListProps {
   credits?: Credit[];
 }
 const CreditList: FC<CreditListProps> = ({ credits }) => {
-  const nav = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
@@ -38,17 +36,23 @@ const CreditList: FC<CreditListProps> = ({ credits }) => {
               <Avatar alt="game" src={bonus} />
             </ListItemAvatar>
             <ListItemText
-              primary={ethers.formatEther(item.amount).substring(0, 5)}
-              secondary="ETH"
+              primary={
+                <span className="font-dogica text-sm">
+                  {ethers.formatEther(item.amount).substring(0, 5)}
+                </span>
+              }
+              secondary={<span className="font-dogica text-sm">ETH</span>}
             ></ListItemText>
             <ListItemText
-              primary="Address"
+              primary={<span className="font-dogica text-sm">Address</span>}
               secondary={
                 <React.Fragment>
                   <Stack direction={'row'} gap={2}>
                     <Tooltip title={item.address} placement="top">
                       <Link href={`/credits/${item.address}`} underline="hover">
-                        {formatAddress(item.address)}
+                        <span className="font-dogica text-sm">
+                          {formatAddress(item.address)}
+                        </span>
                       </Link>
                     </Tooltip>
                     {/* <Typography
