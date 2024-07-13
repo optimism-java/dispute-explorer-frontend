@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ethers } from 'ethers';
+import DigWrapper from '../../components/DigWrapper';
 import TableRowSkeleton from '../../components/TableRowSkeleton';
 import { ClaimData } from '../../lib/types';
 import { formatAddress } from '../../lib/utils';
@@ -25,13 +26,27 @@ const ClaimDataTable = ({ loading, data }: ClaimDataTableProps) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Data Index</TableCell>
-            <TableCell>Position</TableCell>
-            <TableCell>Claim</TableCell>
-            <TableCell>Claimant</TableCell>
-            <TableCell>Countered By</TableCell>
-            <TableCell>Bond</TableCell>
-            <TableCell>Clock</TableCell>
+            <TableCell>
+              <DigWrapper children={'Data Index'} />
+            </TableCell>
+            <TableCell>
+              <DigWrapper children={'Position'} />
+            </TableCell>
+            <TableCell>
+              <DigWrapper children={'Claim'} />
+            </TableCell>
+            <TableCell>
+              <DigWrapper children={'Claimant'} />
+            </TableCell>
+            <TableCell>
+              <DigWrapper children={'Countered By'} />
+            </TableCell>
+            <TableCell>
+              <DigWrapper children={'Bond'} />
+            </TableCell>
+            <TableCell>
+              <DigWrapper children={'Clock'} />
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -39,28 +54,41 @@ const ClaimDataTable = ({ loading, data }: ClaimDataTableProps) => {
           {!loading &&
             data?.map((item) => (
               <TableRow key={item.data_index}>
-                <TableCell>{item.data_index}</TableCell>
-                <TableCell>{item.position}</TableCell>
+                <TableCell>
+                  <DigWrapper children={item.data_index} />
+                </TableCell>
+                <TableCell>
+                  <DigWrapper children={item.position} />
+                </TableCell>
                 <TableCell>
                   <Tooltip title={item.claim} placement="top">
-                    <span>{formatAddress(item.claim)}</span>
+                    <DigWrapper children={formatAddress(item.claim)} />
                   </Tooltip>
                 </TableCell>
                 <TableCell>
                   <Tooltip title={item.claimant} placement="top">
-                    <span>{formatAddress(item.claimant)}</span>
+                    <DigWrapper children={formatAddress(item.claimant)} />
                   </Tooltip>
                 </TableCell>
                 <TableCell>
                   <Tooltip title={item.countered_by} placement="top">
-                    <span>{formatAddress(item.countered_by)}</span>
+                    <DigWrapper children={formatAddress(item.countered_by)} />
                   </Tooltip>
                 </TableCell>
                 <TableCell>
-                  {ethers.formatEther(item.bond.toString())} ETH
+                  <DigWrapper
+                    children={
+                      ethers
+                        .formatEther(item.bond.toString())
+                        .match(/^\d+(?:\.\d{0,2})?/) + 'ETH'
+                    }
+                  />
                 </TableCell>
                 <TableCell>
-                  <Typography>{item.clock.toString()}</Typography>
+                  <Typography>
+                    {' '}
+                    <DigWrapper children={item.clock.toString()} />
+                  </Typography>
                 </TableCell>
               </TableRow>
             ))}

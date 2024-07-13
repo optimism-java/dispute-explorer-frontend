@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameCard from '../../components/Card/Card';
+import DigWrapper from '../../components/DigWrapper';
 import useAmountPerday from '../../hooks/useAmountPerDay';
 import useCreditRank from '../../hooks/useCreditRank';
 import useGames from '../../hooks/useGames';
@@ -63,7 +64,7 @@ const Dashboard = () => {
     <div className="flex items-center justify-between pb-2 font-dogica text-sm font-bold">
       <p className="font-dogica">Latest Games</p>
       <Button onClick={() => nav('/games')} variant="outlined">
-        View All Games
+        <DigWrapper children={'View All Games'} />
       </Button>
     </div>
   );

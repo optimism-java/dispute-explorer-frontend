@@ -39,7 +39,9 @@ export interface ClaimData {
   bond: number;
   claim: string;
   position: number;
-  clock: BigInt;
+  clock: number;
+  output_block: number;
+  event_id: number;
 }
 
 export interface Credit {
