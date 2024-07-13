@@ -4,50 +4,61 @@ import { FC } from 'react';
 import { ClaimData } from '../../lib/types';
 import { formatAddress } from '../../lib/utils';
 
-const attackVal = 10;
-const defendVal = 5;
+const xBase = 50;
+const gap = 250;
+const attackHeight = 400;
+const defendHeight = 300;
 
-// const handleData = (data: ClaimData[]) => {};
+const genNodesAndLinks = (data: ClaimData[]): any => {
+  const nodes: any[] = [];
+  const links: any[] = [];
+
+  data?.forEach((item, i, arr) => {
+    const nodeLevel = Math.floor(Math.log2(item.position));
+    const node: any = {
+      name: item.event_id.toString(),
+      claim: item.claim,
+      x: xBase + nodeLevel * gap,
+    };
+
+    if (item.position % 2 == 0) {
+      node.itemStyle = {
+        color: 'red',
+      };
+      node.y = attackHeight;
+    } else {
+      node.itemStyle = {
+        color: 'blue',
+      };
+      node.y = defendHeight;
+    }
+    if (arr[i + 1]) {
+      const link: any = {
+        source: item.event_id.toString(),
+        target: arr[i + 1].event_id.toString(),
+      };
+      if (arr[i + 1].position % 2 === 0) {
+        link.lineStyle = {
+          color: 'red',
+        };
+      } else {
+        link.lineStyle = {
+          color: 'blue',
+        };
+      }
+      links.push(link);
+    }
+
+    nodes.push(node);
+  });
+  return {
+    nodes,
+    links,
+  };
+};
 
 const GameChart: FC<{ data: ClaimData[] }> = ({ data }) => {
-  const axisData: number[] = [];
-  const valData: any[] = [];
-  const links: any[] = [];
-  data?.forEach((item, i) => {
-    axisData.push(item.position);
-    const node: any = {
-      name: item.position,
-      claim: item.claim,
-    };
-    if (item.position % 2 === 0) {
-      node.value = attackVal;
-      node.itemStyle = {
-        color: 'red',
-      };
-    } else {
-      node.value = defendVal;
-      node.itemStyle = {
-        color: 'blue',
-      };
-    }
-    valData.push(node);
-
-    const link: any = {
-      source: i,
-      target: i + 1,
-    };
-    if (item.position % 2 === 0) {
-      link.lineStyle = {
-        color: 'red',
-      };
-    } else {
-      link.lineStyle = {
-        color: 'blue',
-      };
-    }
-
-    links.push(link);
-  });
+  const { nodes, links } = genNodesAndLinks(data);
 
   const options: EChartsOption = {
     title: {
@@ -71,22 +82,22 @@ const GameChart: FC<{ data: ClaimData[] }> = ({ data }) => {
       left: '5%',
       right: '5%',
     },
-    xAxis: {
-      type: 'category',
-      show: false,
-      data: axisData,
-    },
+    // xAxis: {
+    //   type: 'category',
+    //   show: false,
+    //   data: axisData,
+    // },
     yAxis: {
       type: 'value',
       show: false,
     },
     series: [
       {
-        data: valData,
+        data: nodes,
         type: 'graph',
         layout: 'none',
-        coordinateSystem: 'cartesian2d',
-        symbolSize: 60,
+        // coordinateSystem: 'cartesian2d',
+        symbolSize: 100,
         label: {
           show: true,
           formatter: (params: any) => {
