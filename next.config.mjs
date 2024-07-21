@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  webpack(config) {
+  async rewrites() {
+    return [
+      {
+        source: "/index/:path*",
+        destination: "http://144.76.97.175:7700/:path*", // Proxy to Backend
+      },
+    ];
+  },
+  webpack(config, { isServer }) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find(
       (/** @type {{ test: { test: (arg0: string) => any; }; }} */ rule) =>
@@ -40,6 +48,10 @@ const nextConfig = {
       asyncWebAssembly: true,
       layers: true,
     };
+
+    // if (isServer) {
+    //   config.externals = ["http-proxy-middleware", ...config.externals];
+    // }
 
     return config;
   },
