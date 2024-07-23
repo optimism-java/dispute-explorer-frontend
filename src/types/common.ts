@@ -10,3 +10,12 @@ export interface SearchParams {
   filter?: string[];
   sort?: string[];
 }
+
+export interface IndexResponse<T> {
+  estimatedTotalHits: number;
+  hits: T[];
+  limit: number;
+  offset: number;
+  processingTimeMs: number;
+  query: string;
+}

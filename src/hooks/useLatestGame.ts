@@ -1,5 +1,6 @@
-import useSWR from "swr";
+import useSWR, { SWRResponse } from "swr";
 import { get } from "@/service/index";
+import { Game, IndexResponse } from "@/types";
 
 const url = "/index/indexes/disputegame/search";
 const params = {
@@ -7,11 +8,15 @@ const params = {
   sort: ["block_number:desc"],
 };
 
-const fetcher = async () => {
+const fetcher = async (): Promise<IndexResponse<Game>> => {
   return await get(url, params);
 };
 
-export const useLatestGame = () => {
+export const useLatestGame = (): SWRResponse<
+  IndexResponse<Game>,
+  Error,
+  Boolean
+> => {
   const res = useSWR(url, fetcher);
   return res;
 };
