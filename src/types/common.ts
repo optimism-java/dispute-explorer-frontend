@@ -19,3 +19,12 @@ export interface IndexResponse<T> {
   processingTimeMs: number;
   query: string;
 }
+
+export interface ListResponse<T> {
+  currrentPage: number;
+  pageSize: number;
+  data: T[];
+  totalCounts: number;
+  totalPage: number;
+  [propname: string]: any;
+}

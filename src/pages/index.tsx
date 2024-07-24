@@ -7,7 +7,10 @@ import { Button } from "@/components/Button";
 import { useRouter } from "next/router";
 import { SlidableList } from "@/components/SlidableList";
 import { GameCard } from "@/components/Cards/SurfaceCards/GameCard";
-import { Game, IndexResponse } from "@/types";
+import { CreditCard } from "@/components/Cards/SurfaceCards/CreditCard";
+import { Credit, Game, IndexResponse, ListResponse } from "@/types";
+import { useCreditRank } from "@/hooks/useCreditRank";
+import NextError from "@/pages/_error";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -18,7 +21,20 @@ export default function Page() {
     error: latestGamesError,
     isLoading: latestGamesLoading,
   } = useLatestGame();
+
+  const {
+    data: credits,
+    error: creditsError,
+    isLoading: creditsLoading,
+  } = useCreditRank();
   const router = useRouter();
+
+  const error = latestGamesError || creditsError;
+
+  if (error) {
+    return <NextError title={error.message} statusCode={500} />;
+  }
+
   return (
     <div className="flex flex-col items-center justify-center gap-12 sm:gap-20">
       <div className=" flex flex-col items-center justify-center gap-8 md:w-8/12">
@@ -61,28 +77,68 @@ export default function Page() {
             }
             emptyState="No games"
           >
-            {latestGamesLoading ? (
-              <div className="flex flex-col gap-4">
-                {Array(LATEST_ITEMS_LENGTH)
-                  .fill(0)
-                  .map((_, i) => (
-                    <div className={CARD_HEIGHT} key={i}>
-                      <GameCard />
-                    </div>
-                  ))}
+            <div className="h-[660px] sm:h-[630px]">
+              {latestGamesLoading ? (
+                <div className="flex flex-col gap-4">
+                  {Array(LATEST_ITEMS_LENGTH)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div className={CARD_HEIGHT} key={i}>
+                        <GameCard />
+                      </div>
+                    ))}
+                </div>
+              ) : (
+                <SlidableList
+                  items={(games as IndexResponse<Game>).hits.map((g) => ({
+                    id: g.id,
+                    element: (
+                      <div className={CARD_HEIGHT} key={g.id}>
+                        <GameCard game={g} />
+                      </div>
+                    ),
+                  }))}
+                />
+              )}
+            </div>
+          </Card>
+          <Card
+            header={
+              <div className="flex items-center justify-between gap-5">
+                <div>Latest Credits</div>
+                <Button
+                  variant="outline"
+                  label="View All Credits"
+                  onClick={() => void router.push("/")}
+                />
               </div>
-            ) : (
-              <SlidableList
-                items={(games as IndexResponse<Game>).hits.map((g) => ({
-                  id: g.id,
-                  element: (
-                    <div className={CARD_HEIGHT} key={g.id}>
-                      <GameCard game={g} />
-                    </div>
-                  ),
-                }))}
-              />
-            )}
+            }
+            emptyState="No games"
+          >
+            <div className="h-[660px] sm:h-[630px]">
+              {creditsLoading ? (
+                <div className="flex flex-col gap-4">
+                  {Array(LATEST_ITEMS_LENGTH)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div className={CARD_HEIGHT} key={i}>
+                        <GameCard />
+                      </div>
+                    ))}
+                </div>
+              ) : (
+                <SlidableList
+                  items={(credits as ListResponse<Credit>).data.map((g, i) => ({
+                    id: g.address,
+                    element: (
+                      <div className={CARD_HEIGHT} key={g.address}>
+                        <CreditCard credit={g} index={i} />
+                      </div>
+                    ),
+                  }))}
+                />
+              )}
+            </div>
           </Card>
         </div>
       </div>

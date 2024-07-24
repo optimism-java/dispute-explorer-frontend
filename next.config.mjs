@@ -7,6 +7,10 @@ const nextConfig = {
         source: "/index/:path*",
         destination: "http://144.76.97.175:7700/:path*", // Proxy to Backend
       },
+      {
+        source: "/api/:path*",
+        destination: "http://144.76.97.175:8080/:path*", // Proxy to Backend
+      },
     ];
   },
   webpack(config, { isServer }) {

@@ -4,7 +4,7 @@ import { Game, IndexResponse } from "@/types";
 
 const url = "/index/indexes/disputegame/search";
 const params = {
-  limit: 10,
+  limit: 5,
   sort: ["block_number:desc"],
 };
 
