@@ -11,11 +11,7 @@ const fetcher = async (): Promise<ListResponse<Credit>> => {
   return await get(url, params);
 };
 
-export const useCreditRank = (): SWRResponse<
-  ListResponse<Credit>,
-  Error,
-  Boolean
-> => {
+export const useCreditRank = (): SWRResponse<ListResponse<Credit>, Error, boolean> => {
   const res = useSWR(url, fetcher);
   return res;
 };

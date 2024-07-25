@@ -1,8 +1,8 @@
 import { HTMLAttributes, useRef, useState } from "react";
 import { Button } from "../Button";
 import { Input } from "../Input";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useClickOutside } from "@/hooks/useClickOutside";
+// import { useDebounce } from "@/hooks/useDebounce";
+// import { useClickOutside } from "@/hooks/useClickOutside";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 type SearchInputProps = {
@@ -14,11 +14,13 @@ export const SearchInput: React.FC<SearchInputProps> = function ({
   className,
 }: SearchInputProps) {
   const [term, setTerm] = useState<string>("");
-  const debouncedTerm = useDebounce(term, 600);
+  // const debouncedTerm = useDebounce(term, 600);
   const searchRef = useRef<HTMLFormElement>(null);
-  const clickOutside = useClickOutside(searchRef);
+  // const clickOutside = useClickOutside(searchRef);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    // TODO
+  };
 
   return (
     <form ref={searchRef} onSubmit={handleSubmit}>

@@ -12,7 +12,7 @@ const fetcher = async (): Promise<DetailResponse<Overview>> => {
 export const useOverview = (): SWRResponse<
   DetailResponse<Overview>,
   Error,
-  Boolean
+  boolean
 > => {
   const res = useSWR(url, fetcher);
   return res;

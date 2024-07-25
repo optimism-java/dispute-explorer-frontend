@@ -12,7 +12,7 @@ const fetcher = async (): Promise<ListResponse<Amountperday>> => {
 export const useAmoutPerDay = (): SWRResponse<
   ListResponse<Amountperday>,
   Error,
-  Boolean
+  boolean
 > => {
   const res = useSWR(url, fetcher);
   return res;

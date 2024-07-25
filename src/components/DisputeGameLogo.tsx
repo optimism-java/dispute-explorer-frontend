@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const DisputeGameLogo: React.FC<{ className?: string }> = ({ className }) => {
+const DisputeGameLogo: React.FC<{ className?: string }> = ({}) => {
   return <Link href="/">Dispute Game</Link>;
 };
 

@@ -12,11 +12,7 @@ const fetcher = async (): Promise<IndexResponse<Game>> => {
   return await get(url, params);
 };
 
-export const useLatestGame = (): SWRResponse<
-  IndexResponse<Game>,
-  Error,
-  Boolean
-> => {
+export const useLatestGame = (): SWRResponse<IndexResponse<Game>, Error, boolean> => {
   const res = useSWR(url, fetcher);
   return res;
 };

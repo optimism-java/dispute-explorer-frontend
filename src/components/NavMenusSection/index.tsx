@@ -8,15 +8,6 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
-import EthereumIcon from "~/icons/ethereum.svg";
-// import {
-//   buildBlobStatsRoute,
-//   buildBlockStatsRoute,
-//   buildBlocksRoute,
-//   buildTransactionStatsRoute,
-//   buildTransactionsRoute,
-//   buildBlobsRoute,
-// } from "~/utils";
 import { Button } from "../Button";
 import { NavItem } from "./NavItem";
 
