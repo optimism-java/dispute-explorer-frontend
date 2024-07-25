@@ -20,11 +20,19 @@ export interface IndexResponse<T> {
   query: string;
 }
 
-export interface ListResponse<T> {
+export interface PageListResponse<T> {
   currrentPage: number;
   pageSize: number;
   data: T[];
   totalCounts: number;
   totalPage: number;
   [propname: string]: any;
+}
+
+export interface DetailResponse<T> {
+  data: T;
+}
+
+export interface ListResponse<T> {
+  data: T[];
 }

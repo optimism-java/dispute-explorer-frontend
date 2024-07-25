@@ -40,3 +40,14 @@ export interface CreditDetail {
   game_contract: string;
   id: number;
 }
+
+export interface Overview {
+  disputeGameProxy: string;
+  totalCredit: string;
+  totalGames: number;
+}
+
+export interface Amountperday {
+  amount: string;
+  date: string;
+}

@@ -8,9 +8,11 @@ import { useRouter } from "next/router";
 import { SlidableList } from "@/components/SlidableList";
 import { GameCard } from "@/components/Cards/SurfaceCards/GameCard";
 import { CreditCard } from "@/components/Cards/SurfaceCards/CreditCard";
-import { Credit, Game, IndexResponse, ListResponse } from "@/types";
+import { Credit, Game, IndexResponse, PageListResponse } from "@/types";
 import { useCreditRank } from "@/hooks/useCreditRank";
 import NextError from "@/pages/_error";
+import { useOverview } from "@/hooks/useOverview";
+import { useAmoutPerDay } from "@/hooks/useAmoutPerDay";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -28,6 +30,10 @@ export default function Page() {
     isLoading: creditsLoading,
   } = useCreditRank();
   const router = useRouter();
+
+  const {} = useOverview();
+
+  const {} = useAmoutPerDay();
 
   const error = latestGamesError || creditsError;
 
@@ -128,14 +134,16 @@ export default function Page() {
                 </div>
               ) : (
                 <SlidableList
-                  items={(credits as ListResponse<Credit>).data.map((g, i) => ({
-                    id: g.address,
-                    element: (
-                      <div className={CARD_HEIGHT} key={g.address}>
-                        <CreditCard credit={g} index={i} />
-                      </div>
-                    ),
-                  }))}
+                  items={(credits as PageListResponse<Credit>).data.map(
+                    (g, i) => ({
+                      id: g.address,
+                      element: (
+                        <div className={CARD_HEIGHT} key={g.address}>
+                          <CreditCard credit={g} index={i} />
+                        </div>
+                      ),
+                    })
+                  )}
                 />
               )}
             </div>
