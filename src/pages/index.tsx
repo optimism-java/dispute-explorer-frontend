@@ -13,6 +13,7 @@ import { useCreditRank } from "@/hooks/useCreditRank";
 import NextError from "@/pages/_error";
 import { useOverview } from "@/hooks/useOverview";
 import { useAmoutPerDay } from "@/hooks/useAmoutPerDay";
+import { MetricCard } from "@/components/Cards/MetricCard";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -31,11 +32,14 @@ export default function Page() {
   } = useCreditRank();
   const router = useRouter();
 
-  const {} = useOverview();
-
+  const {
+    data: overview,
+    error: overviewError,
+    isLoading: overviewLoading,
+  } = useOverview();
   const {} = useAmoutPerDay();
 
-  const error = latestGamesError || creditsError;
+  const error = latestGamesError || creditsError || overviewError;
 
   if (error) {
     return <NextError title={error.message} statusCode={500} />;
@@ -60,12 +64,31 @@ export default function Page() {
       </div>
       <div className="flex w-full flex-col gap-8 sm:gap-10">
         <div className="grid grid-cols-2 space-y-6 lg:grid-cols-10 lg:gap-6 lg:space-y-0">
-          <div className="col-span-2 sm:col-span-4">
+          {/* <div className="col-span-2 sm:col-span-4">
             DailyBlobGasComparisonChart
-          </div>
+          </div> */}
           <div className="col-span-2 grid w-full grid-cols-2 gap-2 sm:col-span-2 sm:grid-cols-2">
-            <div className="col-span-2">MetricCard</div>
-            MetricCard MetricCard
+            <div className="col-span-2">
+              <MetricCard
+                name="Total Credits"
+                metric={{
+                  value: overview?.data.totalCredit
+                    ? BigInt(overview?.data.totalCredit)
+                    : 0,
+                  type: "ethereum",
+                }}
+                compact
+              />
+            </div>
+            <div className="col-span-2">
+              <MetricCard
+                name="Total Games"
+                metric={{
+                  value: overview?.data?.totalGames,
+                }}
+                compact
+              />
+            </div>
           </div>
           <div className="col-span-2 sm:col-span-4">DailyTransactionsChart</div>
         </div>
