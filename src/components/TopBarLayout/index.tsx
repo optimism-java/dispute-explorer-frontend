@@ -1,11 +1,17 @@
+import { ExplorerDetails } from "../ExplorerDetails";
+import { NavMenusSection } from "../NavMenusSection";
+import { ThemeModeButton } from "../ThemeModeButton";
+
 export const TopBarLayout: React.FC = () => {
   return (
     <nav className="z-10 flex h-16 w-full items-center justify-between px-4">
-      <div className="hidden w-full md:flex">ExplorerDetails</div>
+      <div className="hidden w-full md:flex">
+        <ExplorerDetails />
+      </div>
       <div className="flex items-center gap-3">
-        NavMenusSection
+        <NavMenusSection />
         <div className="relative -top-[2px] hidden md:block">
-          ThemeModeButton
+          <ThemeModeButton />
         </div>
       </div>
       <div className="relative -top-[2px] md:hidden">ThemeModeButton</div>
