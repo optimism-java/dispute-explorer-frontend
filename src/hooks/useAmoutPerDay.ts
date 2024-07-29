@@ -2,7 +2,7 @@ import useSWR, { SWRResponse } from "swr";
 import { get } from "@/service/index";
 import { Amountperday, DetailResponse, ListResponse } from "@/types";
 
-const url = "/api/disputegames/overview/amountperdays";
+const url = "/api/disputegames/overview/amountperday";
 const params = {};
 
 const fetcher = async (): Promise<ListResponse<Amountperday>> => {

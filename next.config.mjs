@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: "/index/:path*",
-        destination: "http://144.76.97.175:7700/:path*", // Proxy to Backend
+        destination: "http://144.76.97.175:7700/:path*", // Proxy to Backend, token required
       },
       {
         source: "/api/:path*",

@@ -1,5 +1,5 @@
 const latestGames = async () => {
-  const res = await fetch("index/indexes/disputegame/search?limit=10&");
+  const res = await fetch("index/indexes/disputegames/search?limit=10&");
   //"sort": ["block_number:desc"]
 };
 
