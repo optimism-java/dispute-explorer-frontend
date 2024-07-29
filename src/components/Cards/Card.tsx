@@ -3,6 +3,7 @@ import React from "react";
 import cn from "classnames";
 
 import { Centered } from "../Centered";
+import { Link } from "../Link";
 
 export type CardProps = {
   header?: ReactNode;
@@ -85,18 +86,25 @@ export const CardHeader: FC<CardHeaderProps> = function ({
   );
 };
 
-export type CardFieldProps = { name: ReactNode; value: ReactNode };
+export type CardFieldProps = {
+  name: ReactNode;
+  value: ReactNode;
+  originValue: string;
+};
 
-export const CardField: FC<{ name: ReactNode; value: ReactNode }> = function ({
+export const CardField: FC<CardFieldProps> = function ({
   name,
   value,
+  originValue,
 }) {
   return (
     <div className="flex gap-1 truncate text-xs">
       <span className="text-contentTertiary-light dark:text-contentTertiary-dark">
         {name}
       </span>
-      <div className="truncate">{value}</div>
+      <div className="truncate">
+        <Link href={`/game/${originValue}`}>{value}</Link>
+      </div>
     </div>
   );
 };
