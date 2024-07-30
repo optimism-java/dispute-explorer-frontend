@@ -36,3 +36,8 @@ export function formatTtl(ttl: number) {
 export function getHumanDate(date: string | Date) {
   return dayjs(date).format("dddd, MMMM, DD YYYY");
 }
+
+export function formatSeconds(secs: number) {
+  const date = new Date(secs * 1000);
+  return dayjs(date).format("YYYY/MM/DD hh:mm:ss");
+}
