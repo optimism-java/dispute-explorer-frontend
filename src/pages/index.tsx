@@ -140,7 +140,7 @@ export default function Page() {
                 <Button
                   variant="outline"
                   label="View All Games"
-                  onClick={() => void router.push("/")}
+                  onClick={() => void router.push("/games")}
                 />
               </div>
             }

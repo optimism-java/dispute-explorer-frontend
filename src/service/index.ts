@@ -3,10 +3,8 @@ const latestGames = async () => {
   //"sort": ["block_number:desc"]
 };
 
-const get = async (url: string, params: Record<string, any>) => {
-  const queryString = new URLSearchParams(params);
-  const requestUrl = `${url}?${queryString.toString()}`;
-  const data = await fetch(requestUrl, {
+const get = async (url: string, params?: Record<string, any>) => {
+  const data = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
