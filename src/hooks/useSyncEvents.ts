@@ -4,16 +4,24 @@ import { Credit, IndexResponse, LatestEvents, ListResponse } from "@/types";
 
 
 const url = "/index/indexes/syncevents/search";
-const params = {
+type EventsParams = {
+  limit?: number,
+  offset?: number,
+  sort?: any
+}
+const defaultParams = {
   limit: 5,
   sort: ["block_number:desc"]
 };
 
-const fetcher = async (): Promise<IndexResponse<LatestEvents>> => {
-  return await post(url, params);
+const getFetcher = (params?: EventsParams) => async (): Promise<IndexResponse<LatestEvents>> => {
+  return await post(url, {
+    ...defaultParams,
+    ... (params ? params : {})
+  });
 };
 
-export const useSyncEvents = (): SWRResponse<IndexResponse<LatestEvents>, Error, boolean> => {
-  const res = useSWR(url, fetcher);
+export const useSyncEvents = (params?: EventsParams): SWRResponse<IndexResponse<LatestEvents>, Error, boolean> => {
+  const res = useSWR([url, params], getFetcher(params));
   return res;
 };
