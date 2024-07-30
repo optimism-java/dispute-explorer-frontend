@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { SlidableList } from "@/components/SlidableList";
 import { GameCard } from "@/components/Cards/SurfaceCards/GameCard";
 import { CreditCard } from "@/components/Cards/SurfaceCards/CreditCard";
-import { Credit, Game, IndexResponse, PageListResponse } from "@/types";
+import { Credit, Game, IndexResponse, LatestEvents, PageListResponse } from "@/types";
 import { useCreditRank } from "@/hooks/useCreditRank";
 import NextError from "@/pages/_error";
 import { useOverview } from "@/hooks/useOverview";
@@ -17,6 +17,7 @@ import { useSyncEvents } from "@/hooks/useSyncEvents";
 import { useBoundProgress } from "@/hooks/useBoundProgress";
 import DailyAmountChart from "@/components/Charts/DailyAmountChart";
 import { useAmountPerDay } from "@/hooks/useAmoutPerDay";
+import { EventCard } from "@/components/Cards/SurfaceCards/EventCard";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -51,11 +52,13 @@ export default function Page() {
   const days = amountData?.data?.map((item) => item.date);
 
   const error =
-    latestGamesError || creditsError || overviewError || amountError;
+    latestGamesError || creditsError || overviewError || amountError || BoundError || latestEventsError;
 
   if (error) {
     return <NextError title={error.message} statusCode={500} />;
   }
+
+  console.log({ boundData, events })
 
   return (
     <div className="flex flex-col items-center justify-center gap-12 sm:gap-20">
@@ -222,7 +225,7 @@ export default function Page() {
             emptyState="No Events"
           >
             <div className="h-[660px] sm:h-[630px]">
-              {latestGamesLoading ? (
+              {latestEventsLoading ? (
                 <div className="flex flex-col gap-4">
                   {Array(LATEST_ITEMS_LENGTH)
                     .fill(0)
@@ -234,11 +237,11 @@ export default function Page() {
                 </div>
               ) : (
                 <SlidableList
-                  items={(games as IndexResponse<Game>).hits.map((g) => ({
+                  items={(events as IndexResponse<LatestEvents>)?.hits.map((g) => ({
                     id: g.id,
                     element: (
                       <div className={CARD_HEIGHT} key={g.id}>
-                        <GameCard game={g} />
+                        <EventCard events={g} />
                       </div>
                     ),
                   }))}
