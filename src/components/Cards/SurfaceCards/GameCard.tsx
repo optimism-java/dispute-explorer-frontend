@@ -10,7 +10,6 @@ import { shortenAddress } from "@/utils";
 import shield from "@/icons/shield.png";
 import sword from "@/icons/sword.png";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 type GameCardProps = {
   game: Game;
@@ -19,7 +18,6 @@ type GameCardProps = {
 const GameCard: FC<Partial<GameCardProps>> = function ({
   game: { l2_block_number: number, block_time, game_contract, status } = {},
 }) {
-  const nav = useRouter();
 
   return (
     <SurfaceCardBase>
