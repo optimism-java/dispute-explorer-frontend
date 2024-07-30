@@ -174,7 +174,7 @@ export default function Page() {
           <Card
             header={
               <div className="flex items-center justify-between gap-5">
-                <div>Latest Credits</div>
+                <div>Credit Rank</div>
                 <Button
                   variant="outline"
                   label="View All Credits"
