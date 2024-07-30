@@ -18,6 +18,7 @@ import { useBoundProgress } from "@/hooks/useBoundProgress";
 import DailyAmountChart from "@/components/Charts/DailyAmountChart";
 import { useAmountPerDay } from "@/hooks/useAmoutPerDay";
 import { EventCard } from "@/components/Cards/SurfaceCards/EventCard";
+import InprogressChart from "@/components/Charts/InprogressChart";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -131,6 +132,13 @@ export default function Page() {
               compact
             />
           </div>
+          <div className="col-span-2 sm:col-span-4">
+            <InprogressChart
+              days={boundData?.data?.map((item) => item.date)}
+              data={boundData?.data?.map((item) => item.amount)}
+              compact={false}
+            />
+          </div>
         </div>
         <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-3">
           <Card
@@ -178,7 +186,7 @@ export default function Page() {
                 <Button
                   variant="outline"
                   label="View All Credits"
-                  onClick={() => void router.push("/")}
+                  onClick={() => void router.push("/rank")}
                 />
               </div>
             }
@@ -218,7 +226,7 @@ export default function Page() {
                 <Button
                   variant="outline"
                   label="View All Events"
-                  onClick={() => void router.push("/")}
+                  onClick={() => void router.push("/events")}
                 />
               </div>
             }
