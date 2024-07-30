@@ -12,8 +12,10 @@ import { Credit, Game, IndexResponse, PageListResponse } from "@/types";
 import { useCreditRank } from "@/hooks/useCreditRank";
 import NextError from "@/pages/_error";
 import { useOverview } from "@/hooks/useOverview";
-import { useAmoutPerDay } from "@/hooks/useAmoutPerDay";
+import { useAmountPerDay } from "@/hooks/useAmoutPerDay";
 import { MetricCard } from "@/components/Cards/MetricCard";
+import { useSyncEvents } from "@/hooks/useSyncEvents";
+import { useBoundProgress } from "@/hooks/useBoundProgress";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -24,6 +26,11 @@ export default function Page() {
     error: latestGamesError,
     isLoading: latestGamesLoading,
   } = useLatestGame();
+  const {
+    data: events,
+    error: latestEventsError,
+    isLoading: latestEventsLoading,
+  } = useSyncEvents();
 
   const {
     data: credits,
@@ -37,7 +44,9 @@ export default function Page() {
     error: overviewError,
     isLoading: overviewLoading,
   } = useOverview();
-  const {} = useAmoutPerDay();
+  const { data: amountData, isLoading: amountLoading, error: amountError } = useAmountPerDay();
+  const { data: boundData, isLoading: boundDataLoading, error: BoundError } = useBoundProgress()
+  console.log({ amountData, boundData })
 
   const error = latestGamesError || creditsError || overviewError;
 
@@ -92,7 +101,7 @@ export default function Page() {
           </div>
           <div className="col-span-2 sm:col-span-4">DailyTransactionsChart</div>
         </div>
-        <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-3">
           <Card
             header={
               <div className="flex items-center justify-between gap-5">
@@ -171,7 +180,46 @@ export default function Page() {
               )}
             </div>
           </Card>
+          <Card
+            header={
+              <div className="flex items-center justify-between gap-5">
+                <div>Latest Events</div>
+                <Button
+                  variant="outline"
+                  label="View All Events"
+                  onClick={() => void router.push("/")}
+                />
+              </div>
+            }
+            emptyState="No Events"
+          >
+            <div className="h-[660px] sm:h-[630px]">
+              {latestGamesLoading ? (
+                <div className="flex flex-col gap-4">
+                  {Array(LATEST_ITEMS_LENGTH)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div className={CARD_HEIGHT} key={i}>
+                        <GameCard />
+                      </div>
+                    ))}
+                </div>
+              ) : (
+                <SlidableList
+                  items={(games as IndexResponse<Game>).hits.map((g) => ({
+                    id: g.id,
+                    element: (
+                      <div className={CARD_HEIGHT} key={g.id}>
+                        <GameCard game={g} />
+                      </div>
+                    ),
+                  }))}
+                />
+              )}
+            </div>
+          </Card>
         </div>
+
       </div>
     </div>
   );

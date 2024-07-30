@@ -9,7 +9,7 @@ const fetcher = async (): Promise<ListResponse<Amountperday>> => {
   return await get(url, params);
 };
 
-export const useAmoutPerDay = (): SWRResponse<
+export const useAmountPerDay = (): SWRResponse<
   ListResponse<Amountperday>,
   Error,
   boolean
