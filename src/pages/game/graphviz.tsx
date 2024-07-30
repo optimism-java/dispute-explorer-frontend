@@ -3,8 +3,7 @@ import { ClaimData } from "@/types";
 import { depth, shortenAddress } from "@/utils";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
-// import GraphViz from "graphviz-react";
-import ClaimChart from "@/components/Charts/ClaimChart";
+import GraphViz from "graphviz-react";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -182,18 +181,15 @@ const GameDetail = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* <GraphViz
-        dot={g}
-        options={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: "red",
-          minHeight: "200px",
-        }}
-      /> */}
-      <ClaimChart />
-    </div>
+    <GraphViz
+      dot={g}
+      options={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: "red",
+        minHeight: "200px",
+      }}
+    />
   );
 };
 

@@ -45,6 +45,9 @@ export interface Overview {
   disputeGameProxy: string;
   totalCredit: string;
   totalGames: number;
+  challengerWinGamesCount: number;
+  defenderWinWinGamesCount: number;
+  inProgressGamesCount: number;
 }
 
 export interface Amountperday {

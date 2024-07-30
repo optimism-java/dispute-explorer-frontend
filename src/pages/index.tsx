@@ -12,10 +12,11 @@ import { Credit, Game, IndexResponse, PageListResponse } from "@/types";
 import { useCreditRank } from "@/hooks/useCreditRank";
 import NextError from "@/pages/_error";
 import { useOverview } from "@/hooks/useOverview";
-import { useAmountPerDay } from "@/hooks/useAmoutPerDay";
 import { MetricCard } from "@/components/Cards/MetricCard";
 import { useSyncEvents } from "@/hooks/useSyncEvents";
 import { useBoundProgress } from "@/hooks/useBoundProgress";
+import DailyAmountChart from "@/components/Charts/DailyAmountChart";
+import { useAmountPerDay } from "@/hooks/useAmoutPerDay";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -44,11 +45,13 @@ export default function Page() {
     error: overviewError,
     isLoading: overviewLoading,
   } = useOverview();
-  const { data: amountData, isLoading: amountLoading, error: amountError } = useAmountPerDay();
   const { data: boundData, isLoading: boundDataLoading, error: BoundError } = useBoundProgress()
-  console.log({ amountData, boundData })
+  const { data: amountData, error: amountError } = useAmountPerDay();
 
-  const error = latestGamesError || creditsError || overviewError;
+  const days = amountData?.data?.map((item) => item.date);
+
+  const error =
+    latestGamesError || creditsError || overviewError || amountError;
 
   if (error) {
     return <NextError title={error.message} statusCode={500} />;
@@ -89,17 +92,42 @@ export default function Page() {
                 compact
               />
             </div>
-            <div className="col-span-2">
-              <MetricCard
-                name="Total Games"
-                metric={{
-                  value: overview?.data?.totalGames,
-                }}
-                compact
-              />
-            </div>
+            <MetricCard
+              name="Total Games"
+              metric={{
+                value: overview?.data?.totalGames,
+              }}
+              compact
+            />
+            <MetricCard
+              name="In Progress Games"
+              metric={{
+                value: overview?.data?.inProgressGamesCount,
+              }}
+              compact
+            />
+            <MetricCard
+              name="Defender Win Games"
+              metric={{
+                value: overview?.data?.defenderWinWinGamesCount,
+              }}
+              compact
+            />
+            <MetricCard
+              name="Attacker Win Games"
+              metric={{
+                value: overview?.data?.challengerWinGamesCount,
+              }}
+              compact
+            />
           </div>
-          <div className="col-span-2 sm:col-span-4">DailyTransactionsChart</div>
+          <div className="col-span-2 sm:col-span-4">
+            <DailyAmountChart
+              days={days}
+              data={amountData?.data?.map((item) => item.amount)}
+              compact
+            />
+          </div>
         </div>
         <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-3">
           <Card
