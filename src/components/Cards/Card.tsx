@@ -89,7 +89,7 @@ export const CardHeader: FC<CardHeaderProps> = function ({
 export type CardFieldProps = {
   name: ReactNode;
   value: ReactNode;
-  originValue: string;
+  originValue?: string;
 };
 
 export const CardField: FC<CardFieldProps> = function ({
