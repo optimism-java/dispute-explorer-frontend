@@ -15,18 +15,18 @@ import { CreditCard } from "@/components/Cards/SurfaceCards/CreditCard";
 const Rank: NextPage = function () {
   const router = useRouter();
   const { p, ps } = getPaginationParams(router.query);
-  const { data: rawBlocksData, error } = useCreditRank({ offset: (p - 1).toString(), limit: ps.toString() })
+  const { data: rawRankData, error } = useCreditRank({ offset: (p - 1).toString(), limit: ps.toString() })
   const blocksData = useMemo(() => {
-    if (!rawBlocksData) {
+    if (!rawRankData) {
       return {};
     }
 
     return {
-      totalBlocks: 100,
-      blocks: rawBlocksData.data
+      totalRanks: 100,
+      ranks: rawRankData.data
     };
-  }, [rawBlocksData]);
-  const { blocks, totalBlocks } = blocksData;
+  }, [rawRankData]);
+  const { ranks, totalRanks } = blocksData;
 
   if (error) {
     return (
@@ -39,15 +39,15 @@ const Rank: NextPage = function () {
 
   return (
     <PaginatedListLayout
-      header={`Rank ${totalBlocks ? `(${formatNumber(totalBlocks)})` : ""}`}
-      items={blocks?.map((b, i) => (
+      header={`Rank ${totalRanks ? `(${formatNumber(totalRanks)})` : ""}`}
+      items={ranks?.map((b, i) => (
         <CreditCard index={(p && ps ? Number(p - 1) * ps : 0) + i} key={b.address} credit={b} />
       ))}
-      totalItems={totalBlocks}
+      totalItems={totalRanks}
       page={p}
       pageSize={ps}
       itemSkeleton={<CreditCard />}
-      emptyState="No blocks"
+      emptyState="No ranks"
     />
   );
 };

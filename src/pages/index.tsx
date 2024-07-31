@@ -39,7 +39,7 @@ export default function Page() {
     data: credits,
     error: creditsError,
     isLoading: creditsLoading,
-  } = useCreditRank();
+  } = useCreditRank({ limit: '5', offset: '0' });
   const router = useRouter();
 
   const {
@@ -58,8 +58,6 @@ export default function Page() {
   if (error) {
     return <NextError title={error.message} statusCode={500} />;
   }
-
-  console.log({ boundData, events })
 
   return (
     <div className="flex flex-col items-center justify-center gap-12 sm:gap-20">
