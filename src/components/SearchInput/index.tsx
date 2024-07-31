@@ -1,9 +1,10 @@
-import { HTMLAttributes, useRef, useState } from "react";
+import { FormEventHandler, HTMLAttributes, useState } from "react";
 import { Button } from "../Button";
 import { Input } from "../Input";
 // import { useDebounce } from "@/hooks/useDebounce";
 // import { useClickOutside } from "@/hooks/useClickOutside";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { useRouter } from "next/router";
 
 type SearchInputProps = {
   className?: HTMLAttributes<HTMLInputElement>["className"];
@@ -14,16 +15,16 @@ export const SearchInput: React.FC<SearchInputProps> = function ({
   className,
 }: SearchInputProps) {
   const [term, setTerm] = useState<string>("");
-  // const debouncedTerm = useDebounce(term, 600);
-  const searchRef = useRef<HTMLFormElement>(null);
-  // const clickOutside = useClickOutside(searchRef);
-
-  const handleSubmit = () => {
-    // TODO
+  const router = useRouter();
+  const handleSubmit: FormEventHandler<HTMLFormElement | HTMLButtonElement> = (
+    e
+  ) => {
+    e.preventDefault();
+    void router.push(`/game/${term}`);
   };
 
   return (
-    <form ref={searchRef} onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div
         className={`relative flex rounded-md border-border-light shadow-sm dark:border-border-dark ${className}`}
       >

@@ -7,9 +7,7 @@ import { Button } from "@/components/Button";
 import { useRouter } from "next/router";
 import { SlidableList } from "@/components/SlidableList";
 import { GameCard } from "@/components/Cards/SurfaceCards/GameCard";
-import { CreditCard } from "@/components/Cards/SurfaceCards/CreditCard";
-import { Credit, Game, IndexResponse, LatestEvents, PageListResponse } from "@/types";
-import { useCreditRank } from "@/hooks/useCreditRank";
+import { Game, IndexResponse, LatestEvents } from "@/types";
 import NextError from "@/pages/_error";
 import { useOverview } from "@/hooks/useOverview";
 import { MetricCard } from "@/components/Cards/MetricCard";
@@ -35,11 +33,11 @@ export default function Page() {
     isLoading: latestEventsLoading,
   } = useSyncEvents();
 
-  const {
-    data: credits,
-    error: creditsError,
-    isLoading: creditsLoading,
-  } = useCreditRank({ limit: '5', offset: '0' });
+  // const {
+  //   data: credits,
+  //   error: creditsError,
+  //   isLoading: creditsLoading,
+  // } = useCreditRank({ limit: "5", offset: "0" });
   const router = useRouter();
 
   const {
@@ -47,13 +45,21 @@ export default function Page() {
     error: overviewError,
     isLoading: overviewLoading,
   } = useOverview();
-  const { data: boundData, isLoading: boundDataLoading, error: BoundError } = useBoundProgress()
+  const {
+    data: boundData,
+    isLoading: boundDataLoading,
+    error: BoundError,
+  } = useBoundProgress();
   const { data: amountData, error: amountError } = useAmountPerDay();
 
   const days = amountData?.data?.map((item) => item.date);
 
   const error =
-    latestGamesError || creditsError || overviewError || amountError || BoundError || latestEventsError;
+    latestGamesError ||
+    overviewError ||
+    amountError ||
+    BoundError ||
+    latestEventsError;
 
   if (error) {
     return <NextError title={error.message} statusCode={500} />;
@@ -78,9 +84,13 @@ export default function Page() {
       </div>
       <div className="flex w-full flex-col gap-8 sm:gap-10">
         <div className="grid grid-cols-2 space-y-6 lg:grid-cols-10 lg:gap-6 lg:space-y-0">
-          {/* <div className="col-span-2 sm:col-span-4">
-            DailyBlobGasComparisonChart
-          </div> */}
+          <div className="col-span-2 sm:col-span-4">
+            <DailyAmountChart
+              days={days}
+              data={amountData?.data?.map((item) => item.amount)}
+              compact
+            />
+          </div>
           <div className="col-span-2 grid w-full grid-cols-2 gap-2 sm:col-span-2 sm:grid-cols-2">
             <div className="col-span-2">
               <MetricCard
@@ -123,13 +133,7 @@ export default function Page() {
               compact
             />
           </div>
-          <div className="col-span-2 sm:col-span-4">
-            <DailyAmountChart
-              days={days}
-              data={amountData?.data?.map((item) => item.amount)}
-              compact
-            />
-          </div>
+
           <div className="col-span-2 sm:col-span-4">
             <InprogressChart
               days={boundData?.data?.map((item) => item.date)}
@@ -138,7 +142,7 @@ export default function Page() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-2">
           <Card
             header={
               <div className="flex items-center justify-between gap-5">
@@ -177,7 +181,7 @@ export default function Page() {
               )}
             </div>
           </Card>
-          <Card
+          {/* <Card
             header={
               <div className="flex items-center justify-between gap-5">
                 <div>Credit Rank</div>
@@ -216,7 +220,7 @@ export default function Page() {
                 />
               )}
             </div>
-          </Card>
+          </Card> */}
           <Card
             header={
               <div className="flex items-center justify-between gap-5">
@@ -243,20 +247,21 @@ export default function Page() {
                 </div>
               ) : (
                 <SlidableList
-                  items={(events as IndexResponse<LatestEvents>)?.hits.map((g) => ({
-                    id: g.id,
-                    element: (
-                      <div className={CARD_HEIGHT} key={g.id}>
-                        <EventCard events={g} />
-                      </div>
-                    ),
-                  }))}
+                  items={(events as IndexResponse<LatestEvents>)?.hits.map(
+                    (g) => ({
+                      id: g.id,
+                      element: (
+                        <div className={CARD_HEIGHT} key={g.id}>
+                          <EventCard events={g} />
+                        </div>
+                      ),
+                    })
+                  )}
                 />
               )}
             </div>
           </Card>
         </div>
-
       </div>
     </div>
   );

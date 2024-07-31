@@ -16,9 +16,14 @@ type GameCardProps = {
 };
 
 const GameCard: FC<Partial<GameCardProps>> = function ({
-  game: { l2_block_number: number, block_time, game_contract, status } = {},
+  game: {
+    l2_block_number: number,
+    block_time,
+    game_contract,
+    status,
+    tx_hash,
+  } = {},
 }) {
-
   return (
     <SurfaceCardBase>
       <div className="flex  justify-between gap-2 text-sm">
@@ -69,7 +74,15 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
         </div>
         {block_time ? (
           <div className="mt-1 flex">
-            <span>4 Claims</span>
+            <span>
+              tx hash{" "}
+              <Link
+                href={`https://sepolia.etherscan.io/tx/${tx_hash}`}
+                isExternal
+              >
+                {shortenAddress(tx_hash as string)}
+              </Link>
+            </span>
           </div>
         ) : (
           <Skeleton width={170} size="xs" />
