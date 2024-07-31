@@ -10,9 +10,6 @@ import Skeleton from "react-loading-skeleton";
 import { shortenAddress } from "@/utils";
 import {
   formatSeconds,
-  formatTimestamp,
-  formatTtl,
-  getHumanDate,
 } from "@/utils/date";
 
 const GameDetail = () => {
@@ -26,7 +23,7 @@ const GameDetail = () => {
   });
   return (
     <div className="flex flex-col gap-4">
-      {gameLoading && isLoading ? (
+      {(gameLoading || isLoading) ? (
         <Skeleton style={{ width: "100%" }} height={250} />
       ) : (
         <div className="col-span-3 grid w-full grid-cols-3 gap-2 sm:col-span-3 sm:grid-cols-3">
