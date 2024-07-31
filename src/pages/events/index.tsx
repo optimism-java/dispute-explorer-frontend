@@ -41,7 +41,7 @@ const Events: NextPage = function () {
     <PaginatedListLayout
       header={`Events ${totalEvents ? `(${formatNumber(totalEvents)})` : ""}`}
       items={events?.map((e) => (
-        <EventCard events={e} />
+        <EventCard key={e.id} events={e} />
       ))}
       totalItems={totalEvents}
       page={p}
