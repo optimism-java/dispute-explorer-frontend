@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Card } from "./Card";
 import cn from "classnames";
 import Skeleton from "react-loading-skeleton";
 
 export type GameItemCardProps = Partial<{
   name: string;
-  content: string;
+  content: ReactNode;
   compact: boolean;
 }>;
 
@@ -27,7 +27,7 @@ export const GameItemCard: FC<GameItemCardProps> = ({
       >
         <div
           className={cn(
-            "text-xl",
+            "text-lg",
             "font-semibold dark:text-warmGray-50",
             "text-center"
           )}
@@ -36,8 +36,8 @@ export const GameItemCard: FC<GameItemCardProps> = ({
         </div>
         <div
           className={cn(
-            "text-lg",
-            "font-semibold dark:text-warmGray-50",
+            "text-sm",
+            "font-semibold text-contentSecondary-light dark:text-warmGray-300",
             "text-center"
           )}
         >

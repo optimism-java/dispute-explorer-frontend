@@ -7,7 +7,13 @@ import { Button } from "@/components/Button";
 import { useRouter } from "next/router";
 import { SlidableList } from "@/components/SlidableList";
 import { GameCard } from "@/components/Cards/SurfaceCards/GameCard";
-import { Game, IndexResponse, LatestEvents } from "@/types";
+import {
+  Credit,
+  Game,
+  IndexResponse,
+  LatestEvents,
+  PageListResponse,
+} from "@/types";
 import NextError from "@/pages/_error";
 import { useOverview } from "@/hooks/useOverview";
 import { MetricCard } from "@/components/Cards/MetricCard";
@@ -17,6 +23,8 @@ import DailyAmountChart from "@/components/Charts/DailyAmountChart";
 import { useAmountPerDay } from "@/hooks/useAmoutPerDay";
 import { EventCard } from "@/components/Cards/SurfaceCards/EventCard";
 import InprogressChart from "@/components/Charts/InprogressChart";
+import { useCreditRank } from "@/hooks/useCreditRank";
+import { CreditCard } from "@/components/Cards/SurfaceCards/CreditCard";
 
 const LATEST_ITEMS_LENGTH = 5;
 const CARD_HEIGHT = "sm:h-28";
@@ -33,11 +41,11 @@ export default function Page() {
     isLoading: latestEventsLoading,
   } = useSyncEvents();
 
-  // const {
-  //   data: credits,
-  //   error: creditsError,
-  //   isLoading: creditsLoading,
-  // } = useCreditRank({ limit: "5", offset: "0" });
+  const {
+    data: credits,
+    error: creditsError,
+    isLoading: creditsLoading,
+  } = useCreditRank({ limit: "5", offset: "0" });
   const router = useRouter();
 
   const {
@@ -59,6 +67,7 @@ export default function Page() {
     overviewError ||
     amountError ||
     BoundError ||
+    creditsError ||
     latestEventsError;
 
   if (error) {
@@ -142,7 +151,7 @@ export default function Page() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 items-stretch justify-stretch gap-6 lg:grid-cols-3">
           <Card
             header={
               <div className="flex items-center justify-between gap-5">
@@ -181,15 +190,15 @@ export default function Page() {
               )}
             </div>
           </Card>
-          {/* <Card
+          <Card
             header={
               <div className="flex items-center justify-between gap-5">
                 <div>Credit Rank</div>
-                <Button
+                {/* <Button
                   variant="outline"
                   label="View All Credits"
                   onClick={() => void router.push("/rank")}
-                />
+                /> */}
               </div>
             }
             emptyState="No games"
@@ -220,7 +229,7 @@ export default function Page() {
                 />
               )}
             </div>
-          </Card> */}
+          </Card>
           <Card
             header={
               <div className="flex items-center justify-between gap-5">
