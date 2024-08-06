@@ -33,12 +33,14 @@ export const BottomBarLayout = () => {
           ))}
         </div>
         <div className="max-w-lg text-center text-xs text-contentTertiary-light dark:text-contentTertiary-dark">
-          Blobscan is the first open-source block explorer for the{" "}
-          <Link href="https://www.eip4844.com/" isExternal>
-            EIP-4844
+          Dispute game is the first open-source disputr game explorer for the{" "}
+          <Link
+            href="https://docs.optimism.io/stack/protocol/fault-proofs/explainer"
+            isExternal
+          >
+            Fault proofs
           </Link>{" "}
-          shard blob transactions, providing the necessary infrastructure to
-          scale Ethereum.
+          .
         </div>
         {/* {env.NEXT_PUBLIC_VERSION && (
               <div className="flex items-center gap-1">
@@ -59,7 +61,7 @@ export const BottomBarLayout = () => {
             )} */}
         <div className="flex gap-2">
           <div className="text-sm text-contentTertiary-light dark:text-contentTertiary-dark">
-            Blobscan © 2024
+            Optmistic Java © 2024
           </div>
         </div>
       </div>

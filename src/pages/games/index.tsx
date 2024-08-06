@@ -13,7 +13,10 @@ import { useLatestGame } from "@/hooks/useLatestGame";
 const Blocks: NextPage = function () {
   const router = useRouter();
   const { p, ps } = getPaginationParams(router.query);
-  const { data: rawBlocksData, error } = useLatestGame({ offset: (p - 1).toString(), limit: ps.toString() })
+  const { data: rawBlocksData, error } = useLatestGame({
+    offset: (p - 1).toString(),
+    limit: ps.toString(),
+  });
   const blocksData = useMemo(() => {
     if (!rawBlocksData) {
       return {};
@@ -21,23 +24,18 @@ const Blocks: NextPage = function () {
 
     return {
       totalBlocks: rawBlocksData.estimatedTotalHits,
-      blocks: rawBlocksData.hits
+      blocks: rawBlocksData.hits,
     };
   }, [rawBlocksData]);
   const { blocks, totalBlocks } = blocksData;
 
   if (error) {
-    return (
-      <NextError
-        title={error.message}
-        statusCode={500}
-      />
-    );
+    return <NextError title={error.message} statusCode={500} />;
   }
 
   return (
     <PaginatedListLayout
-      header={`Blocks ${totalBlocks ? `(${formatNumber(totalBlocks)})` : ""}`}
+      header={`Games ${totalBlocks ? `(${formatNumber(totalBlocks)})` : ""}`}
       items={blocks?.map((b) => (
         <GameCard key={b.block_hash} game={b} />
       ))}

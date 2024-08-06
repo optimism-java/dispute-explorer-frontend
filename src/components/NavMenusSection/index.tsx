@@ -43,18 +43,17 @@ export const NavMenusSection: React.FC = () => {
               label="Blockchain"
               icon={<Squares2X2Icon />}
               menuItems={[
-                { label: "Blobs", href: "/" },
-                { label: "Blocks", href: "/" },
-                { label: "Transactions", href: "/" },
+                { label: "Games", href: "/games" },
+                { label: "Events", href: "/events" },
               ]}
             />
-            <NavItem
+            {/* <NavItem
               label="Stats"
               icon={<ChartBarIcon />}
               menuItems={[
                 {
                   label: "Blob Metrics",
-                  href: "/" ,
+                  href: "/",
                 },
                 { label: "Block Metrics", href: "/" },
                 {
@@ -62,7 +61,7 @@ export const NavMenusSection: React.FC = () => {
                   href: "/",
                 },
               ]}
-            />
+            /> */}
             <NavItem
               label="API"
               icon={<CommandLineIcon />}

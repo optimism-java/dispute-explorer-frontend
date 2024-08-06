@@ -30,7 +30,14 @@ const GameDetail = () => {
         <div className="col-span-3 grid w-full grid-cols-3 gap-2 sm:col-span-3 sm:grid-cols-3">
           <GameItemCard
             name="Game Address"
-            content={game?.hits[0].game_contract}
+            content={
+              <Link
+                href={`https://sepolia.etherscan.io/address/${game?.hits[0].game_contract}`}
+                isExternal
+              >
+                {shortenAddress(game?.hits[0].game_contract!, 8)}
+              </Link>
+            }
           />
           <GameItemCard
             name="Root Claim"

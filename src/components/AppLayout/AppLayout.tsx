@@ -1,6 +1,6 @@
 import { useIsHomepage } from "@/hooks/useIsHomePage";
 import cn from "classnames";
-import { TopBarLayout } from "../TopBarLayout";
+import { TopBarLayout } from "./TopBarLayout";
 import { BottomBarLayout } from "../BottomBarLayout";
 
 interface LayoutProps {
