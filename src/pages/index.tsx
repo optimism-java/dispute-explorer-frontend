@@ -178,7 +178,7 @@ export default function Page() {
                 </div>
               ) : (
                 <SlidableList
-                  items={(games as IndexResponse<Game>).hits.map((g) => ({
+                  items={(games as IndexResponse<Game>).hits?.map((g) => ({
                     id: g.id,
                     element: (
                       <div className={CARD_HEIGHT} key={g.id}>
@@ -216,7 +216,7 @@ export default function Page() {
                 </div>
               ) : (
                 <SlidableList
-                  items={(events as IndexResponse<LatestEvents>)?.hits.map(
+                  items={(events as IndexResponse<LatestEvents>)?.hits?.map(
                     (g) => ({
                       id: g.id,
                       element: (

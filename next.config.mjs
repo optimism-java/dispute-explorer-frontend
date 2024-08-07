@@ -8,8 +8,16 @@ const nextConfig = {
         destination: "http://144.76.97.175:7700/:path*", // Proxy to Backend, token required
       },
       {
+        source: "/indexMain/:path*",
+        destination: "http://144.76.97.175:7701/:path*", // Proxy to Backend, token required
+      },
+      {
         source: "/api/:path*",
         destination: "http://144.76.97.175:8080/:path*", // Proxy to Backend
+      },
+      {
+        source: "/apiMain/:path*",
+        destination: "http://144.76.97.175:8088/:path*", // Proxy to Backend
       },
     ];
   },

@@ -1,9 +1,11 @@
 import useSWR, { SWRResponse } from "swr";
 import { get, post } from "@/service/index";
 import { Credit, IndexResponse, LatestEvents, ListResponse } from "@/types";
+import useApiPrefix from "./useApiPrefix";
+import { useMemo } from "react";
 
 
-const url = "/index/indexes/syncevents/search";
+const url = "/indexes/syncevents/search";
 type EventsParams = {
   limit?: number,
   offset?: number,
@@ -14,14 +16,16 @@ const defaultParams = {
   sort: ["block_number:desc"]
 };
 
-const getFetcher = (params?: EventsParams) => async (): Promise<IndexResponse<LatestEvents>> => {
-  return await post(url, {
+const getFetcher = (path: string, params?: EventsParams,) => async (): Promise<IndexResponse<LatestEvents>> => {
+  return await post(path, {
     ...defaultParams,
     ... (params ? params : {})
   });
 };
 
 export const useSyncEvents = (params?: EventsParams): SWRResponse<IndexResponse<LatestEvents>, Error, boolean> => {
-  const res = useSWR([url, params], getFetcher(params));
+  const { indexApiPrefix } = useApiPrefix()
+  const path = useMemo(() => `${indexApiPrefix}${url}`, [indexApiPrefix])
+  const res = useSWR([path, params], getFetcher(path, params));
   return res;
 };

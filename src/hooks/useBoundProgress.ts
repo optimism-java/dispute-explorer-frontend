@@ -1,12 +1,13 @@
 import useSWR, { SWRResponse } from "swr";
 import { get } from "@/service/index";
 import { BoundProgress, DetailResponse, ListResponse } from "@/types";
+import useApiPrefix from "./useApiPrefix";
 
-const url = "/api/disputegames/statistics/bond/inprogress";
+const url = "/disputegames/statistics/bond/inprogress";
 const params = {};
 
-const fetcher = async (): Promise<ListResponse<BoundProgress>> => {
-  return await get(url, params);
+const getFetcher = (path: string) => async (): Promise<ListResponse<BoundProgress>> => {
+  return await get(path, params);
 };
 
 export const useBoundProgress = (): SWRResponse<
@@ -14,6 +15,7 @@ export const useBoundProgress = (): SWRResponse<
   Error,
   boolean
 > => {
-  const res = useSWR(url, fetcher);
+  const { apiPrefix } = useApiPrefix()
+  const res = useSWR(apiPrefix + url, getFetcher(apiPrefix + url));
   return res;
 };

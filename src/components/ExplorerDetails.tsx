@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
 
 import { capitalize } from "@/utils";
+import { useSnapshot } from "valtio";
+import { store } from "@/store/globalStore";
 
 type ExplorerDetailsItemProps = {
   name: string;
@@ -30,9 +32,13 @@ function ExplorerDetailsItem({
 }
 
 export function ExplorerDetails() {
-  const explorerDetailsItems: ExplorerDetailsItemProps[] = [
-    { name: "Network", value: capitalize("sepolia") },
-  ];
+
+  const { network } = useSnapshot(store)
+  const explorerDetailsItems: ExplorerDetailsItemProps[] = useMemo(() => {
+    return [
+      { name: "Network", value: capitalize(network) },
+    ]
+  }, [network]);
 
   return (
     <div className="sm:fle flex w-full flex-wrap items-center justify-center gap-2 align-middle text-xs text-contentSecondary-light dark:text-contentSecondary-dark sm:h-4 sm:justify-start">

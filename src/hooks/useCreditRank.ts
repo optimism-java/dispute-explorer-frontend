@@ -1,8 +1,8 @@
 import useSWR, { SWRResponse } from "swr";
 import { get } from "@/service/index";
 import { Credit, IndexResponse, ListResponse } from "@/types";
+import useApiPrefix from "./useApiPrefix";
 
-const url = "/api/disputegames/credit/rank";
 type RankParams = {
   limit?: string,
   offset?: string,
@@ -13,11 +13,15 @@ const defaultParams: RankParams = {
   offset: '0',
 };
 
-const fetcher = async (): Promise<ListResponse<Credit>> => {
-  return await get(url);
-};
+
 
 export const useCreditRank = (params?: RankParams): SWRResponse<ListResponse<Credit>, Error, boolean> => {
+
+  const { apiPrefix } = useApiPrefix()
+  const url = apiPrefix + "/disputegames/credit/rank";
+  const fetcher = async (): Promise<ListResponse<Credit>> => {
+    return await get(url);
+  };
   const p = {
     ...defaultParams,
     ... (params ? params : {})

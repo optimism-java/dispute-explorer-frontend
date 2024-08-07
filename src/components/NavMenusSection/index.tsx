@@ -7,9 +7,11 @@ import {
   Squares2X2Icon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-
+import EthereumIcon from "@/icons/ethereum.svg";
 import { Button } from "../Button";
 import { NavItem } from "./NavItem";
+import { useSnapshot } from "valtio";
+import { Network, setNetwork } from "@/store/globalStore";
 
 const resolveApiUrl = () =>
   // TODO
@@ -18,12 +20,17 @@ const resolveApiUrl = () =>
 export const NavMenusSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+
+  const handleSelectNetwork = (e: Network) => {
+    setNetwork(e)
+  }
+
   return (
     <div className="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
       <Button
         className={`md:hidden ${isMobileMenuOpen
-            ? "stroke-controlBorderActive-light dark:stroke-controlBorderActive-dark"
-            : ""
+          ? "stroke-controlBorderActive-light dark:stroke-controlBorderActive-dark"
+          : ""
           }`}
         variant="icon"
         icon={isMobileMenuOpen ? <XMarkIcon /> : <Bars3Icon />}
@@ -44,6 +51,16 @@ export const NavMenusSection: React.FC = () => {
                 { label: "Games", href: "/games" },
                 { label: "Events", href: "/events" },
               ]}
+            />
+            <NavItem
+              label="Networks"
+              icon={<EthereumIcon />}
+              menuItems={
+                [
+                  { label: "sepolia", href: "", handleClick: () => { handleSelectNetwork('sepolia') } },
+                  { label: "mainnet", href: "", handleClick: () => { handleSelectNetwork('mainnet') } },
+                ]
+              }
             />
             {/* <NavItem
               label="Stats"

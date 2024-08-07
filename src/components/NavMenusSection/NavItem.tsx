@@ -11,6 +11,7 @@ type MenuItemProps = {
   label: string;
   icon?: ReactNode;
   isLast?: boolean;
+  handleClick?: () => void
 };
 
 const MenuItem: FC<MenuItemProps> = function ({
@@ -18,18 +19,31 @@ const MenuItem: FC<MenuItemProps> = function ({
   label,
   icon,
   isLast = false,
+  handleClick
 }) {
   return (
-    <Popover.Button as={Link} href={href}>
-      <div
-        className={`px-4 py-2 transition-all ${
-          isLast && "rounded-b-lg"
-        } hover:bg-primary-300 hover:text-content-light/60 hover:dark:bg-iconHighlight-dark/80 hover:dark:text-content-dark`}
-      >
-        {icon}
-        <div className="text-xs">{label}</div>
-      </div>
-    </Popover.Button>
+    <>
+      {
+        handleClick ? <div
+          onClick={handleClick}
+          className={`px-4 py-2 transition-all ${isLast && "rounded-b-lg"
+            } hover:bg-primary-300 hover:text-content-light/60 hover:dark:bg-iconHighlight-dark/80 hover:dark:text-content-dark`}
+        >
+          {icon}
+          <div className="text-xs">{label}</div>
+        </div> :
+          <Popover.Button as={Link} href={href}>
+            <div
+              className={`px-4 py-2 transition-all ${isLast && "rounded-b-lg"
+                } hover:bg-primary-300 hover:text-content-light/60 hover:dark:bg-iconHighlight-dark/80 hover:dark:text-content-dark`}
+            >
+              {icon}
+              <div className="text-xs">{label}</div>
+            </div>
+          </Popover.Button>
+      }
+    </>
+
   );
 };
 
@@ -40,11 +54,10 @@ const NavItemBase: FC<{
 }> = function ({ label, icon, isHovered }) {
   return (
     <div
-      className={`flex items-center gap-1 ${
-        isHovered
-          ? "text-iconHighlight-light dark:text-iconHighlight-dark"
-          : "text-content-light dark:text-content-dark"
-      }  text-sm transition-colors`}
+      className={`flex items-center gap-1 ${isHovered
+        ? "text-iconHighlight-light dark:text-iconHighlight-dark"
+        : "text-content-light dark:text-content-dark"
+        }  text-sm transition-colors`}
     >
       <div className="h-4 w-4">{icon}</div>
       {label}
@@ -55,7 +68,7 @@ const NavItemBase: FC<{
 type NavItemProps = {
   label: string;
   icon?: ReactNode;
-  menuItems?: { label: string; href: string; icon?: ReactNode }[];
+  menuItems?: { label: string; href: string; icon?: ReactNode, handleClick?: () => void }[];
   href?: string;
 };
 
@@ -139,6 +152,7 @@ export const NavItem: FC<NavItemProps> = function ({
                     <div className="flex flex-col flex-nowrap gap-1">
                       {menuItems.map((item, index) => (
                         <MenuItem
+                          handleClick={item.handleClick}
                           key={index}
                           href={item.href}
                           label={item.label}
