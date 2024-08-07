@@ -193,46 +193,6 @@ export default function Page() {
           <Card
             header={
               <div className="flex items-center justify-between gap-5">
-                <div>Credit Rank</div>
-                {/* <Button
-                  variant="outline"
-                  label="View All Credits"
-                  onClick={() => void router.push("/rank")}
-                /> */}
-              </div>
-            }
-            emptyState="No games"
-          >
-            <div className="h-[660px] sm:h-[630px]">
-              {creditsLoading ? (
-                <div className="flex flex-col gap-4">
-                  {Array(LATEST_ITEMS_LENGTH)
-                    .fill(0)
-                    .map((_, i) => (
-                      <div className={CARD_HEIGHT} key={i}>
-                        <GameCard />
-                      </div>
-                    ))}
-                </div>
-              ) : (
-                <SlidableList
-                  items={(credits as PageListResponse<Credit>).data.slice(0, 5).map(
-                    (g, i) => ({
-                      id: g.address,
-                      element: (
-                        <div className={CARD_HEIGHT} key={g.address}>
-                          <CreditCard credit={g} index={i} />
-                        </div>
-                      ),
-                    })
-                  )}
-                />
-              )}
-            </div>
-          </Card>
-          <Card
-            header={
-              <div className="flex items-center justify-between gap-5">
                 <div>Latest Events</div>
                 <Button
                   variant="outline"
@@ -270,6 +230,47 @@ export default function Page() {
               )}
             </div>
           </Card>
+          <Card
+            header={
+              <div className="flex items-center justify-between gap-5">
+                <div>Credit Rank</div>
+                {/* <Button
+                  variant="outline"
+                  label="View All Credits"
+                  onClick={() => void router.push("/rank")}
+                /> */}
+              </div>
+            }
+            emptyState="No games"
+          >
+            <div className="h-[660px] sm:h-[630px]">
+              {creditsLoading ? (
+                <div className="flex flex-col gap-4">
+                  {Array(LATEST_ITEMS_LENGTH)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div className={CARD_HEIGHT} key={i}>
+                        <GameCard />
+                      </div>
+                    ))}
+                </div>
+              ) : (
+                <SlidableList
+                  items={(credits as PageListResponse<Credit>).data.slice(0, 5).map(
+                    (g, i) => ({
+                      id: g.address,
+                      element: (
+                        <div className={CARD_HEIGHT} key={g.address}>
+                          <CreditCard credit={g} index={i} />
+                        </div>
+                      ),
+                    })
+                  )}
+                />
+              )}
+            </div>
+          </Card>
+
         </div>
       </div>
     </div>
