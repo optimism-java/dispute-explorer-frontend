@@ -33,7 +33,7 @@ export const BottomBarLayout = () => {
           ))}
         </div>
         <div className="max-w-lg text-center text-xs text-contentTertiary-light dark:text-contentTertiary-dark">
-          Dispute game is the first open-source disputr game explorer for the{" "}
+          This is the first open-source dispute game explorer for the{" "}
           <Link
             href="https://docs.optimism.io/stack/protocol/fault-proofs/explainer"
             isExternal
@@ -61,7 +61,7 @@ export const BottomBarLayout = () => {
             )} */}
         <div className="flex gap-2">
           <div className="text-sm text-contentTertiary-light dark:text-contentTertiary-dark">
-            Optmistic Java © 2024
+            Optimism-java © 2024
           </div>
         </div>
       </div>

@@ -11,7 +11,6 @@ import { shortenAddress } from "@/utils";
 import { formatSeconds } from "@/utils/date";
 import { Link } from "@/components/Link";
 import { ClockIcon, FlagIcon } from "@heroicons/react/24/outline";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 
 const GameDetail = () => {
   const router = useRouter();
