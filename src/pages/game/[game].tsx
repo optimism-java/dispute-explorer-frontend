@@ -3,7 +3,7 @@ import React from "react";
 import ClaimChart from "@/components/Charts/ClaimChart";
 import { useClaimData } from "@/hooks/useClaimData";
 import { ChartSkeleton } from "@/components/ChartSkeleton";
-import { ClaimData } from "@/types";
+import { ClaimData, IndexResponse, ListResponse } from "@/types";
 import { useLatestGame } from "@/hooks/useLatestGame";
 import { GameItemCard } from "@/components/Cards/GameItemCard";
 import Skeleton from "react-loading-skeleton";
@@ -11,6 +11,9 @@ import { shortenAddress } from "@/utils";
 import { formatSeconds } from "@/utils/date";
 import { Link } from "@/components/Link";
 import { ClockIcon, FlagIcon } from "@heroicons/react/24/outline";
+import { Card } from "@/components/Cards/Card";
+import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
+import { SlidableList } from "@/components/SlidableList";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -40,11 +43,11 @@ const GameDetail = () => {
           />
           <GameItemCard
             name="Root Claim"
-            content={("0x" + data?.data[0].claim) as string}
+            content={"0x" + data?.data[0].claim}
           />
           <GameItemCard
             name="Created"
-            content={formatSeconds(game?.hits[0].block_time as number)}
+            content={formatSeconds(game?.hits[0].block_time!)}
           />
           <GameItemCard name="Claims" content={data?.data.length.toString()} />
           <GameItemCard
@@ -86,6 +89,37 @@ const GameDetail = () => {
       ) : (
         <ClaimChart claimData={data?.data as ClaimData[]} />
       )}
+      <Card
+        header={
+          <div className="flex items-center justify-between gap-5">
+            <div>All Claims</div>
+          </div>
+        }
+        emptyState="No data"
+      >
+        {isLoading ? (
+          <div className="flex flex-col gap-4">
+            {Array(1)
+              .fill(0)
+              .map((_, i) => (
+                <div className="sm:h-28" key={i}>
+                  <ClaimCard />
+                </div>
+              ))}
+          </div>
+        ) : (
+          <SlidableList
+            items={(data as ListResponse<ClaimData>).data?.map((g) => ({
+              id: g.id,
+              element: (
+                <div className="sm:h-28" key={g.id}>
+                  <ClaimCard claimData={g} />
+                </div>
+              ),
+            }))}
+          />
+        )}
+      </Card>
     </div>
   );
 };

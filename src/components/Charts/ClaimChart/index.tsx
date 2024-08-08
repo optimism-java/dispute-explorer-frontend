@@ -235,9 +235,7 @@ const ClaimChart: FC<{claimData: ClaimData[]}> = ({ claimData }) => {
       },
     ],
   };
-  return (
-    <ChartCard title="Attack and defend graph" options={options} />
-  );
+  return <ChartCard title="Fault Dispute Game Graph" options={options} />;
 };
 
 export default ClaimChart;

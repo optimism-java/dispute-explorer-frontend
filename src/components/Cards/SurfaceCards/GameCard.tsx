@@ -26,7 +26,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
 }) {
   return (
     <SurfaceCardBase>
-      <div className="flex  justify-between gap-2 text-sm">
+      <div className="flex justify-between gap-2 text-sm">
         <div className="flex gap-2 md:flex-row">
           {number ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
@@ -61,18 +61,19 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
       <div className="mt-1.5 flex flex-col gap-1 text-xs">
         <div className="flex w-full gap-1">
           {game_contract ? (
-            <>
-              <CardField
-                name={<div title="Game Address">Game Address</div>}
-                value={shortenAddress(game_contract)}
-                originValue={game_contract}
-              />
-            </>
+            <CardField
+              name={<div title="Game Address">Game Address</div>}
+              value={
+                <Link href={`/game/${game_contract}`}>
+                  {shortenAddress(game_contract)}
+                </Link>
+              }
+            />
           ) : (
             <Skeleton width={300} size="xs" />
           )}
         </div>
-        {block_time ? (
+        {tx_hash ? (
           <div className="mt-1 flex">
             <span>
               tx hash{" "}

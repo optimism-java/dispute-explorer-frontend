@@ -12,11 +12,11 @@ const EXTERNAL_APPS: { href: string; icon: ReactElement }[] = [
   },
   {
     icon: <DiscordIcon className="h-5 w-5" />,
-    href: "https://github.com/optimism-java/dispute-explorer-frontend",
+    href: "https://github.com/optimism-java/dispute-explorer",
   },
   {
     icon: <XIcon className="h-5 w-5" />,
-    href: "https://github.com/optimism-java/dispute-explorer-frontend",
+    href: "https://github.com/optimism-java",
   },
 ];
 
@@ -33,7 +33,7 @@ export const BottomBarLayout = () => {
           ))}
         </div>
         <div className="max-w-lg text-center text-xs text-contentTertiary-light dark:text-contentTertiary-dark">
-          This is the first open-source dispute game explorer for the{" "}
+          The first open-source dispute game explorer for the{" "}
           <Link
             href="https://docs.optimism.io/stack/protocol/fault-proofs/explainer"
             isExternal
