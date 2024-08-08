@@ -25,7 +25,7 @@ const getFetcher = (path: string, params?: EventsParams,) => async (): Promise<I
 
 export const useSyncEvents = (params?: EventsParams): SWRResponse<IndexResponse<LatestEvents>, Error, boolean> => {
   const { indexApiPrefix } = useApiPrefix()
-  const path = useMemo(() => `${indexApiPrefix}${url}`, [indexApiPrefix])
+  const path = `${indexApiPrefix}${url}`
   const res = useSWR([path, params], getFetcher(path, params));
   return res;
 };
