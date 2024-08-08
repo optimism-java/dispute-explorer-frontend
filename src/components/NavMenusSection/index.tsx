@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Bars3Icon,
   BookOpenIcon,
@@ -12,6 +12,7 @@ import { Button } from "../Button";
 import { NavItem } from "./NavItem";
 import { useSnapshot } from "valtio";
 import { Network, setNetwork } from "@/store/globalStore";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const resolveApiUrl = () =>
   // TODO
@@ -19,11 +20,28 @@ const resolveApiUrl = () =>
 
 export const NavMenusSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const createQueryString = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('n', value)
+      return params.toString()
+    },
+    [searchParams]
+  )
   const handleSelectNetwork = (e: Network) => {
     setNetwork(e)
+    router.push(pathname + '?' + createQueryString(e))
   }
+
+  useEffect(() => {
+    const n = searchParams.get('n')
+    if (n) {
+      setNetwork(n as Network)
+    }
+  }, [searchParams])
 
   return (
     <div className="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
