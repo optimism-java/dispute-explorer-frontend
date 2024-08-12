@@ -1,5 +1,5 @@
 import useSWR, { SWRResponse } from "swr";
-import { get } from "@/service/index";
+import { get, post } from "@/service/index";
 import { Game, IndexResponse } from "@/types";
 import { useEffect, useState } from "react";
 import useApiPrefix from "./useApiPrefix";
@@ -19,9 +19,9 @@ const defaultParams: GamesParams = {
   sort: ["block_number:desc"],
 };
 
-const getFetcher = (u: string) => {
+const getFetcher = (u: string, p: GamesParams) => {
   return async (): Promise<IndexResponse<Game>> => {
-    return await get(u);
+    return await post(u, p);
   };
 };
 
@@ -34,8 +34,7 @@ export const useLatestGame = (
     ...defaultParams,
     ...(params ? params : {}),
   };
-  const queryString = new URLSearchParams(p);
-  const requestUrl = `${indexApiPrefix}${url}?${queryString.toString()}`;
-  const res = useSWR(requestUrl, getFetcher(requestUrl));
+  const requestUrl = `${indexApiPrefix}${url}}`;
+  const res = useSWR([requestUrl, p], getFetcher(requestUrl, p));
   return res;
 };
