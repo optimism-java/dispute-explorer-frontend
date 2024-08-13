@@ -34,7 +34,6 @@ export const useLatestGame = (
     ...defaultParams,
     ...(params ? params : {}),
   };
-  console.log(p, 'ppp')
   const requestUrl = `${indexApiPrefix}${url}`;
   const res = useSWR([requestUrl, p], getFetcher(requestUrl, p));
   return res;

@@ -21,8 +21,6 @@ const getFetcher = (path: string, params?: EventsParams,) => async (): Promise<I
     ...defaultParams,
     ... (params ? params : {})
   }
-  console.log(params, 'params')
-
   return await post(path, p);
 };
 
