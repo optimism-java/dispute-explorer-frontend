@@ -7,15 +7,15 @@ import useApiPrefix from "./useApiPrefix";
 const url = "/indexes/disputegames/search";
 
 type GamesParams = {
-  limit?: string;
-  offset?: string;
+  hitsPerPage?: number;
+  page?: number;
   sort?: any;
   q?: string;
 };
 
 const defaultParams: GamesParams = {
-  limit: "5",
-  offset: "0",
+  hitsPerPage: 5,
+  page: 1,
   sort: ["block_number:desc"],
 };
 
@@ -34,7 +34,8 @@ export const useLatestGame = (
     ...defaultParams,
     ...(params ? params : {}),
   };
-  const requestUrl = `${indexApiPrefix}${url}}`;
+  console.log(p, 'ppp')
+  const requestUrl = `${indexApiPrefix}${url}`;
   const res = useSWR([requestUrl, p], getFetcher(requestUrl, p));
   return res;
 };

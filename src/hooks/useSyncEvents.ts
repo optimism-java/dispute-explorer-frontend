@@ -7,20 +7,23 @@ import { useMemo } from "react";
 
 const url = "/indexes/syncevents/search";
 type EventsParams = {
-  limit?: number,
-  offset?: number,
+  hitsPerPage?: number,
+  page?: number,
   sort?: any
 }
 const defaultParams = {
-  limit: 5,
+  hitsPerPage: 5,
   sort: ["block_number:desc"]
 };
 
 const getFetcher = (path: string, params?: EventsParams,) => async (): Promise<IndexResponse<LatestEvents>> => {
-  return await post(path, {
+  const p = {
     ...defaultParams,
     ... (params ? params : {})
-  });
+  }
+  console.log(params, 'params')
+
+  return await post(path, p);
 };
 
 export const useSyncEvents = (params?: EventsParams): SWRResponse<IndexResponse<LatestEvents>, Error, boolean> => {

@@ -14,16 +14,15 @@ const Blocks: NextPage = function () {
   const router = useRouter();
   const { p, ps } = getPaginationParams(router.query);
   const { data: rawBlocksData, error } = useLatestGame({
-    offset: (p - 1).toString(),
-    limit: ps.toString(),
+    page: Number(p),
+    hitsPerPage: Number(ps),
   });
   const blocksData = useMemo(() => {
     if (!rawBlocksData) {
       return {};
     }
-
     return {
-      totalBlocks: rawBlocksData.estimatedTotalHits,
+      totalBlocks: rawBlocksData.totalHits,
       blocks: rawBlocksData.hits,
     };
   }, [rawBlocksData]);

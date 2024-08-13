@@ -21,7 +21,7 @@ const GameDetail = () => {
 
   const { data, isLoading } = useClaimData(address);
   const { data: game, isLoading: gameLoading } = useLatestGame({
-    limit: "1",
+    hitsPerPage: 1,
     q: address,
   });
   return (

@@ -59,7 +59,7 @@ export default function Page() {
     error: BoundError,
   } = useBoundProgress();
   const { data: amountData, error: amountError } = useAmountPerDay();
-
+  console.log({ amountData }, 'amountData')
   const days = amountData?.data?.map((item) => item.date);
 
   const error =

@@ -18,6 +18,7 @@ export interface IndexResponse<T> {
   offset: number;
   processingTimeMs: number;
   query: string;
+  totalHits: number
 }
 
 export interface PageListResponse<T> {

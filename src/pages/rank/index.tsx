@@ -6,9 +6,7 @@ import { useRouter } from "next/router";
 import { PaginatedListLayout } from "@/components/Layouts/PaginatedListLayout";
 import NextError from "@/pages/_error";
 import { formatNumber } from "@/utils";
-import { GameCard } from "@/components/Cards/SurfaceCards/GameCard";
 import { getPaginationParams } from "@/utils/pagination";
-import { useLatestGame } from "@/hooks/useLatestGame";
 import { useCreditRank } from "@/hooks/useCreditRank";
 import { CreditCard } from "@/components/Cards/SurfaceCards/CreditCard";
 
