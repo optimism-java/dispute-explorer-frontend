@@ -100,11 +100,11 @@ export const NavMenusSection: React.FC = () => {
               icon={<CommandLineIcon />}
               href={resolveApiUrl()}
             />
-            <NavItem
+            {/* <NavItem
               label="Docs"
               icon={<BookOpenIcon />}
               href="https://docs.blobscan.com"
-            />
+            /> */}
           </div>
         </div>
       </div>
