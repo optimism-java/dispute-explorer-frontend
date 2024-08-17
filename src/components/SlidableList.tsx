@@ -43,11 +43,13 @@ export const SlidableList: FC<SlidableListProps> = function ({
     }
 
     setItems((currentItems) => {
-      const newItems = itemsProp
-        .filter(({ id }) => !currentItems.some((item) => item.id === id))
-        .map(({ element, id }) => ({ element, id }));
-
-      return newItems.length ? [...newItems, ...currentItems] : currentItems;
+      // const newItems = itemsProp
+      //   .filter(({ id }) => !currentItems.some((item) => item.id === id))
+      //   .map(({ element, id }) => ({ element, id }));
+      // const res = newItems.length
+      //   ? [...newItems, ...currentItems]
+      //   : currentItems;
+      return itemsProp;
     });
   }, [itemsProp]);
 
