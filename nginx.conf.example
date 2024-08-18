@@ -29,6 +29,7 @@ http {
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
+            proxy_set_header Authorization "Bearer $TOKEN";
         }
         location ～ /indexMain/ {
             proxy_pass http://main/;
@@ -38,6 +39,7 @@ http {
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
+            proxy_set_header Authorization "Bearer $TOKEN";
         }
         location ～ /api/ {
             proxy_pass http://Sepolia/;
