@@ -7,6 +7,7 @@ import { SurfaceCardBase } from "./SurfaceCardBase";
 import { Credit } from "@/types";
 import { shortenAddress } from "@/utils";
 import { EtherUnitDisplay } from "@/components/Displays/EtherUnitDisplay";
+import useExplorer from "@/hooks/useExplorer";
 
 type CreditCardProps = {
   credit: Credit;
@@ -17,6 +18,7 @@ const CreditCard: FC<Partial<CreditCardProps>> = function ({
   credit: { address, amount } = {},
   index,
 }) {
+  const explorer = useExplorer()
   return (
     <SurfaceCardBase>
       <div className="flex  justify-between gap-2 text-sm">
@@ -25,7 +27,7 @@ const CreditCard: FC<Partial<CreditCardProps>> = function ({
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Address{" "}
               <Link
-                href={`https://sepolia-optimism.etherscan.io/address/${address}`}
+                href={`${explorer}/address/${address}`}
                 isExternal
               >
                 {shortenAddress(address)}
