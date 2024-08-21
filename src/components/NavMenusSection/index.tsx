@@ -10,38 +10,36 @@ import {
 import EthereumIcon from "@/icons/ethereum.svg";
 import { Button } from "../Button";
 import { NavItem } from "./NavItem";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ApiDoc, Network, SuperProofUrls } from "@/utils/env";
+import { ApiDoc, Network, networkConfigs } from "@/utils/env";
 
-const resolveApiUrl = () => ApiDoc
-
+const resolveApiUrl = () => ApiDoc;
 
 export const NavMenusSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSelectNetwork = (e: Network) => {
-    const url = SuperProofUrls[e]
-    if (url.includes(window.location.origin)) return
-    window.open(url)
-  }
-
-
+    const { origin } = networkConfigs[e];
+    if (origin.includes(window.location.origin)) return;
+    window.open(origin);
+  };
 
   return (
     <div className="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
       <Button
-        className={`md:hidden ${isMobileMenuOpen
-          ? "stroke-controlBorderActive-light dark:stroke-controlBorderActive-dark"
-          : ""
-          }`}
+        className={`md:hidden ${
+          isMobileMenuOpen
+            ? "stroke-controlBorderActive-light dark:stroke-controlBorderActive-dark"
+            : ""
+        }`}
         variant="icon"
         icon={isMobileMenuOpen ? <XMarkIcon /> : <Bars3Icon />}
         aria-expanded={isMobileMenuOpen}
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
       <div
-        className={`fixed inset-x-0 top-0 z-50 mt-14 transform ${isMobileMenuOpen ? "block" : "hidden"
-          } md:relative md:top-auto md:mt-0 md:block`}
+        className={`fixed inset-x-0 top-0 z-50 mt-14 transform ${
+          isMobileMenuOpen ? "block" : "hidden"
+        } md:relative md:top-auto md:mt-0 md:block`}
         id="navbar-dropdown"
       >
         <div className="mx-auto w-full max-w-md rounded-lg bg-surface-light p-4 shadow-lg md:max-w-screen-xl md:bg-transparent md:p-0 md:shadow-none">
@@ -57,13 +55,29 @@ export const NavMenusSection: React.FC = () => {
             <NavItem
               label="Networks"
               icon={<EthereumIcon />}
-              menuItems={
-                [
-                  { label: "sepolia", href: "", handleClick: () => { handleSelectNetwork('sepolia') } },
-                  { label: "mainnet", href: "", handleClick: () => { handleSelectNetwork('mainnet') } },
-                  { label: "base-sepolia", href: "", handleClick: () => { handleSelectNetwork('base-sepolia') } },
-                ]
-              }
+              menuItems={[
+                {
+                  label: "sepolia",
+                  href: "",
+                  handleClick: () => {
+                    handleSelectNetwork("sepolia");
+                  },
+                },
+                {
+                  label: "mainnet",
+                  href: "",
+                  handleClick: () => {
+                    handleSelectNetwork("mainnet");
+                  },
+                },
+                {
+                  label: "base-sepolia",
+                  href: "",
+                  handleClick: () => {
+                    handleSelectNetwork("base-sepolia");
+                  },
+                },
+              ]}
             />
             {/* <NavItem
               label="Stats"

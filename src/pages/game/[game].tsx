@@ -14,7 +14,7 @@ import { ClockIcon, FlagIcon } from "@heroicons/react/24/outline";
 import { Card } from "@/components/Cards/Card";
 import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
 import { SlidableList } from "@/components/SlidableList";
-import { EXPLORER_L1, EXPLORER_L2 } from "@/utils/env";
+import { useNetworkConfig } from "@/hooks/useNetworkConfig";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -25,6 +25,8 @@ const GameDetail = () => {
     hitsPerPage: 1,
     q: address,
   });
+  const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
+    useNetworkConfig();
   return (
     <div className="flex flex-col gap-4">
       {gameLoading || isLoading ? (

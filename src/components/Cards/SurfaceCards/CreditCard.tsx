@@ -7,7 +7,7 @@ import { SurfaceCardBase } from "./SurfaceCardBase";
 import { Credit } from "@/types";
 import { shortenAddress } from "@/utils";
 import { EtherUnitDisplay } from "@/components/Displays/EtherUnitDisplay";
-import { EXPLORER_L1 } from "@/utils/env";
+import { useNetworkConfig } from "@/hooks/useNetworkConfig";
 
 type CreditCardProps = {
   credit: Credit;
@@ -18,6 +18,7 @@ const CreditCard: FC<Partial<CreditCardProps>> = function ({
   credit: { address, amount } = {},
   index,
 }) {
+  const { explorer_l1: EXPLORER_L1 } = useNetworkConfig();
   return (
     <SurfaceCardBase>
       <div className="flex  justify-between gap-2 text-sm">
@@ -25,10 +26,7 @@ const CreditCard: FC<Partial<CreditCardProps>> = function ({
           {address ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Address{" "}
-              <Link
-                href={`${EXPLORER_L1}/address/${address}`}
-                isExternal
-              >
+              <Link href={`${EXPLORER_L1}/address/${address}`} isExternal>
                 {shortenAddress(address)}
               </Link>
             </div>

@@ -10,7 +10,7 @@ import { shortenAddress } from "@/utils";
 import shield from "@/icons/shield.png";
 import sword from "@/icons/sword.png";
 import Image from "next/image";
-import { EXPLORER_L1, EXPLORER_L2 } from "@/utils/env";
+import { useNetworkConfig } from "@/hooks/useNetworkConfig";
 
 type GameCardProps = {
   game: Game;
@@ -25,6 +25,8 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
     tx_hash,
   } = {},
 }) {
+  const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
+    useNetworkConfig();
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">
@@ -32,10 +34,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
           {number ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Block{" "}
-              <Link
-                href={`${EXPLORER_L2}/block/${number}`}
-                isExternal
-              >
+              <Link href={`${EXPLORER_L2}/block/${number}`} isExternal>
                 {number}
               </Link>
             </div>
@@ -78,10 +77,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
           <div className="mt-1 flex">
             <span>
               tx hash{" "}
-              <Link
-                href={`${EXPLORER_L1}/tx/${tx_hash}`}
-                isExternal
-              >
+              <Link href={`${EXPLORER_L1}/tx/${tx_hash}`} isExternal>
                 {shortenAddress(tx_hash as string)}
               </Link>
             </span>

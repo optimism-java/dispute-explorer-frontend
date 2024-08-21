@@ -5,7 +5,7 @@ import { Link } from "@/components/Link";
 import { Skeleton } from "@/components/Skeleton";
 import { CardField } from "../Card";
 import { shortenAddress } from "@/utils";
-import { EXPLORER_L1, EXPLORER_L2 } from "@/utils/env";
+import { useNetworkConfig } from "@/hooks/useNetworkConfig";
 
 type ClaimCardProps = {
   claimData: ClaimData;
@@ -13,6 +13,8 @@ type ClaimCardProps = {
 
 const ClaimCard: FC<Partial<ClaimCardProps>> = ({ claimData = {} }) => {
   const { claim, claimant, output_block, event_id } = claimData;
+  const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
+    useNetworkConfig();
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">
@@ -20,10 +22,7 @@ const ClaimCard: FC<Partial<ClaimCardProps>> = ({ claimData = {} }) => {
           {output_block ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Block{" "}
-              <Link
-                href={`${EXPLORER_L2}/block/${output_block}`}
-                isExternal
-              >
+              <Link href={`${EXPLORER_L2}/block/${output_block}`} isExternal>
                 {output_block}
               </Link>
             </div>
@@ -43,10 +42,7 @@ const ClaimCard: FC<Partial<ClaimCardProps>> = ({ claimData = {} }) => {
             <CardField
               name={<div title="Game Address">Claimant</div>}
               value={
-                <Link
-                  href={`${EXPLORER_L1}/address/${claimant}`}
-                  isExternal
-                >
+                <Link href={`${EXPLORER_L1}/address/${claimant}`} isExternal>
                   {shortenAddress(claimant)}
                 </Link>
               }
