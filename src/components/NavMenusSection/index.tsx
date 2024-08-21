@@ -11,11 +11,10 @@ import EthereumIcon from "@/icons/ethereum.svg";
 import { Button } from "../Button";
 import { NavItem } from "./NavItem";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Network, SuperProofUrls } from "@/utils/env";
+import { ApiDoc, Network, SuperProofUrls } from "@/utils/env";
 
-const resolveApiUrl = () =>
-  // TODO
-  "http://144.76.97.175:8080/swagger/index.html";
+const resolveApiUrl = () => ApiDoc
+
 
 export const NavMenusSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
