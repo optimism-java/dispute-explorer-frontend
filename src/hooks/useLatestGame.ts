@@ -2,9 +2,8 @@ import useSWR, { SWRResponse } from "swr";
 import { get, post } from "@/service/index";
 import { Game, IndexResponse } from "@/types";
 import { useEffect, useState } from "react";
-import useApiPrefix from "./useApiPrefix";
 
-const url = "/indexes/disputegames/search";
+const url = "/index/indexes/disputegames/search";
 
 type GamesParams = {
   hitsPerPage?: number;
@@ -29,12 +28,11 @@ export const useLatestGame = (
   params?: GamesParams
 ): SWRResponse<IndexResponse<Game>, Error, boolean> => {
 
-  const { indexApiPrefix } = useApiPrefix()
   const p = {
     ...defaultParams,
     ...(params ? params : {}),
   };
-  const requestUrl = `${indexApiPrefix}${url}`;
+  const requestUrl = `${url}`;
   const res = useSWR([requestUrl, p], getFetcher(requestUrl, p));
   return res;
 };

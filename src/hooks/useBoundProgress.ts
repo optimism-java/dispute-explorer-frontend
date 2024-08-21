@@ -1,7 +1,6 @@
 import useSWR, { SWRResponse } from "swr";
 import { get } from "@/service/index";
 import { BoundProgress, DetailResponse, ListResponse } from "@/types";
-import useApiPrefix from "./useApiPrefix";
 
 const url = "/disputegames/statistics/bond/inprogress";
 const params = {};
@@ -15,7 +14,6 @@ export const useBoundProgress = (): SWRResponse<
   Error,
   boolean
 > => {
-  const { apiPrefix } = useApiPrefix()
-  const res = useSWR(apiPrefix + url, getFetcher(apiPrefix + url));
+  const res = useSWR('/api' + url, getFetcher('/api' + url));
   return res;
 };

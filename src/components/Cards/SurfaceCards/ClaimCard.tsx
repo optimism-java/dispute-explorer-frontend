@@ -5,7 +5,7 @@ import { Link } from "@/components/Link";
 import { Skeleton } from "@/components/Skeleton";
 import { CardField } from "../Card";
 import { shortenAddress } from "@/utils";
-import useExplorer from "@/hooks/useExplorer";
+import { EXPLORER_L2 } from "@/utils/env";
 
 type ClaimCardProps = {
   claimData: ClaimData;
@@ -13,7 +13,6 @@ type ClaimCardProps = {
 
 const ClaimCard: FC<Partial<ClaimCardProps>> = ({ claimData = {} }) => {
   const { claim, claimant, output_block, event_id } = claimData;
-  const explorer = useExplorer()
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">
@@ -22,7 +21,7 @@ const ClaimCard: FC<Partial<ClaimCardProps>> = ({ claimData = {} }) => {
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Block{" "}
               <Link
-                href={`${explorer}/block/${output_block}`}
+                href={`${EXPLORER_L2}/block/${output_block}`}
                 isExternal
               >
                 {output_block}

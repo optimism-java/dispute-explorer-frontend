@@ -10,8 +10,7 @@ import { shortenAddress } from "@/utils";
 import shield from "@/icons/shield.png";
 import sword from "@/icons/sword.png";
 import Image from "next/image";
-import { useSnapshot } from "valtio";
-import useExplorer from "@/hooks/useExplorer";
+import { EXPLORER_L2 } from "@/utils/env";
 
 type GameCardProps = {
   game: Game;
@@ -26,7 +25,6 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
     tx_hash,
   } = {},
 }) {
-  const explorer = useExplorer()
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">
@@ -35,7 +33,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Block{" "}
               <Link
-                href={`${explorer}/block/${number}`}
+                href={`${EXPLORER_L2}/block/${number}`}
                 isExternal
               >
                 {number}

@@ -1,10 +1,8 @@
 import useSWR, { SWRResponse } from "swr";
 import { get } from "@/service/index";
 import { DetailResponse, Overview } from "@/types";
-import useApiPrefix from "./useApiPrefix";
 
 const params = {};
-
 
 
 export const useOverview = (): SWRResponse<
@@ -12,8 +10,7 @@ export const useOverview = (): SWRResponse<
   Error,
   boolean
 > => {
-  const { apiPrefix } = useApiPrefix()
-  const url = apiPrefix + "/disputegames/overview";
+  const url = "/api/disputegames/overview";
   const fetcher = async (): Promise<DetailResponse<Overview>> => {
     return await get(url, params);
   };

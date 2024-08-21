@@ -1,11 +1,9 @@
 import useSWR, { SWRResponse } from "swr";
 import { get, post } from "@/service/index";
 import { Credit, IndexResponse, LatestEvents, ListResponse } from "@/types";
-import useApiPrefix from "./useApiPrefix";
-import { useMemo } from "react";
 
 
-const url = "/indexes/syncevents/search";
+const url = "/index/indexes/syncevents/search";
 type EventsParams = {
   hitsPerPage?: number,
   page?: number,
@@ -25,8 +23,7 @@ const getFetcher = (path: string, params?: EventsParams,) => async (): Promise<I
 };
 
 export const useSyncEvents = (params?: EventsParams): SWRResponse<IndexResponse<LatestEvents>, Error, boolean> => {
-  const { indexApiPrefix } = useApiPrefix()
-  const path = `${indexApiPrefix}${url}`
+  const path = url;
   const res = useSWR([path, params], getFetcher(path, params));
   return res;
 };

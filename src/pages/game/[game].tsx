@@ -14,7 +14,7 @@ import { ClockIcon, FlagIcon } from "@heroicons/react/24/outline";
 import { Card } from "@/components/Cards/Card";
 import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
 import { SlidableList } from "@/components/SlidableList";
-import useExplorer from "@/hooks/useExplorer";
+import { EXPLORER_L2 } from "@/utils/env";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -25,7 +25,6 @@ const GameDetail = () => {
     hitsPerPage: 1,
     q: address,
   });
-  const explorer = useExplorer()
   return (
     <div className="flex flex-col gap-4">
       {gameLoading || isLoading ? (
@@ -36,7 +35,7 @@ const GameDetail = () => {
             name="Game Address"
             content={
               <Link
-                href={`${explorer}/address/${game?.hits[0].game_contract}`}
+                href={`${EXPLORER_L2}/address/${game?.hits[0].game_contract}`}
                 isExternal
               >
                 {shortenAddress(game?.hits[0].game_contract!, 8)}
@@ -74,7 +73,7 @@ const GameDetail = () => {
             name="Disputed L2 Block"
             content={
               <Link
-                href={`${explorer}/block/${game?.hits[0].l2_block_number.toString()}`}
+                href={`${EXPLORER_L2}/block/${game?.hits[0].l2_block_number.toString()}`}
                 isExternal
               >
                 {game?.hits[0].l2_block_number.toString()}
@@ -121,6 +120,15 @@ const GameDetail = () => {
             }))}
           />
         )}
+      </Card>
+      <Card
+        header={
+          <div className="flex items-center justify-between gap-5">
+            <div>Contract</div>
+          </div>
+        }
+      >
+        <></>
       </Card>
     </div>
   );

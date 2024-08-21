@@ -1,9 +1,8 @@
 import useSWR, { SWRResponse } from "swr";
 import { get } from "@/service/index";
 import { Amountperday, DetailResponse, ListResponse } from "@/types";
-import useApiPrefix from "./useApiPrefix";
 
-const url = "/disputegames/overview/amountperday";
+const url = "/api/disputegames/overview/amountperday";
 const params = {};
 
 const getFetcher = (path: string) => async (): Promise<ListResponse<Amountperday>> => {
@@ -15,7 +14,7 @@ export const useAmountPerDay = (): SWRResponse<
   Error,
   boolean
 > => {
-  const { apiPrefix } = useApiPrefix()
-  const res = useSWR(apiPrefix + url, getFetcher(apiPrefix + url));
+
+  const res = useSWR(url, getFetcher(url));
   return res;
 };

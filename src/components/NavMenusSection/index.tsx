@@ -10,9 +10,8 @@ import {
 import EthereumIcon from "@/icons/ethereum.svg";
 import { Button } from "../Button";
 import { NavItem } from "./NavItem";
-import { useSnapshot } from "valtio";
-import { Network, setNetwork } from "@/store/globalStore";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Network } from "@/utils/env";
 
 const resolveApiUrl = () =>
   // TODO
@@ -32,16 +31,10 @@ export const NavMenusSection: React.FC = () => {
     [searchParams]
   )
   const handleSelectNetwork = (e: Network) => {
-    setNetwork(e)
-    router.push(pathname + '?' + createQueryString(e))
+    //todo 
   }
 
-  useEffect(() => {
-    const n = searchParams.get('n')
-    if (n) {
-      setNetwork(n as Network)
-    }
-  }, [searchParams])
+
 
   return (
     <div className="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
@@ -77,6 +70,7 @@ export const NavMenusSection: React.FC = () => {
                 [
                   { label: "sepolia", href: "", handleClick: () => { handleSelectNetwork('sepolia') } },
                   { label: "mainnet", href: "", handleClick: () => { handleSelectNetwork('mainnet') } },
+                  { label: "base-sepolia", href: "", handleClick: () => { handleSelectNetwork('base-sepolia') } },
                 ]
               }
             />

@@ -6,20 +6,28 @@ const nextConfig = {
     return [
       {
         source: "/index/:path*",
-        destination: "http://144.76.97.175:7700/:path*", // Proxy to Backend, token required
+        destination: "http://65.109.69.98:7700/:path*", // Proxy to Backend, token required
       },
-      {
-        source: "/indexMain/:path*",
-        destination: "http://144.76.97.175:7701/:path*", // Proxy to Backend, token required
-      },
+      // {
+      //   source: "/indexMain/:path*",
+      //   destination: "http://65.109.69.98:7701/:path*", // Proxy to Backend, token required
+      // },
+      // {
+      //   source: "/indexBase/:path*",
+      //   destination: "http://65.109.69.98:7702/:path*", // Proxy to Backend, token required
+      // },
       {
         source: "/api/:path*",
-        destination: "http://144.76.97.175:8080/:path*", // Proxy to Backend
+        destination: "http://65.109.69.98:8080/:path*", // Proxy to Backend
       },
-      {
-        source: "/apiMain/:path*",
-        destination: "http://144.76.97.175:8088/:path*", // Proxy to Backend
-      },
+      // {
+      //   source: "/apiMain/:path*",
+      //   destination: "http://65.109.69.98:8088/:path*", // Proxy to Backend
+      // },
+      // {
+      //   source: "/apiBase/:path*",
+      //   destination: "http://65.109.69.98:8089/:path*", // Proxy to Backend
+      // },
     ];
   },
   webpack(config, { isServer }) {

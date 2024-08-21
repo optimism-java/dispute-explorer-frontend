@@ -4,8 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
 
 import { capitalize } from "@/utils";
-import { useSnapshot } from "valtio";
-import { store } from "@/store/globalStore";
+import { network } from "@/utils/env";
 
 type ExplorerDetailsItemProps = {
   name: string;
@@ -33,7 +32,6 @@ function ExplorerDetailsItem({
 
 export function ExplorerDetails() {
 
-  const { network } = useSnapshot(store)
   const explorerDetailsItems: ExplorerDetailsItemProps[] = useMemo(() => {
     return [
       { name: "Network", value: capitalize(network) },
