@@ -10,5 +10,3 @@ export const SuperProofUrls: Record<Network, string> = {
   'sepolia': process.env.NEXT_PUBLIC_OP_SEPOLIA_URL || '',
   'base-sepolia': process.env.NEXT_PUBLIC_BASE_SEPOLIA_URL || ''
 }
-
-console.log(SuperProofUrls, 'ssss')
