@@ -20,7 +20,9 @@ export const NavMenusSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSelectNetwork = (e: Network) => {
-    window.open(SuperProofUrls[e])
+    const url = SuperProofUrls[e]
+    if (url.includes(window.location.origin)) return
+    window.open(url)
   }
 
 

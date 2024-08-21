@@ -7,7 +7,7 @@ import { SurfaceCardBase } from "./SurfaceCardBase";
 import { Credit } from "@/types";
 import { shortenAddress } from "@/utils";
 import { EtherUnitDisplay } from "@/components/Displays/EtherUnitDisplay";
-import { EXPLORER_L2 } from "@/utils/env";
+import { EXPLORER_L1 } from "@/utils/env";
 
 type CreditCardProps = {
   credit: Credit;
@@ -26,7 +26,7 @@ const CreditCard: FC<Partial<CreditCardProps>> = function ({
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Address{" "}
               <Link
-                href={`${EXPLORER_L2}/address/${address}`}
+                href={`${EXPLORER_L1}/address/${address}`}
                 isExternal
               >
                 {shortenAddress(address)}

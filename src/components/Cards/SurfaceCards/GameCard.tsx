@@ -10,7 +10,7 @@ import { shortenAddress } from "@/utils";
 import shield from "@/icons/shield.png";
 import sword from "@/icons/sword.png";
 import Image from "next/image";
-import { EXPLORER_L2 } from "@/utils/env";
+import { EXPLORER_L1, EXPLORER_L2 } from "@/utils/env";
 
 type GameCardProps = {
   game: Game;
@@ -79,7 +79,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
             <span>
               tx hash{" "}
               <Link
-                href={`https://sepolia.etherscan.io/tx/${tx_hash}`}
+                href={`${EXPLORER_L1}/tx/${tx_hash}`}
                 isExternal
               >
                 {shortenAddress(tx_hash as string)}

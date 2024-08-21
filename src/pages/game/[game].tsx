@@ -14,7 +14,7 @@ import { ClockIcon, FlagIcon } from "@heroicons/react/24/outline";
 import { Card } from "@/components/Cards/Card";
 import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
 import { SlidableList } from "@/components/SlidableList";
-import { EXPLORER_L2 } from "@/utils/env";
+import { EXPLORER_L1, EXPLORER_L2 } from "@/utils/env";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -35,7 +35,7 @@ const GameDetail = () => {
             name="Game Address"
             content={
               <Link
-                href={`${EXPLORER_L2}/address/${game?.hits[0].game_contract}`}
+                href={`${EXPLORER_L1}/address/${game?.hits[0].game_contract}`}
                 isExternal
               >
                 {shortenAddress(game?.hits[0].game_contract!, 8)}

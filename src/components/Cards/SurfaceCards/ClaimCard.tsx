@@ -5,7 +5,7 @@ import { Link } from "@/components/Link";
 import { Skeleton } from "@/components/Skeleton";
 import { CardField } from "../Card";
 import { shortenAddress } from "@/utils";
-import { EXPLORER_L2 } from "@/utils/env";
+import { EXPLORER_L1, EXPLORER_L2 } from "@/utils/env";
 
 type ClaimCardProps = {
   claimData: ClaimData;
@@ -44,7 +44,7 @@ const ClaimCard: FC<Partial<ClaimCardProps>> = ({ claimData = {} }) => {
               name={<div title="Game Address">Claimant</div>}
               value={
                 <Link
-                  href={`https://sepolia.etherscan.io/address/${claimant}`}
+                  href={`${EXPLORER_L1}/address/${claimant}`}
                   isExternal
                 >
                   {shortenAddress(claimant)}

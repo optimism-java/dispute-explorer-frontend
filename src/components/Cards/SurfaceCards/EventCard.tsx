@@ -7,6 +7,7 @@ import { SurfaceCardBase } from "./SurfaceCardBase";
 import { LatestEvents } from "@/types";
 import { shortenAddress } from "@/utils";
 import { useRouter } from "next/router";
+import { EXPLORER_L1 } from "@/utils/env";
 
 type EventCardProps = {
   events: LatestEvents;
@@ -25,7 +26,7 @@ const EventCard: FC<Partial<EventCardProps>> = function ({
           {event_hash ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               <Link
-                href={`https://sepolia.etherscan.io/tx/${tx_hash}`}
+                href={`${EXPLORER_L1}/tx/${tx_hash}`}
                 isExternal
               >
                 {shortenAddress(event_hash, 10)}
@@ -56,7 +57,7 @@ const EventCard: FC<Partial<EventCardProps>> = function ({
           {contract_address ? (
             <div className="flex w-full gap-1">
               <div>Contract Address: </div>
-              <Link href={`https://sepolia.etherscan.io/address/${contract_address}`}>{shortenAddress(contract_address)}</Link>
+              <Link href={`${EXPLORER_L1}/address/${contract_address}`}>{shortenAddress(contract_address)}</Link>
             </div>
           ) : (
             <Skeleton width={300} size="xs" />
