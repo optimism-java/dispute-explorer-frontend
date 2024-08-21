@@ -11,7 +11,7 @@ import EthereumIcon from "@/icons/ethereum.svg";
 import { Button } from "../Button";
 import { NavItem } from "./NavItem";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Network } from "@/utils/env";
+import { Network, SuperProofUrls } from "@/utils/env";
 
 const resolveApiUrl = () =>
   // TODO
@@ -19,19 +19,9 @@ const resolveApiUrl = () =>
 
 export const NavMenusSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const createQueryString = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set('n', value)
-      return params.toString()
-    },
-    [searchParams]
-  )
+
   const handleSelectNetwork = (e: Network) => {
-    //todo 
+    window.open(SuperProofUrls[e])
   }
 
 
