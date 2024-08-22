@@ -15,6 +15,8 @@ import { Card } from "@/components/Cards/Card";
 import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
 import { SlidableList } from "@/components/SlidableList";
 import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import Challenge from "@/components/Challenge";
+import Provider from "@/components/Wallet/Provider";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -25,6 +27,7 @@ const GameDetail = () => {
     hitsPerPage: 1,
     q: address,
   });
+  console.log({ game })
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
     useNetworkConfig();
   return (
@@ -126,11 +129,11 @@ const GameDetail = () => {
       <Card
         header={
           <div className="flex items-center justify-between gap-5">
-            <div>Contract</div>
+            <div>Challenge</div>
           </div>
         }
       >
-        <></>
+        <Provider><Challenge /></Provider>
       </Card>
     </div>
   );
