@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
 
 import { capitalize } from "@/utils";
-import { network } from "@/utils/env";
+import { useNetworkConfig } from "@/hooks/useNetworkConfig";
 
 type ExplorerDetailsItemProps = {
   name: string;
@@ -31,11 +31,9 @@ function ExplorerDetailsItem({
 }
 
 export function ExplorerDetails() {
-
+  const { network } = useNetworkConfig();
   const explorerDetailsItems: ExplorerDetailsItemProps[] = useMemo(() => {
-    return [
-      { name: "Network", value: capitalize(network) },
-    ]
+    return [{ name: "Network", value: capitalize(network!) }];
   }, [network]);
 
   return (

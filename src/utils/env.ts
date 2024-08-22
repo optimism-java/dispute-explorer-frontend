@@ -1,19 +1,12 @@
 export type Network = "mainnet" | "sepolia" | "base-sepolia";
 
-export const network =
-  (process.env.NEXT_PUBLIC_NETWORK as Network) || "sepolia";
 export const ApiDoc = process.env.NEXT_PUBLIC_API_DOC || "";
-
-export const SuperProofUrls: Record<Network, string> = {
-  mainnet: process.env.NEXT_PUBLIC_OP_MAINNET_URL || "",
-  sepolia: process.env.NEXT_PUBLIC_OP_SEPOLIA_URL || "",
-  "base-sepolia": process.env.NEXT_PUBLIC_BASE_SEPOLIA_URL || "",
-};
 
 export interface NetworkConfig {
   origin: string;
   explorer_l1: string;
   explorer_l2: string;
+  network?: Network;
 }
 
 export const networkConfigs: Record<Network, NetworkConfig> = {

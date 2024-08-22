@@ -6,17 +6,23 @@ import { Link } from "../../Link";
 import { SurfaceCardBase } from "./SurfaceCardBase";
 import { LatestEvents } from "@/types";
 import { shortenAddress } from "@/utils";
-import { useRouter } from "next/router";
-import { EXPLORER_L1 } from "@/utils/env";
+import { useNetworkConfig } from "@/hooks/useNetworkConfig";
 
 type EventCardProps = {
   events: LatestEvents;
 };
 
 const EventCard: FC<Partial<EventCardProps>> = function ({
-  events: { event_name, event_hash, block_time, contract_address, status, tx_hash } = {},
+  events: {
+    event_name,
+    event_hash,
+    block_time,
+    contract_address,
+    status,
+    tx_hash,
+  } = {},
 }) {
-  const nav = useRouter();
+  const { explorer_l1: EXPLORER_L1 } = useNetworkConfig();
 
   return (
     <SurfaceCardBase>
@@ -25,10 +31,7 @@ const EventCard: FC<Partial<EventCardProps>> = function ({
         <div className="flex gap-2 md:flex-row">
           {event_hash ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
-              <Link
-                href={`${EXPLORER_L1}/tx/${tx_hash}`}
-                isExternal
-              >
+              <Link href={`${EXPLORER_L1}/tx/${tx_hash}`} isExternal>
                 {shortenAddress(event_hash, 10)}
               </Link>
             </div>
@@ -57,7 +60,9 @@ const EventCard: FC<Partial<EventCardProps>> = function ({
           {contract_address ? (
             <div className="flex w-full gap-1">
               <div>Contract Address: </div>
-              <Link href={`${EXPLORER_L1}/address/${contract_address}`}>{shortenAddress(contract_address)}</Link>
+              <Link href={`${EXPLORER_L1}/address/${contract_address}`}>
+                {shortenAddress(contract_address)}
+              </Link>
             </div>
           ) : (
             <Skeleton width={300} size="xs" />
