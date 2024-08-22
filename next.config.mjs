@@ -18,11 +18,11 @@ const nextConfig = {
       // },
       {
         source: "/api/:path*",
-        destination: "http://65.109.69.98:8080/:path*", // Proxy to Backend
+        destination: "http://65.109.69.98:9001/:path*", // Proxy to Backend
       },
       {
         source: "/docs/:path*",
-        destination: "http://65.109.69.98:8080/:path*", // Proxy to Backend, token required
+        destination: "http://65.109.69.98:9001/:path*", // Proxy to Backend, token required
       },
       // {
       //   source: "/apiMain/:path*",
