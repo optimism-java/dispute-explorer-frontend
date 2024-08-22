@@ -38,7 +38,7 @@ const InprogressChart: FC<Partial<DailyAmountChartProps>> = ({
     ],
     ...opts,
   };
-  return <ChartCard title="Daily Bond Inprogress" size="sm" options={options} />;
+  return <ChartCard title="Daily Bond" size="sm" options={options} />;
 };
 
 export default InprogressChart;

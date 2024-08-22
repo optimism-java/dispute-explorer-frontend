@@ -26,20 +26,18 @@ export const NavMenusSection: React.FC = () => {
   return (
     <div className="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
       <Button
-        className={`md:hidden ${
-          isMobileMenuOpen
-            ? "stroke-controlBorderActive-light dark:stroke-controlBorderActive-dark"
-            : ""
-        }`}
+        className={`md:hidden ${isMobileMenuOpen
+          ? "stroke-controlBorderActive-light dark:stroke-controlBorderActive-dark"
+          : ""
+          }`}
         variant="icon"
         icon={isMobileMenuOpen ? <XMarkIcon /> : <Bars3Icon />}
         aria-expanded={isMobileMenuOpen}
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
       <div
-        className={`fixed inset-x-0 top-0 z-50 mt-14 transform ${
-          isMobileMenuOpen ? "block" : "hidden"
-        } md:relative md:top-auto md:mt-0 md:block`}
+        className={`fixed inset-x-0 top-0 z-50 mt-14 transform ${isMobileMenuOpen ? "block" : "hidden"
+          } md:relative md:top-auto md:mt-0 md:block`}
         id="navbar-dropdown"
       >
         <div className="mx-auto w-full max-w-md rounded-lg bg-surface-light p-4 shadow-lg md:max-w-screen-xl md:bg-transparent md:p-0 md:shadow-none">
@@ -99,11 +97,11 @@ export const NavMenusSection: React.FC = () => {
               icon={<CommandLineIcon />}
               href={resolveApiUrl()}
             />
-            {/* <NavItem
+            <NavItem
               label="Docs"
               icon={<BookOpenIcon />}
-              href="https://docs.blobscan.com"
-            /> */}
+              href="https://optimism-java.github.io/superproof-docs"
+            />
           </div>
         </div>
       </div>
