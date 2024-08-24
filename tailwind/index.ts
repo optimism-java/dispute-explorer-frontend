@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
 import { baseColors, semanticColors } from "./colors";
+console.log(process.env.NEXT_PUBLIC_BASE_SEPOLIA_URL, 'process-env1')
 
 export default {
   content: [""],

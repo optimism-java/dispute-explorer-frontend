@@ -1,3 +1,10 @@
+const isBase = process.env.NEXT_PUBLIC_BASE_SEPOLIA_URL === "http://localhost:3000"
+
+const LightPrimaryColor = isBase ? "#0051ff" : "#b80018"
+const LightBorderColor = isBase ? "#0051ff" : "#ff5c6c"
+const DarkBorderColor = isBase ? "#0051ff" : "#ff0420"
+
+
 export const baseColors = {
   blues: {
     100: "#C9E5FF",
@@ -30,13 +37,13 @@ export const baseColors = {
     100: "#fff0f1",
     200: "#ffd1d5",
     300: "#ff99a1",
-    400: "#ff5c6c",
-    500: "#ff0420",
-    600: "#b80018",
-    700: "#b80018",
-    800: "#b80018",
-    900: "#b80018",
-    1000: "#b80018",
+    400: LightBorderColor,
+    500: DarkBorderColor,
+    600: LightPrimaryColor,
+    700: LightPrimaryColor,
+    800: LightPrimaryColor,
+    900: LightPrimaryColor,
+    1000: LightPrimaryColor,
     // 50: "#F7F1FF",
     // 100: "#F7F5FD",
     // 200: "#EADEFD",
@@ -95,121 +102,120 @@ export const baseColors = {
     900: "#7F1D1D",
   },
 };
-  
-  const { coolGray, primary, shades, success, error, warmGray } = baseColors;
-  
-  export const semanticColors = {
-    accent: {
-      light: primary[700],
-      dark: primary[500],
-    },
-    accentContent: {
-      light: shades["00"],
-      dark: warmGray[50],
-    },
-    accentHighlight: {
-      light: primary[600],
-      dark: primary[400],
-    },
-    accentDisabled: {
-      light: warmGray[500],
-      dark: coolGray[300],
-    },
-    background: {
-      light: warmGray[100],
-      dark: shades[50],
-    },
-    border: {
-      light: warmGray[200],
-      dark: coolGray[300],
-    },
-    content: {
-      light: warmGray[700],
-      dark: warmGray[50],
-    },
-    contentSecondary: {
-      light: warmGray[600],
-      dark: coolGray[700],
-    },
-    contentTertiary: {
-      light: warmGray[400],
-      dark: coolGray[400],
-    },
-    contentDisabled: {
-      light: warmGray[400],
-      dark: coolGray[400],
-    },
-    control: {
-      light: shades["00"],
-      dark: shades["00"],
-    },
-    controlBackground: {
-      light: shades["00"],
-      dark: coolGray[200],
-    },
-    controlActive: {
-      light: primary[100],
-      dark: primary[500],
-    },
-    controlBorder: {
-      light: warmGray[200],
-      dark: primary[300],
-    },
-    controlBorderActive: {
-      light: primary[700],
-      dark: primary[400],
-    },
-    controlBorderHighlight: {
-      light: primary[400],
-      dark: primary[400],
-    },
-    hint: {
-      light: warmGray[300],
-      dark: coolGray[400],
-    },
-    icon: {
-      light: warmGray[700],
-      dark: coolGray[400],
-    },
-    iconHighlight: {
-      light: primary[700],
-      dark: primary[400],
-    },
-    link: {
-      light: primary[700],
-      dark: primary[400],
-    },
-    negative: {
-      light: error[500],
-      dark: error[400],
-    },
-    positive: {
-      light: success[500],
-      dark: success[400],
-    },
-    surface: {
-      light: shades["00"],
-      dark: coolGray[50],
-    },
-    surfaceBorder: {
-      light: warmGray[200],
-      dark: coolGray[300],
-    },
-    surfaceContent: {
-      light: warmGray[700],
-      dark: warmGray[200],
-    },
-    surfaceContentSecondary: {
-      light: warmGray[600],
-      dark: coolGray[700],
-    },
-    surfaceHeader: {
-      light: primary[100],
-      dark: coolGray[200],
-    },
-    skeleton: {
-      light: "#e2e8f0",
-      dark: "#334454",
-    },
-  };
-  
+
+const { coolGray, primary, shades, success, error, warmGray } = baseColors;
+
+export const semanticColors = {
+  accent: {
+    light: primary[700],
+    dark: primary[500],
+  },
+  accentContent: {
+    light: shades["00"],
+    dark: warmGray[50],
+  },
+  accentHighlight: {
+    light: primary[600],
+    dark: primary[400],
+  },
+  accentDisabled: {
+    light: warmGray[500],
+    dark: coolGray[300],
+  },
+  background: {
+    light: warmGray[100],
+    dark: shades[50],
+  },
+  border: {
+    light: warmGray[200],
+    dark: coolGray[300],
+  },
+  content: {
+    light: warmGray[700],
+    dark: warmGray[50],
+  },
+  contentSecondary: {
+    light: warmGray[600],
+    dark: coolGray[700],
+  },
+  contentTertiary: {
+    light: warmGray[400],
+    dark: coolGray[400],
+  },
+  contentDisabled: {
+    light: warmGray[400],
+    dark: coolGray[400],
+  },
+  control: {
+    light: shades["00"],
+    dark: shades["00"],
+  },
+  controlBackground: {
+    light: shades["00"],
+    dark: coolGray[200],
+  },
+  controlActive: {
+    light: primary[100],
+    dark: primary[500],
+  },
+  controlBorder: {
+    light: warmGray[200],
+    dark: primary[300],
+  },
+  controlBorderActive: {
+    light: primary[700],
+    dark: primary[400],
+  },
+  controlBorderHighlight: {
+    light: primary[400],
+    dark: primary[400],
+  },
+  hint: {
+    light: warmGray[300],
+    dark: coolGray[400],
+  },
+  icon: {
+    light: warmGray[700],
+    dark: coolGray[400],
+  },
+  iconHighlight: {
+    light: primary[700],
+    dark: primary[400],
+  },
+  link: {
+    light: primary[700],
+    dark: primary[400],
+  },
+  negative: {
+    light: error[500],
+    dark: error[400],
+  },
+  positive: {
+    light: success[500],
+    dark: success[400],
+  },
+  surface: {
+    light: shades["00"],
+    dark: coolGray[50],
+  },
+  surfaceBorder: {
+    light: warmGray[200],
+    dark: coolGray[300],
+  },
+  surfaceContent: {
+    light: warmGray[700],
+    dark: warmGray[200],
+  },
+  surfaceContentSecondary: {
+    light: warmGray[600],
+    dark: coolGray[700],
+  },
+  surfaceHeader: {
+    light: primary[100],
+    dark: coolGray[200],
+  },
+  skeleton: {
+    light: "#e2e8f0",
+    dark: "#334454",
+  },
+};
