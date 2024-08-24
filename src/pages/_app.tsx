@@ -26,7 +26,7 @@ const App = ({ Component, pageProps }: NextAppProps) => {
         <title>Super Proof</title>
         <meta
           name="description"
-          content="Blobscan is the first EIP4844 Blob Transaction explorer, a web-based application that offers a seamless experience for navigating and indexing blob data."
+          content="Super proof"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

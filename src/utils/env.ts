@@ -23,6 +23,6 @@ export const networkConfigs: Record<Network, NetworkConfig> = {
   "base-sepolia": {
     origin: process.env.NEXT_PUBLIC_BASE_SEPOLIA_URL || "",
     explorer_l1: "https://sepolia.etherscan.io",
-    explorer_l2: "https://sepolia.basescan.org/",
+    explorer_l2: "https://sepolia.basescan.org",
   },
 };
