@@ -9,10 +9,12 @@ import Skeleton from "react-loading-skeleton";
 import { ChartSkeleton } from "@/components/ChartSkeleton";
 import { ChartBase } from "./ChartBase";
 import { Card } from "@/components/Cards/Card";
+import { depth } from "@/utils";
 
 type ChartCardProps = {
   title?: ReactNode;
   options: EChartOption;
+  depth?: number;
 };
 
 function getSeriesDataState(series: EChartOption.Series[] | undefined) {
@@ -27,6 +29,7 @@ function getSeriesDataState(series: EChartOption.Series[] | undefined) {
 export const ChartCard: FC<ChartCardProps> = function ({
   title,
   options,
+  depth,
 }) {
   const { isEmpty, isLoading } = getSeriesDataState(options.series);
 
@@ -36,9 +39,7 @@ export const ChartCard: FC<ChartCardProps> = function ({
         {title ?? <Skeleton width={150} />}
       </div>
       <div className="flex h-full flex-col gap-2">
-        <div
-          className="h-full"
-        >
+        <div className="h-full">
           {isEmpty ? (
             <div className="flex h-full items-center justify-center">
               <div className="text-sm font-thin uppercase text-contentSecondary-light dark:text-contentSecondary-dark">
@@ -50,7 +51,7 @@ export const ChartCard: FC<ChartCardProps> = function ({
               <ChartSkeleton itemsCount={6} />
             </div>
           ) : (
-            <ChartBase options={options} />
+            <ChartBase options={options} depth={depth} />
           )}
         </div>
       </div>

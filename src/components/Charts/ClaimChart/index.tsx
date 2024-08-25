@@ -19,8 +19,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
   const nodes: any[] = [];
   const links: any[] = [];
 
-  // key: tree deep, value: nums of nodes at this level
-  const levelMap = new Map<number, number>();
+  let maxDepth = 1;
 
   const root = data[0];
   nodes.push({
@@ -35,46 +34,60 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
     y: yBase,
   });
 
-  for (let i = 1; i < data.length; i++) {
-    const current = data[i];
-    const parent = data[current.parent_index];
-    const deep = depth(current.position);
-    const deepCount = levelMap.get(deep) || 0;
-    const node = {
-      name: current.event_id.toString(),
-      claim: current.claim,
-      position: current.position,
-      value: `${current.position}⚔️ ${shortenAddress(current.claim, 3)}`,
-      itemStyle: {
-        color: "red",
-      },
-      x: (-deep + deepCount) * xGap,
-      y: yBase + deep * yGap,
-    };
-    const link = {
-      source: parent.event_id.toString(),
-      target: current.event_id.toString(),
-      lineStyle: {
-        color: "red",
-      },
-      label: {
-        show: true,
-        formatter: "attack",
-      },
-    };
-    if (!isAttack(current.position, parent.position)) {
-      node.itemStyle.color = "blue";
-      link.lineStyle.color = "blue";
-      link.label.formatter = "defend";
+  const queue: number[] = [0];
+  // key: tree deep, value: nums of nodes at this level
+  const levelMap = new Map<number, number>();
+
+  while (queue.length) {
+    const parentIndex = queue.shift()!;
+    const parent = data[parentIndex];
+    for (let i = 1; i < data.length; i++) {
+      const current = data[i];
+      if (current.parent_index !== parentIndex) {
+        continue;
+      }
+      queue.push(i);
+      const deep = depth(current.position);
+      if (deep > maxDepth) {
+        maxDepth = deep;
+      }
+      const deepCount = levelMap.get(deep) || 0;
+      const node = {
+        name: current.event_id.toString(),
+        claim: current.claim,
+        position: current.position,
+        value: `${current.position}⚔️ ${shortenAddress(current.claim, 3)}`,
+        itemStyle: {
+          color: "red",
+        },
+        x: (-deep + deepCount) * xGap,
+        y: yBase + deep * yGap,
+      };
+      const link = {
+        source: parent.event_id.toString(),
+        target: current.event_id.toString(),
+        lineStyle: {
+          color: "red",
+        },
+        label: {
+          show: true,
+          formatter: "attack",
+        },
+      };
+      if (!isAttack(current.position, parent.position)) {
+        node.itemStyle.color = "blue";
+        link.lineStyle.color = "blue";
+        link.label.formatter = "defend";
+      }
+      nodes.push(node);
+      links.push(link);
+      levelMap.set(deep, deepCount + 1);
     }
-    nodes.push(node);
-    links.push(link);
-    levelMap.set(deep, deepCount + 1);
   }
-  console.log(nodes);
   return {
     nodes,
     links,
+    maxDepth,
   };
 };
 
@@ -192,8 +205,57 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
   //     output_block: 16288209,
   //     event_id: 14818,
   //   },
+  //   {
+  //     id: 7606,
+  //     created_at: "2024-08-23T06:32:25Z",
+  //     updated_at: "2024-08-23T06:32:25Z",
+  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
+  //     data_index: 6,
+  //     parent_index: 5,
+  //     countered_by: "0x0000000000000000000000000000000000000000",
+  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
+  //     bond: 95908800000000000,
+  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
+  //     position: 6,
+  //     clock: 1724393700,
+  //     output_block: 16288209,
+  //     event_id: 148181,
+  //   },
+  //   {
+  //     id: 7606,
+  //     created_at: "2024-08-23T06:32:25Z",
+  //     updated_at: "2024-08-23T06:32:25Z",
+  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
+  //     data_index: 6,
+  //     parent_index: 3,
+  //     countered_by: "0x0000000000000000000000000000000000000000",
+  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
+  //     bond: 95908800000000000,
+  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
+  //     position: 6,
+  //     clock: 1724393700,
+  //     output_block: 16288209,
+  //     event_id: 148182,
+  //   },
+  //   {
+  //     id: 7606,
+  //     created_at: "2024-08-23T06:32:25Z",
+  //     updated_at: "2024-08-23T06:32:25Z",
+  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
+  //     data_index: 6,
+  //     parent_index: 1,
+  //     countered_by: "0x0000000000000000000000000000000000000000",
+  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
+  //     bond: 95908800000000000,
+  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
+  //     position: 6,
+  //     clock: 1724393700,
+  //     output_block: 16288209,
+  //     event_id: 148184,
+  //   },
   // ];
-  const { nodes, links } = genNodesAndLinks(claimData);
+  // const data = genTreeData(claimData);
+  const { nodes, links, maxDepth } = genNodesAndLinks(claimData);
   const options: EChartOption<EChartOption.SeriesGraph> = {
     tooltip: {
       trigger: "item",
@@ -221,7 +283,9 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
         data: nodes,
         type: "graph",
         layout: "none",
-        symbolSize: 90,
+        symbolSize: 80,
+        // top: "20%",
+        // bottom: "20%",
         force: {
           // 设置link长度
           edgeLength: 100, // 固定长度
@@ -242,7 +306,120 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
       },
     ],
   };
-  return <ChartCard title="Fault Dispute Game Graph" options={options} />;
+  // const options: EChartOption<EChartOption.SeriesTree> = {
+  //   tooltip: {
+  //     trigger: "item",
+  //     formatter: (params: any) => {
+  //       if (params.dataType === "node") {
+  //         return `${params.data.claim}`;
+  //       }
+  //       return "";
+  //     },
+  //   },
+  //   grid: {
+  //     left: "5%",
+  //     right: "5%",
+  //   },
+  //   xAxis: {
+  //     type: "category",
+  //     show: false,
+  //   },
+  //   yAxis: {
+  //     type: "value",
+  //     show: false,
+  //   },
+  //   series: [
+  //     {
+  //       data: [data],
+  //       type: "tree",
+  //       symbolSize: 70,
+  //       orient: "vertical",
+  //       left: "2%",
+  //       right: "2%",
+  //       top: "20%",
+  //       bottom: "20%",
+  //       expandAndCollapse: false,
+  //       // force: {
+  //       //   // 设置link长度
+  //       //   edgeLength: 100, // 固定长度
+  //       //   // repulsion: 300,
+  //       // },
+  //       label: {
+  //         show: true,
+  //         formatter: (params: any) => {
+  //           return params.data.value;
+  //         },
+  //       },
+  //       // edgeSymbol: ["circle", "arrow"],
+  //       // edgeSymbolSize: [4, 10],
+  //       // links,
+  //       lineStyle: {
+  //         color: "red",
+  //       },
+  //       symbol: "circle", // 节点形状为圆形
+  //       itemStyle: {
+  //         color: "red",
+  //       },
+  //     },
+  //   ],
+  // };
+  return (
+    <ChartCard
+      title="Fault Dispute Game Graph"
+      options={options}
+      depth={maxDepth}
+    />
+  );
+};
+
+const genTreeData = (data: ClaimData[]): any => {
+  const root = data[0];
+  const rootNode = {
+    index: 0,
+    name: root.event_id.toString(),
+    claim: root.claim,
+    position: root.position,
+    value: `${root.position}👑 ${shortenAddress(root.claim, 2)}`,
+    itemStyle: {
+      color: "yellow",
+    },
+    children: [] as any[],
+  };
+  const queue = [rootNode] as any[];
+  while (queue.length) {
+    const parent = queue.shift()!;
+    const parentIndex = parent!.index;
+    for (let i = 1; i < data.length; i++) {
+      const current = data[i];
+      if (current.parent_index === parentIndex) {
+        const node = {
+          index: i,
+          name: current.event_id.toString(),
+          claim: current.claim,
+          position: current.position,
+          value: `${current.position}⚔️ ${shortenAddress(current.claim, 2)}`,
+          itemStyle: {
+            color: "red",
+          },
+          lineStyle: {
+            color: "red",
+          },
+          children: [],
+        };
+        if (!isAttack(current.position, parent.position)) {
+          node.itemStyle.color = "blue";
+          node.lineStyle.color = "blue";
+          node.value = `${current.position}🏁 ${shortenAddress(
+            current.claim,
+            2
+          )}`;
+        }
+        parent!.children.push(node);
+        queue.push(node);
+      }
+    }
+  }
+  return rootNode;
 };
 
 export default ClaimChart;

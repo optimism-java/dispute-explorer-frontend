@@ -6,6 +6,7 @@ import EChartsReact from "echarts-for-react";
 type ChartBaseProps = {
   options: EChartOption;
   compact?: boolean;
+  depth?: number;
 };
 
 const COMMON_OPTIONS: EChartOption = {
@@ -18,13 +19,11 @@ const COMMON_OPTIONS: EChartOption = {
   },
 };
 
-
-
 export const ChartBase: FC<ChartBaseProps> = function ({
   options,
   compact = false,
+  depth = 0,
 }) {
-
   const processedSeries = useMemo(
     () =>
       options.series?.map((series) => {
@@ -39,8 +38,8 @@ export const ChartBase: FC<ChartBaseProps> = function ({
     [options]
   );
 
-  const len = options?.series ? (options?.series[0]?.data?.length || 0) : 0
-  const height = len === 2 ? (len * 250) : (len * 150)
+  // const len = options?.series ? options?.series[0]?.data?.length || 0 : 0;
+  const height = depth * 200;
 
   return (
     <EChartsReact
