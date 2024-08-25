@@ -1,4 +1,7 @@
-const isBase = process.env.NEXT_PUBLIC_BASE_SEPOLIA_URL === "http://localhost:3000"
+
+const baseOrigin = "base-sepolia.superproof.wtf"
+// const baseOrigin = "localhost:3000"
+const isBase = process.env.NEXT_PUBLIC_BASE_SEPOLIA_URL?.includes(baseOrigin)
 
 const LightPrimaryColor = isBase ? "#0051ff" : "#b80018"
 const LightBorderColor = isBase ? "#0051ff" : "#ff5c6c"
