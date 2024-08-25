@@ -12,11 +12,11 @@ const EXTERNAL_APPS: { href: string; icon: ReactElement }[] = [
   },
   {
     icon: <DiscordIcon className="h-5 w-5" />,
-    href: "https://github.com/optimism-java/dispute-explorer",
+    href: "https://discord.gg/YC34UKyc2Y",
   },
   {
     icon: <XIcon className="h-5 w-5" />,
-    href: "https://github.com/optimism-java",
+    href: "https://x.com/optimism_java",
   },
 ];
 
@@ -33,14 +33,14 @@ export const BottomBarLayout = () => {
           ))}
         </div>
         <div className="max-w-lg text-center text-xs text-contentTertiary-light dark:text-contentTertiary-dark">
-          The first open-source dispute game explorer for the{" "}
+          The first open source{" "}
           <Link
             href="https://docs.optimism.io/stack/protocol/fault-proofs/explainer"
             isExternal
           >
-            Fault proofs
+            fault proofs
           </Link>{" "}
-          .
+          explorer.
         </div>
         {/* {env.NEXT_PUBLIC_VERSION && (
               <div className="flex items-center gap-1">

@@ -27,7 +27,7 @@ const GameDetail = () => {
     hitsPerPage: 1,
     q: address,
   });
-  console.log({ game })
+  console.log({ game });
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
     useNetworkConfig();
   return (
@@ -115,6 +115,7 @@ const GameDetail = () => {
           </div>
         ) : (
           <SlidableList
+            maxItems={data?.data.length}
             items={(data as ListResponse<ClaimData>).data?.map((g) => ({
               id: g.id,
               element: (
@@ -133,7 +134,9 @@ const GameDetail = () => {
           </div>
         }
       >
-        <Provider><Challenge /></Provider>
+        <Provider>
+          <Challenge />
+        </Provider>
       </Card>
     </div>
   );
