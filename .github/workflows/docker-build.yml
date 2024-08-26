@@ -51,4 +51,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}-base
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_IS_BASE: "true"
+            NEXT_PUBLIC_IS_BASE=true
