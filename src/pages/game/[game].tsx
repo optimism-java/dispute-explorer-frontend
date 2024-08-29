@@ -27,7 +27,6 @@ const GameDetail = () => {
     hitsPerPage: 1,
     q: address,
   });
-  console.log({ game });
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
     useNetworkConfig();
   return (
