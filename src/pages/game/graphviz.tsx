@@ -136,7 +136,6 @@ const GameDetail = () => {
       }
     });
     const maxIndex = 2 ** (maxDepth + 1);
-    console.log(maxIndex);
     let nodes = "";
     let links = "";
     for (let i = 1; i <= maxIndex; i++) {

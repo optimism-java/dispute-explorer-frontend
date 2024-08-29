@@ -23,7 +23,7 @@ export interface ClaimData {
   claimant: string;
   bond: number;
   claim: string;
-  position: number;
+  position: string;
   clock: number;
   output_block: number;
   event_id: number;
@@ -56,26 +56,26 @@ export interface Amountperday {
 }
 
 export interface BoundProgress {
-  amount: string,
-  date: string
+  amount: string;
+  date: string;
 }
 
 export interface LatestEvents {
-  block_hash: string
-  block_log_indexed: number
-  block_number: number
-  block_time: number
-  blockchain: string
-  contract_address: string
-  created_at: number
-  data: string
-  event_hash: string
-  event_name: string
-  id: number
-  retry_count: number
-  status: string
-  sync_block_id: number
-  tx_hash: string
-  tx_index: string
-  updated_at: number
+  block_hash: string;
+  block_log_indexed: number;
+  block_number: number;
+  block_time: number;
+  blockchain: string;
+  contract_address: string;
+  created_at: number;
+  data: string;
+  event_hash: string;
+  event_name: string;
+  id: number;
+  retry_count: number;
+  status: string;
+  sync_block_id: number;
+  tx_hash: string;
+  tx_index: string;
+  updated_at: number;
 }
