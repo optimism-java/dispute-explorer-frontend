@@ -27,7 +27,6 @@ const GameDetail = () => {
     hitsPerPage: 1,
     q: address,
   });
-  console.log({ game });
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
     useNetworkConfig();
   return (
@@ -93,7 +92,9 @@ const GameDetail = () => {
           <ChartSkeleton itemsCount={6} />
         </div>
       ) : (
-        <ClaimChart claimData={data?.data as ClaimData[]} />
+        <Provider>
+          <ClaimChart claimData={data?.data as ClaimData[]} />
+        </Provider>
       )}
       <Card
         header={
@@ -126,17 +127,6 @@ const GameDetail = () => {
             }))}
           />
         )}
-      </Card>
-      <Card
-        header={
-          <div className="flex items-center justify-between gap-5">
-            <div>Challenge</div>
-          </div>
-        }
-      >
-        <Provider>
-          <Challenge />
-        </Provider>
       </Card>
     </div>
   );

@@ -2,11 +2,27 @@ import { ChartCard } from "./ChartCard";
 import { ClaimData } from "@/types";
 import { depth, shortenAddress } from "@/utils";
 import { EChartOption } from "echarts";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
 
 const xGap = 100;
 const yGap = 100;
 const yBase = 100;
+
+type Node = {
+  name: string,
+  claim: string,
+  position: number,
+  value: string,
+  itemStyle: {
+    color: string,
+  },
+  x: number,
+  y: number,
+}
 
 const isAttack = (cur: number, parent: number): boolean => {
   if (parent * 2 === cur) {
@@ -16,7 +32,7 @@ const isAttack = (cur: number, parent: number): boolean => {
 };
 
 const genNodesAndLinks = (data: ClaimData[]): any => {
-  const nodes: any[] = [];
+  const nodes: Node[] = [];
   const links: any[] = [];
 
   let maxDepth = 1;
@@ -92,177 +108,15 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
 };
 
 const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
-  // const claimData = [
-  //   {
-  //     id: 7585,
-  //     created_at: "2024-08-23T02:29:11Z",
-  //     updated_at: "2024-08-23T02:29:11Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 0,
-  //     parent_index: 4294967295,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0x49277EE36A024120Ee218127354c4a3591dc90A9",
-  //     bond: 80000000000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
-  //     position: 1,
-  //     clock: 1724379108,
-  //     output_block: 16288209,
-  //     event_id: 14781,
-  //   },
-  //   {
-  //     id: 7588,
-  //     created_at: "2024-08-23T03:07:27Z",
-  //     updated_at: "2024-08-23T03:07:27Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 1,
-  //     parent_index: 0,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0x756A6aa43547fA8cCF02ab417E6c4c4747137346",
-  //     bond: 87594000000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5b",
-  //     position: 2,
-  //     clock: 1724381664,
-  //     output_block: 16288209,
-  //     event_id: 14787,
-  //   },
-  //   {
-  //     id: 7589,
-  //     created_at: "2024-08-23T03:13:45Z",
-  //     updated_at: "2024-08-23T03:13:45Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 2,
-  //     parent_index: 1,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
-  //     bond: 95908800000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
-  //     position: 4,
-  //     clock: 1724381676,
-  //     output_block: 16288209,
-  //     event_id: 14788,
-  //   },
-  //   {
-  //     id: 7603,
-  //     created_at: "2024-08-23T06:25:52Z",
-  //     updated_at: "2024-08-23T06:25:52Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 1,
-  //     parent_index: 0,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0x756A6aa43547fA8cCF02ab417E6c4c4747137346",
-  //     bond: 87594000000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5b",
-  //     position: 2,
-  //     clock: 1724381664,
-  //     output_block: 16288209,
-  //     event_id: 14815,
-  //   },
-  //   {
-  //     id: 7604,
-  //     created_at: "2024-08-23T06:25:52Z",
-  //     updated_at: "2024-08-23T06:25:52Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 4,
-  //     parent_index: 3,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
-  //     bond: 95908800000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
-  //     position: 4,
-  //     clock: 1724393436,
-  //     output_block: 16288209,
-  //     event_id: 14816,
-  //   },
-  //   {
-  //     id: 7605,
-  //     created_at: "2024-08-23T06:32:24Z",
-  //     updated_at: "2024-08-23T06:32:24Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 1,
-  //     parent_index: 0,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0x756A6aa43547fA8cCF02ab417E6c4c4747137346",
-  //     bond: 87594000000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5b",
-  //     position: 2,
-  //     clock: 1724381664,
-  //     output_block: 16288209,
-  //     event_id: 14817,
-  //   },
-  //   {
-  //     id: 7606,
-  //     created_at: "2024-08-23T06:32:25Z",
-  //     updated_at: "2024-08-23T06:32:25Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 6,
-  //     parent_index: 5,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
-  //     bond: 95908800000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
-  //     position: 4,
-  //     clock: 1724393700,
-  //     output_block: 16288209,
-  //     event_id: 14818,
-  //   },
-  //   {
-  //     id: 7606,
-  //     created_at: "2024-08-23T06:32:25Z",
-  //     updated_at: "2024-08-23T06:32:25Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 6,
-  //     parent_index: 5,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
-  //     bond: 95908800000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
-  //     position: 6,
-  //     clock: 1724393700,
-  //     output_block: 16288209,
-  //     event_id: 148181,
-  //   },
-  //   {
-  //     id: 7606,
-  //     created_at: "2024-08-23T06:32:25Z",
-  //     updated_at: "2024-08-23T06:32:25Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 6,
-  //     parent_index: 3,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
-  //     bond: 95908800000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
-  //     position: 6,
-  //     clock: 1724393700,
-  //     output_block: 16288209,
-  //     event_id: 148182,
-  //   },
-  //   {
-  //     id: 7606,
-  //     created_at: "2024-08-23T06:32:25Z",
-  //     updated_at: "2024-08-23T06:32:25Z",
-  //     game_contract: "0x2ed2a8c32bbe31e55dd03f31c85bd45138a1181f",
-  //     data_index: 6,
-  //     parent_index: 1,
-  //     countered_by: "0x0000000000000000000000000000000000000000",
-  //     claimant: "0xffb026F67DA0869EB3ABB090cB7F015CE0925CdF",
-  //     bond: 95908800000000000,
-  //     claim: "bef852721eceb6b7da05920bf3c7ce8291cb1d673e93409e79da26106fff3a5a",
-  //     position: 6,
-  //     clock: 1724393700,
-  //     output_block: 16288209,
-  //     event_id: 148184,
-  //   },
-  // ];
-  // const data = genTreeData(claimData);
   const { nodes, links, maxDepth } = genNodesAndLinks(claimData);
   const options: EChartOption<EChartOption.SeriesGraph> = {
     tooltip: {
       trigger: "item",
+      triggerOn: 'click',
       formatter: (params: any) => {
-        if (params.dataType === "node") {
-          return `${params.data.claim}`;
-        }
+        // if (params.dataType === "node") {
+        //   return `${params.data.claim}`;
+        // }
         return "";
       },
     },
@@ -294,7 +148,7 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
         label: {
           show: true,
           formatter: (params: any) => {
-            return params.data.value;
+            return params.data.value
           },
         },
         edgeSymbol: ["circle", "arrow"],
@@ -306,69 +160,76 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
       },
     ],
   };
-  // const options: EChartOption<EChartOption.SeriesTree> = {
-  //   tooltip: {
-  //     trigger: "item",
-  //     formatter: (params: any) => {
-  //       if (params.dataType === "node") {
-  //         return `${params.data.claim}`;
-  //       }
-  //       return "";
-  //     },
-  //   },
-  //   grid: {
-  //     left: "5%",
-  //     right: "5%",
-  //   },
-  //   xAxis: {
-  //     type: "category",
-  //     show: false,
-  //   },
-  //   yAxis: {
-  //     type: "value",
-  //     show: false,
-  //   },
-  //   series: [
-  //     {
-  //       data: [data],
-  //       type: "tree",
-  //       symbolSize: 70,
-  //       orient: "vertical",
-  //       left: "2%",
-  //       right: "2%",
-  //       top: "20%",
-  //       bottom: "20%",
-  //       expandAndCollapse: false,
-  //       // force: {
-  //       //   // 设置link长度
-  //       //   edgeLength: 100, // 固定长度
-  //       //   // repulsion: 300,
-  //       // },
-  //       label: {
-  //         show: true,
-  //         formatter: (params: any) => {
-  //           return params.data.value;
-  //         },
-  //       },
-  //       // edgeSymbol: ["circle", "arrow"],
-  //       // edgeSymbolSize: [4, 10],
-  //       // links,
-  //       lineStyle: {
-  //         color: "red",
-  //       },
-  //       symbol: "circle", // 节点形状为圆形
-  //       itemStyle: {
-  //         color: "red",
-  //       },
-  //     },
-  //   ],
-  // };
+  const [showModal, setShowModal] = useState(false)
+  const [modalData, setModalData] = useState<Node>()
+  const [val, setVal] = useState('')
+  const handleClick = (e: any) => {
+    setShowModal(true)
+    setModalData(e.data)
+    console.log(e.data, 'e')
+  }
   return (
-    <ChartCard
-      title="Fault Dispute Game Graph"
-      options={options}
-      depth={maxDepth}
-    />
+    <>
+      <Dialog open={showModal} as="div" className="relative z-10 focus:outline-none" onClose={() => setShowModal(false)}>
+        <DialogBackdrop
+          transition
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+        />
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <DialogPanel
+              transition
+              className="w-full max-w-md rounded-xl dark:bg-surface-dark bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+            >
+              <DialogTitle as="h3" className="text-base/7 font-medium">
+                Challenge
+              </DialogTitle>
+              <p className="mt-4 text-sm/6 text-white/50">
+                <div>
+                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">Claim</div>
+                  <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">{modalData?.claim}</div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">challenge claim</div>
+                  <Input
+                    type="text"
+                    name="search"
+                    id="search"
+                    value={val}
+                    onChange={(e) => setVal(e.target.value)}
+                    className={"rounded-none rounded-l-md"}
+                    placeholder={'challenge string'}
+                  />
+                </div>
+              </p>
+              <div className="mt-4 flex justify-end gap-4">
+                <Button
+                  label='defend'
+                  variant="outline"
+                  onClick={() => setShowModal(false)}
+                >
+                </Button> <Button
+                  label='attack'
+                  variant="outline"
+                  onClick={() => setShowModal(false)}
+                >
+                </Button>
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
+      <ChartCard
+        title={<div className="flex items-center gap-10">
+          <div>Fault Dispute Game Graph</div>
+          <ConnectButton showBalance={false} />
+        </div>}
+        handleClick={handleClick}
+        options={options}
+        depth={maxDepth}
+      />
+    </>
+
   );
 };
 

@@ -15,6 +15,7 @@ type ChartCardProps = {
   title?: ReactNode;
   options: EChartOption;
   depth?: number;
+  handleClick: (e: any) => void
 };
 
 function getSeriesDataState(series: EChartOption.Series[] | undefined) {
@@ -30,6 +31,7 @@ export const ChartCard: FC<ChartCardProps> = function ({
   title,
   options,
   depth,
+  handleClick
 }) {
   const { isEmpty, isLoading } = getSeriesDataState(options.series);
 
@@ -51,7 +53,7 @@ export const ChartCard: FC<ChartCardProps> = function ({
               <ChartSkeleton itemsCount={6} />
             </div>
           ) : (
-            <ChartBase options={options} depth={depth} />
+            <ChartBase handleClick={handleClick} options={options} depth={depth} />
           )}
         </div>
       </div>

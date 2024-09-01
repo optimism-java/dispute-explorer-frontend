@@ -7,6 +7,7 @@ type ChartBaseProps = {
   options: EChartOption;
   compact?: boolean;
   depth?: number;
+  handleClick: (e: any) => void
 };
 
 const COMMON_OPTIONS: EChartOption = {
@@ -23,6 +24,7 @@ export const ChartBase: FC<ChartBaseProps> = function ({
   options,
   compact = false,
   depth = 0,
+  handleClick
 }) {
   const processedSeries = useMemo(
     () =>
@@ -43,6 +45,11 @@ export const ChartBase: FC<ChartBaseProps> = function ({
 
   return (
     <EChartsReact
+      onEvents={
+        {
+          "click": handleClick
+        }
+      }
       option={{
         ...COMMON_OPTIONS,
         ...options,
@@ -59,11 +66,11 @@ export const ChartBase: FC<ChartBaseProps> = function ({
           ...(options.xAxis || {}),
           ...(compact
             ? {
-                axisLine: { show: false },
-                axisLabel: {
-                  interval: 4,
-                },
-              }
+              axisLine: { show: false },
+              axisLabel: {
+                interval: 4,
+              },
+            }
             : {}),
         },
         yAxis: {
