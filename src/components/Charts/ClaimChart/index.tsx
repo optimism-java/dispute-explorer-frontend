@@ -15,7 +15,7 @@ const yBase = 100;
 type Node = {
   name: string,
   claim: string,
-  position: number,
+  position: string,
   value: string,
   itemStyle: {
     color: string,
@@ -24,8 +24,8 @@ type Node = {
   y: number,
 }
 
-const isAttack = (cur: number, parent: number): boolean => {
-  if (parent * 2 === cur) {
+const isAttack = (cur: bigint, parent: bigint): boolean => {
+  if (parent * BigInt(2) === cur) {
     return true;
   }
   return false;
@@ -63,7 +63,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
         continue;
       }
       queue.push(i);
-      const deep = depth(current.position);
+      const deep = depth(BigInt(current.position));
       if (deep > maxDepth) {
         maxDepth = deep;
       }
@@ -90,7 +90,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
           formatter: "attack",
         },
       };
-      if (!isAttack(current.position, parent.position)) {
+      if (!isAttack(BigInt(current.position), BigInt(parent.position))) {
         node.itemStyle.color = "blue";
         link.lineStyle.color = "blue";
         link.label.formatter = "defend";
@@ -267,7 +267,7 @@ const genTreeData = (data: ClaimData[]): any => {
           },
           children: [],
         };
-        if (!isAttack(current.position, parent.position)) {
+        if (!isAttack(BigInt(current.position), BigInt(parent.position))) {
           node.itemStyle.color = "blue";
           node.lineStyle.color = "blue";
           node.value = `${current.position}🏁 ${shortenAddress(
