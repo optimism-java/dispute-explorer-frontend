@@ -7,7 +7,7 @@ export default class Document extends NextDocument {
       <Html lang="en" className="dark h-full">
         <Head>
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-          <Script strategy="lazyOnload">
+          <Script id="GA" strategy="lazyOnload">
             {`<!-- Google Tag Manager -->
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
