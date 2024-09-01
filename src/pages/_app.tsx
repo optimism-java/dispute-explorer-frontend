@@ -24,10 +24,7 @@ const App = ({ Component, pageProps }: NextAppProps) => {
     >
       <Head>
         <title>Super Proof</title>
-        <meta
-          name="description"
-          content="Super proof"
-        />
+        <meta name="description" content="Super proof" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppLayout>
