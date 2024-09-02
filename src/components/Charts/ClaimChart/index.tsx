@@ -7,6 +7,8 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import { useCalculateClaim } from "@/hooks/useCaculateClaim";
+import { useWriteContract } from "wagmi";
 
 const xGap = 100;
 const yGap = 100;
@@ -71,6 +73,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
       const node = {
         name: current.event_id.toString(),
         claim: current.claim,
+        parentIndex: current.parent_index,
         position: current.position,
         value: `${current.position}⚔️ ${shortenAddress(current.claim, 3)}`,
         itemStyle: {
@@ -109,6 +112,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
 
 const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
   const { nodes, links, maxDepth } = genNodesAndLinks(claimData);
+  const { isMutating, trigger } = useCalculateClaim()
   const options: EChartOption<EChartOption.SeriesGraph> = {
     tooltip: {
       trigger: "item",
@@ -163,11 +167,17 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
   const [showModal, setShowModal] = useState(false)
   const [modalData, setModalData] = useState<Node>()
   const [val, setVal] = useState('')
+  const { writeContract } = useWriteContract()
+
   const handleClick = (e: any) => {
     setShowModal(true)
     setModalData(e.data)
-    console.log(e.data, 'e')
   }
+
+  const handleAttack = async () => {
+
+  }
+
   return (
     <>
       <Dialog open={showModal} as="div" className="relative z-10 focus:outline-none" onClose={() => setShowModal(false)}>
