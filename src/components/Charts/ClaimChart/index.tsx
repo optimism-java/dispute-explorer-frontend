@@ -3,7 +3,12 @@ import { ClaimData } from "@/types";
 import { depth, shortenAddress } from "@/utils";
 import { EChartOption } from "echarts";
 import React, { FC, useState } from "react";
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
@@ -15,16 +20,16 @@ const yGap = 100;
 const yBase = 100;
 
 type Node = {
-  name: string,
-  claim: string,
-  position: string,
-  value: string,
+  name: string;
+  claim: string;
+  position: string;
+  value: string;
   itemStyle: {
-    color: string,
-  },
-  x: number,
-  y: number,
-}
+    color: string;
+  };
+  x: number;
+  y: number;
+};
 
 const isAttack = (cur: bigint, parent: bigint): boolean => {
   if (parent * BigInt(2) === cur) {
@@ -103,6 +108,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
       levelMap.set(deep, deepCount + 1);
     }
   }
+  console.log(maxDepth);
   return {
     nodes,
     links,
@@ -116,7 +122,7 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
   const options: EChartOption<EChartOption.SeriesGraph> = {
     tooltip: {
       trigger: "item",
-      triggerOn: 'click',
+      triggerOn: "click",
       formatter: (params: any) => {
         // if (params.dataType === "node") {
         //   return `${params.data.claim}`;
@@ -152,7 +158,7 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
         label: {
           show: true,
           formatter: (params: any) => {
-            return params.data.value
+            return params.data.value;
           },
         },
         edgeSymbol: ["circle", "arrow"],
@@ -180,7 +186,12 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
 
   return (
     <>
-      <Dialog open={showModal} as="div" className="relative z-10 focus:outline-none" onClose={() => setShowModal(false)}>
+      <Dialog
+        open={showModal}
+        as="div"
+        className="relative z-10 focus:outline-none"
+        onClose={() => setShowModal(false)}
+      >
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -196,11 +207,17 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
               </DialogTitle>
               <p className="mt-4 text-sm/6 text-white/50">
                 <div>
-                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">Claim</div>
-                  <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">{modalData?.claim}</div>
+                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
+                    Claim
+                  </div>
+                  <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
+                    {modalData?.claim}
+                  </div>
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">challenge claim</div>
+                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
+                    challenge claim
+                  </div>
                   <Input
                     type="text"
                     name="search"
@@ -208,38 +225,38 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
                     className={"rounded-none rounded-l-md"}
-                    placeholder={'challenge string'}
+                    placeholder={"challenge string"}
                   />
                 </div>
               </p>
               <div className="mt-4 flex justify-end gap-4">
                 <Button
-                  label='defend'
+                  label="defend"
                   variant="outline"
                   onClick={() => setShowModal(false)}
-                >
-                </Button> <Button
-                  label='attack'
+                ></Button>{" "}
+                <Button
+                  label="attack"
                   variant="outline"
                   onClick={() => setShowModal(false)}
-                >
-                </Button>
+                ></Button>
               </div>
             </DialogPanel>
           </div>
         </div>
       </Dialog>
       <ChartCard
-        title={<div className="flex items-center gap-10">
-          <div>Fault Dispute Game Graph</div>
-          <ConnectButton showBalance={false} />
-        </div>}
+        title={
+          <div className="flex items-center gap-10">
+            <div>Fault Dispute Game Graph</div>
+            <ConnectButton showBalance={false} />
+          </div>
+        }
         handleClick={handleClick}
         options={options}
         depth={maxDepth}
       />
     </>
-
   );
 };
 
