@@ -15,8 +15,8 @@ import { Input } from "@/components/Input";
 import { useCalculateClaim } from "@/hooks/useCaculateClaim";
 import { useWriteContract } from "wagmi";
 
-const xGap = 100;
-const yGap = 100;
+const xGap = 45;
+const yGap = 50;
 const yBase = 100;
 
 type Node = {
@@ -46,7 +46,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
 
   const root = data[0];
   nodes.push({
-    name: root.event_id.toString(),
+    name: root.id.toString(),
     claim: root.claim,
     position: root.position,
     value: `${root.position}🏁 ${shortenAddress(root.claim, 3)}`,
@@ -58,8 +58,10 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
   });
 
   const queue: number[] = [0];
-  // key: tree deep, value: nums of nodes at this level
-  const levelMap = new Map<number, number>();
+  // key: parent id, value: nums of attack nodes at this level
+  const levelAttackMap = new Map<number, number>();
+  // key: parent id, value: nums of defend nodes at this level
+  const levelDefendMap = new Map<number, number>();
 
   while (queue.length) {
     const parentIndex = queue.shift()!;
@@ -69,14 +71,17 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
       if (current.parent_index !== parentIndex) {
         continue;
       }
+      const parentNode = nodes.find(
+        (item) => item.name === parent.id.toString()
+      )!;
       queue.push(i);
       const deep = depth(BigInt(current.position));
       if (deep > maxDepth) {
         maxDepth = deep;
       }
-      const deepCount = levelMap.get(deep) || 0;
       const node = {
-        name: current.event_id.toString(),
+        id: current.id,
+        name: current.id.toString(),
         claim: current.claim,
         parentIndex: current.parent_index,
         position: current.position,
@@ -84,12 +89,12 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
         itemStyle: {
           color: "red",
         },
-        x: (-deep + deepCount) * xGap,
+        x: 100,
         y: yBase + deep * yGap,
       };
       const link = {
-        source: parent.event_id.toString(),
-        target: current.event_id.toString(),
+        source: parent.id.toString(),
+        target: current.id.toString(),
         lineStyle: {
           color: "red",
         },
@@ -99,16 +104,21 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
         },
       };
       if (!isAttack(BigInt(current.position), BigInt(parent.position))) {
+        const deepCount = levelDefendMap.get(parent.id) || 1;
         node.itemStyle.color = "blue";
         link.lineStyle.color = "blue";
         link.label.formatter = "defend";
+        node.x = parentNode.x + deepCount * xGap;
+        levelDefendMap.set(parent.id, deepCount + 1);
+      } else {
+        const deepCount = levelAttackMap.get(parent.id) || 1;
+        node.x = parentNode.x - deepCount * xGap;
+        levelAttackMap.set(parent.id, deepCount + 1);
       }
       nodes.push(node);
       links.push(link);
-      levelMap.set(deep, deepCount + 1);
     }
   }
-  console.log(maxDepth);
   return {
     nodes,
     links,
@@ -118,7 +128,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
 
 const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
   const { nodes, links, maxDepth } = genNodesAndLinks(claimData);
-  const { isMutating, trigger } = useCalculateClaim()
+  const { isMutating, trigger } = useCalculateClaim();
   const options: EChartOption<EChartOption.SeriesGraph> = {
     tooltip: {
       trigger: "item",
@@ -148,12 +158,14 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
         type: "graph",
         layout: "none",
         symbolSize: 80,
-        // top: "20%",
-        // bottom: "20%",
+        top: "40",
+        bottom: "40",
+        left: "40",
+        right: "auto",
         force: {
           // 设置link长度
           edgeLength: 100, // 固定长度
-          // repulsion: 300,
+          repulsion: 50,
         },
         label: {
           show: true,
@@ -164,25 +176,23 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
         edgeSymbol: ["circle", "arrow"],
         edgeSymbolSize: [4, 10],
         links,
-        lineStyle: {
-          color: "red",
-        },
+        // lineStyle: {
+        //   color: "red",
+        // },
       },
     ],
   };
-  const [showModal, setShowModal] = useState(false)
-  const [modalData, setModalData] = useState<Node>()
-  const [val, setVal] = useState('')
-  const { writeContract } = useWriteContract()
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState<Node>();
+  const [val, setVal] = useState("");
+  const { writeContract } = useWriteContract();
 
   const handleClick = (e: any) => {
-    setShowModal(true)
-    setModalData(e.data)
-  }
+    setShowModal(true);
+    setModalData(e.data);
+  };
 
-  const handleAttack = async () => {
-
-  }
+  const handleAttack = async () => {};
 
   return (
     <>

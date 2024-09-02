@@ -37,7 +37,6 @@ const App = ({ Component, pageProps }: NextAppProps) => {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-              console.log(12345)
           gtag('config', 'G-3NB8M7WDPX');
         `}
       </Script>

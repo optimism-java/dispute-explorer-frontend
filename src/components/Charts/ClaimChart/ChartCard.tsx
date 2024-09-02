@@ -15,7 +15,7 @@ type ChartCardProps = {
   title?: ReactNode;
   options: EChartOption;
   depth?: number;
-  handleClick: (e: any) => void
+  handleClick: (e: any) => void;
 };
 
 function getSeriesDataState(series: EChartOption.Series[] | undefined) {
@@ -31,7 +31,7 @@ export const ChartCard: FC<ChartCardProps> = function ({
   title,
   options,
   depth,
-  handleClick
+  handleClick,
 }) {
   const { isEmpty, isLoading } = getSeriesDataState(options.series);
 
@@ -41,7 +41,7 @@ export const ChartCard: FC<ChartCardProps> = function ({
         {title ?? <Skeleton width={150} />}
       </div>
       <div className="flex h-full flex-col gap-2">
-        <div className="h-full">
+        <div className="h-full max-h-[1000px] overflow-scroll">
           {isEmpty ? (
             <div className="flex h-full items-center justify-center">
               <div className="text-sm font-thin uppercase text-contentSecondary-light dark:text-contentSecondary-dark">
@@ -53,7 +53,11 @@ export const ChartCard: FC<ChartCardProps> = function ({
               <ChartSkeleton itemsCount={6} />
             </div>
           ) : (
-            <ChartBase handleClick={handleClick} options={options} depth={depth} />
+            <ChartBase
+              handleClick={handleClick}
+              options={options}
+              depth={depth}
+            />
           )}
         </div>
       </div>
