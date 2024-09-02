@@ -7,6 +7,7 @@ import Head from "next/head";
 import { SkeletonTheme } from "react-loading-skeleton";
 import AppLayout from "@/components/AppLayout/AppLayout";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import Script from "next/script";
 
 const App = ({ Component, pageProps }: NextAppProps) => {
   const { resolvedTheme } = useTheme();
@@ -27,6 +28,19 @@ const App = ({ Component, pageProps }: NextAppProps) => {
         <meta name="description" content="Super proof" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-3NB8M7WDPX"
+      />
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+              console.log(12345)
+          gtag('config', 'G-3NB8M7WDPX');
+        `}
+      </Script>
       <AppLayout>
         <Component {...pageProps} />
       </AppLayout>
