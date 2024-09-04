@@ -2,7 +2,7 @@ import { ChartCard } from "./ChartCard";
 import { ClaimData } from "@/types";
 import { depth, shortenAddress } from "@/utils";
 import { EChartOption } from "echarts";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -13,7 +13,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { useCalculateClaim } from "@/hooks/useCaculateClaim";
-import { useWriteContract } from "wagmi";
+import { useReadContract, useWriteContract } from "wagmi";
+import { abi } from "@/utils/abi";
+import { Abi, Address, Chain, Client, Transport, formatUnits, parseUnits } from "viem";
+import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { waitForTransactionReceipt } from "viem/actions";
+import { useWagmiConfig } from "@/hooks/useWagmiConfig";
 
 const xGap = 45;
 const yGap = 50;
@@ -126,7 +131,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
   };
 };
 
-const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
+const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData, address }) => {
   const { nodes, links, maxDepth } = genNodesAndLinks(claimData);
   const { isMutating, trigger } = useCalculateClaim();
   const options: EChartOption<EChartOption.SeriesGraph> = {
@@ -185,14 +190,89 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState<Node>();
   const [val, setVal] = useState("");
-  const { writeContract } = useWriteContract();
+  const [recommendAttackClaim, setAttackClaim] = useState("")
+  const [recommendDefendClaim, setDefendClaim] = useState("")
+  const config = useWagmiConfig()
 
+  const attackPosition = useMemo(() => {
+    if (modalData) {
+      return 2 * Number(modalData.position)
+    }
+  }, [modalData])
+  const defendPosition = useMemo(() => {
+    if (modalData) {
+      return 2 * (Number(modalData.position) + 1)
+    }
+  }, [modalData])
+  const { writeContractAsync } = useWriteContract();
+  const { data: index } = useReadContract({
+    abi: abi as Abi,
+    address: address as Address,
+    functionName: 'claimDataLen'
+  })
+  const { data: attackGas } = useReadContract({
+    abi: abi as Abi,
+    address: address as Address,
+    functionName: 'getRequiredBond',
+    args: [attackPosition]
+  })
+  const { data: defendGas } = useReadContract({
+    abi: abi as Abi,
+    address: address as Address,
+    functionName: 'getRequiredBond',
+    args: [defendPosition]
+  })
   const handleClick = (e: any) => {
     setShowModal(true);
     setModalData(e.data);
   };
 
-  const handleAttack = async () => {};
+  useEffect(() => {
+    if (attackPosition) {
+      trigger({ disputeGame: address, position: attackPosition }).then((res) => {
+        setAttackClaim(res.claims)
+      })
+    }
+  }, [attackPosition])
+  useEffect(() => {
+    if (defendPosition) {
+      trigger({ disputeGame: address, position: defendPosition }).then((res) => {
+        setDefendClaim(res.claims)
+      })
+
+    }
+  }, [defendPosition])
+
+  const handleAttack = async () => {
+    if (!val) return;
+    if (!index) return;
+    if (!attackGas) return;
+    const hash = await writeContractAsync({
+      abi: abi as Abi,
+      address: address as Address,
+      functionName: 'attack',
+      args: ['0x' + modalData?.claim, Number(index) - 1, val],
+      value: parseUnits(formatUnits(attackGas as bigint, 18), 18)
+    })
+    const res = await waitForTransactionReceipt(config as any, { hash })
+    console.log(res, 'res-defend')
+  };
+
+  const handleDefend = async () => {
+    if (!val) return;
+    if (!index) return;
+    if (!attackGas) return;
+    console.log(['0x' + modalData?.claim, Number(index) - 1, val])
+    const hash = await writeContractAsync({
+      abi: abi as Abi,
+      address: address as Address,
+      functionName: 'defend',
+      args: ['0x' + modalData?.claim, Number(index) - 1, val],
+      value: parseUnits(formatUnits(defendGas as bigint, 18), 18)
+    })
+    console.log(hash, 'hash')
+
+  }
 
   return (
     <>
@@ -215,13 +295,27 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
               <DialogTitle as="h3" className="text-base/7 font-medium">
                 Challenge
               </DialogTitle>
-              <p className="mt-4 text-sm/6 text-white/50">
+              <div className="mt-4 text-sm/6 text-white/50">
                 <div>
                   <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
-                    Claim
+                    Claim:
                   </div>
                   <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
-                    {modalData?.claim}
+                    {'0x' + modalData?.claim}
+                  </div>
+                </div>  <div>
+                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
+                    Recommend Attack Claim:
+                  </div>
+                  <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
+                    {recommendAttackClaim}
+                  </div>
+                </div>  <div>
+                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
+                    Recommend Defend Claim:
+                  </div>
+                  <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
+                    {recommendDefendClaim}
                   </div>
                 </div>
                 <div>
@@ -234,21 +328,21 @@ const ClaimChart: FC<{ claimData: ClaimData[] }> = ({ claimData }) => {
                     id="search"
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
-                    className={"rounded-none rounded-l-md"}
+                    className={"rounded-none rounded-l-md text-black"}
                     placeholder={"challenge string"}
                   />
                 </div>
-              </p>
+              </div>
               <div className="mt-4 flex justify-end gap-4">
                 <Button
                   label="defend"
                   variant="outline"
-                  onClick={() => setShowModal(false)}
-                ></Button>{" "}
+                  onClick={handleDefend}
+                ></Button>
                 <Button
                   label="attack"
                   variant="outline"
-                  onClick={() => setShowModal(false)}
+                  onClick={handleAttack}
                 ></Button>
               </div>
             </DialogPanel>

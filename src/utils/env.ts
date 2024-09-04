@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 export type Network = "mainnet" | "sepolia" | "base-sepolia";
 
 export const ApiDoc = process.env.NEXT_PUBLIC_API_DOC || "";

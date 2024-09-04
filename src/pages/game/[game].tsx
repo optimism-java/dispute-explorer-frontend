@@ -15,13 +15,10 @@ import { Card } from "@/components/Cards/Card";
 import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
 import { SlidableList } from "@/components/SlidableList";
 import { useNetworkConfig } from "@/hooks/useNetworkConfig";
-import Challenge from "@/components/Challenge";
-import Provider from "@/components/Wallet/Provider";
 
 const GameDetail = () => {
   const router = useRouter();
   const address = (router.query.game as string | undefined) ?? "";
-
   const { data, isLoading } = useClaimData(address);
   const { data: game, isLoading: gameLoading } = useLatestGame({
     hitsPerPage: 1,
@@ -92,9 +89,7 @@ const GameDetail = () => {
           <ChartSkeleton itemsCount={6} />
         </div>
       ) : (
-        <Provider>
-          <ClaimChart claimData={data?.data as ClaimData[]} />
-        </Provider>
+        <ClaimChart address={address} claimData={data?.data as ClaimData[]} />
       )}
       <Card
         header={

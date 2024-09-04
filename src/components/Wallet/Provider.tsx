@@ -1,4 +1,4 @@
-
+"use client"
 import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultConfig,
@@ -6,30 +6,17 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
-  mainnet,
-  sepolia
-} from 'wagmi/chains';
-import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
 import { ReactNode, useMemo } from 'react';
-import { useNetworkConfig } from '@/hooks/useNetworkConfig';
+import useWagmiRainbowConfig from '@/hooks/useWagmiConfig';
 
 
 const queryClient = new QueryClient();
 
 const Provider = ({ children }: { children: ReactNode }) => {
-  const { network } = useNetworkConfig()
-  const isMainnet = useMemo(() => {
-    return network === 'mainnet'
-  }, [network])
-  const config = getDefaultConfig({
-    appName: 'SuperProof explorer',
-    projectId: '876a28d2d23153fe7f76c24bacbabb72',
-    chains: [isMainnet ? mainnet : sepolia],
-    ssr: true
-  });
+  const config = useWagmiRainbowConfig()
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

@@ -2,7 +2,7 @@ import { NetworkConfig, networkConfigs, Network } from "@/utils/env";
 import { useMemo } from "react";
 
 export const useNetworkConfig = (): NetworkConfig => {
-  const host = window.location.host;
+  const host = window?.location?.host;
   const defaultNetwork = networkConfigs["sepolia"];
   defaultNetwork.network = "sepolia";
   const config = useMemo(() => {

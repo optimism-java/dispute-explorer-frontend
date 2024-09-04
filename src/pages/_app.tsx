@@ -8,6 +8,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import AppLayout from "@/components/AppLayout/AppLayout";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import Script from "next/script";
+import WalletProvider from "@/components/Wallet/Provider";
 
 const App = ({ Component, pageProps }: NextAppProps) => {
   const { resolvedTheme } = useTheme();
@@ -41,7 +42,9 @@ const App = ({ Component, pageProps }: NextAppProps) => {
         `}
       </Script>
       <AppLayout>
-        <Component {...pageProps} />
+        <WalletProvider>
+          <Component {...pageProps} />
+        </WalletProvider>
       </AppLayout>
       {/* <FeedbackWidget />
           {env.NEXT_PUBLIC_VERCEL_ANALYTICS_ENABLED && <Analytics />} */}
