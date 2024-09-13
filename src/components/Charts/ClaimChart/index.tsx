@@ -201,7 +201,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
   const [modalData, setModalData] = useState<Node>();
   const [val, setVal] = useState("");
   const [recommendAttackClaim, setAttackClaim] = useState("")
-  const [attackLoading, setAttackLoading] = useState(true);
+  const [attackLoading, setAttackLoading] = useState(false);
   const [defendLoading, setDefendLoading] = useState(false);
   const signer = useEthersSigner()
   const attackPosition = useMemo(() => {
