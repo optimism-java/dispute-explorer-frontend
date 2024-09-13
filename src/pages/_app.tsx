@@ -1,6 +1,7 @@
 import "../styles/global.css";
 import "@upstash/feedback/index.css";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import type { AppProps as NextAppProps } from "next/app";
 import { ThemeProvider, useTheme } from "next-themes";
 import Head from "next/head";
@@ -55,6 +56,18 @@ const App = ({ Component, pageProps }: NextAppProps) => {
 const AppWrapper = (props: NextAppProps) => {
   return (
     <ThemeProvider attribute="class">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <App {...props} />
     </ThemeProvider>
   );

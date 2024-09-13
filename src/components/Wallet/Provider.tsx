@@ -10,15 +10,14 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { ReactNode, useMemo } from 'react';
-import useWagmiRainbowConfig from '@/hooks/useWagmiConfig';
+import { RainbowConfig } from '@/hooks/useWagmiConfig';
 
 
 const queryClient = new QueryClient();
 
 const Provider = ({ children }: { children: ReactNode }) => {
-  const config = useWagmiRainbowConfig()
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={RainbowConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider locale={'en'} modalSize="compact" >
           {
