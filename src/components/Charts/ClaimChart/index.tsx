@@ -13,9 +13,7 @@ import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { useCalculateClaim } from "@/hooks/useCalculateClaim";
-import { useAccount, useReadContract } from "wagmi";
-import { abi } from "@/utils/abi";
-import { Abi, Address, ContractFunctionExecutionError, UserRejectedRequestError, formatUnits, parseUnits } from "viem";
+import { useAccount } from "wagmi";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
 import { useEthersSigner } from "@/hooks/useEthersSigner";
@@ -214,18 +212,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
       return 2 * (Number(modalData.position) + 1)
     }
   }, [modalData])
-  const { data: attackGas } = useReadContract({
-    abi: abi as Abi,
-    address: address as Address,
-    functionName: 'getRequiredBond',
-    args: [attackPosition]
-  })
-  const { data: defendGas } = useReadContract({
-    abi: abi as Abi,
-    address: address as Address,
-    functionName: 'getRequiredBond',
-    args: [defendPosition]
-  })
+
   const handleClick = (e: any) => {
     if (isConnected) {
       setShowModal(true);
@@ -243,16 +230,16 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
     }
   }, [attackPosition])
   const handleAttack = async () => {
+    if (!signer) return;
     if (!val) {
       toast.error('Challenge claim required!')
       return
     };
-    if (!attackGas) return;
-    if (!signer) return;
     const contract = getChallengeContract(address, signer)
     try {
       setAttackLoading(true)
-      const tx = await contract.attack('0x' + modalData?.claim, modalData?.parentIndex, val, { value: parseUnits(formatUnits(attackGas as bigint, 18), 18) })
+      const gas = await contract.getRequiredBond(attackPosition)
+      const tx = await contract.attack('0x' + modalData?.claim, modalData?.parentIndex, val, { value: gas })
       const res = await tx.wait()
       setAttackLoading(false)
       if (res.status === 1) {
@@ -269,12 +256,12 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
       toast.error('Challenge claim required!')
       return
     };
-    if (!defendGas) return;
     if (!signer) return;
     const contract = getChallengeContract(address, signer)
     try {
       setDefendLoading(true)
-      const tx = await contract.defend('0x' + modalData?.claim, modalData?.parentIndex, val, { value: parseUnits(formatUnits(defendGas as bigint, 18), 18) })
+      const gas = await contract.getRequiredBond(defendPosition)
+      const tx = await contract.defend('0x' + modalData?.claim, modalData?.parentIndex, val, { value: gas })
       const res = await tx.wait()
       if (res.status === 1) {
         toast.success('Transaction receipt!')
@@ -329,7 +316,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1 mt-4">
-                    challenge claim
+                    Challenge claim
                   </div>
                   <Input
                     type="text"
@@ -337,7 +324,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
                     id="search"
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
-                    className={"rounded-none rounded-l-md text-black h-10"}
+                    className={"rounded-none rounded-l-md text-black  dark:text-warmGray-300 h-10 "}
                     placeholder={"challenge string"}
                   />
                 </div>
