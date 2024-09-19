@@ -3,8 +3,8 @@ import { useMemo } from "react";
 
 export const useNetworkConfig = (): NetworkConfig => {
   const host = window?.location?.host;
-  const defaultNetwork = networkConfigs["sepolia"];
-  defaultNetwork.network = "sepolia";
+  const defaultNetwork = networkConfigs["mainnet"];
+  defaultNetwork.network = "mainnet";
   const config = useMemo(() => {
     for (const key of Object.keys(networkConfigs)) {
       const val = networkConfigs[key as Network];
