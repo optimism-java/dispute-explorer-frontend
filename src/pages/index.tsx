@@ -255,7 +255,7 @@ export default function Page() {
                 </div>
               ) : (
                 <SlidableList
-                  items={(credits as PageListResponse<Credit>)?.data?.map(
+                  items={(credits as PageListResponse<Credit>)?.data?.slice(0, 5).map(
                     (g, i) => ({
                       id: g.address,
                       element: (

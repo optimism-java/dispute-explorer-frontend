@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ClaimChart from "@/components/Charts/ClaimChart";
 import { useClaimData } from "@/hooks/useClaimData";
 import { ChartSkeleton } from "@/components/ChartSkeleton";
@@ -15,6 +15,8 @@ import { Card } from "@/components/Cards/Card";
 import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
 import { SlidableList } from "@/components/SlidableList";
 import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { useEthersProvider } from "@/hooks/useEthersProvider";
+import { getChallengeContract } from "@/service/contract";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -24,8 +26,23 @@ const GameDetail = () => {
     hitsPerPage: 1,
     q: address,
   });
+  const [resolved, setResolved] = useState(false);
+  const provider = useEthersProvider()
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
     useNetworkConfig();
+
+  useEffect(() => {
+    const getResolveTime = async () => {
+      if (provider && address) {
+        const contract = getChallengeContract(address, provider)
+        const res = await contract.resolvedAt()
+        console.log({ res })
+        setResolved(res > 0)
+      }
+    }
+    getResolveTime()
+  }, [provider, address])
+
   return (
     <div className="flex flex-col gap-4">
       {gameLoading || isLoading ? (
@@ -89,7 +106,7 @@ const GameDetail = () => {
           <ChartSkeleton itemsCount={6} />
         </div>
       ) : (
-        <ClaimChart address={address} claimData={data?.data as ClaimData[]} />
+        <ClaimChart resolved={resolved} address={address} claimData={data?.data as ClaimData[]} />
       )}
       <Card
         header={

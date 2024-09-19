@@ -1,8 +1,8 @@
-import { Contract, ethers, isAddress } from 'ethers';
+import { Contract, ethers, isAddress, FallbackProvider, JsonRpcProvider } from 'ethers';
 import { abi } from "@/utils/abi";
 import { Abi, Address, ContractFunctionExecutionError, UserRejectedRequestError, formatUnits, parseUnits } from "viem";
 
-export type SingerOrProvider = ethers.Signer | ethers.Provider;
+export type SingerOrProvider = ethers.Signer | FallbackProvider | JsonRpcProvider
 
 export function getContract<T extends Contract = Contract>(address: string, ABI: any, provider: SingerOrProvider): T {
   if (!isAddress(address)) {

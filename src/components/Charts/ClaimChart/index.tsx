@@ -20,6 +20,8 @@ import { useEthersSigner } from "@/hooks/useEthersSigner";
 import { getChallengeContract } from "@/service/contract";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import useAutoSwitchNetwork from "@/hooks/useAutoSwitchNetwork";
+import { EthersError, formatUnits } from 'ethers'
+import { useEthersProvider } from "@/hooks/useEthersProvider";
 
 const xGap = 45;
 const yGap = 50;
@@ -136,7 +138,7 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
   };
 };
 
-const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData, address }) => {
+const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolean }> = ({ claimData, address, resolved }) => {
   const { nodes, links, maxDepth } = genNodesAndLinks(claimData);
   useAutoSwitchNetwork()
   const { isMutating, trigger } = useCalculateClaim();
@@ -202,6 +204,12 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
   const [attackLoading, setAttackLoading] = useState(false);
   const [defendLoading, setDefendLoading] = useState(false);
   const signer = useEthersSigner()
+  const provider = useEthersProvider()
+  const [gas, setGas] = useState({
+    attackGas: '',
+    defendGas: ''
+  })
+
   const attackPosition = useMemo(() => {
     if (modalData) {
       return 2 * Number(modalData.position)
@@ -214,12 +222,16 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
   }, [modalData])
 
   const handleClick = (e: any) => {
-    if (isConnected) {
-      setShowModal(true);
-      setModalData(e.data);
-    } else {
+    if (!isConnected) {
       openConnectModal && openConnectModal()
+      return
     }
+    if (resolved) {
+      toast.warning('This game has already resolved!')
+      return
+    }
+    setShowModal(true);
+    setModalData(e.data);
   };
 
   useEffect(() => {
@@ -229,6 +241,23 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
       })
     }
   }, [attackPosition])
+
+  useEffect(() => {
+    const getGas = async () => {
+      if (attackPosition && defendPosition && provider) {
+        const contract = getChallengeContract(address, provider)
+        const attackGas = await contract.getRequiredBond(attackPosition)
+        const defendGas = await contract.getRequiredBond(defendPosition)
+        setGas({
+          attackGas: formatUnits(attackGas, 18),
+          defendGas: formatUnits(defendGas, 18)
+        })
+      }
+    }
+    getGas()
+  }, [attackPosition, defendPosition, provider])
+
+
   const handleAttack = async () => {
     if (!signer) return;
     if (!val) {
@@ -247,7 +276,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
       }
     } catch (error: any) {
       setAttackLoading(false)
-      toast.error(error?.reason || error?.msg || error?.data || error?.message || 'Transaction error!')
+      toast.error(error?.shortMessage || error?.reason || 'Transaction error!')
     }
   };
 
@@ -306,12 +335,32 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string }> = ({ claimData
                   <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
                     {'0x' + modalData?.claim}
                   </div>
-                </div>  <div>
+                </div>
+                <div>
                   <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
                     Recommend Claim:
                   </div>
                   <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
                     {recommendAttackClaim}
+                  </div>
+                </div>
+
+                {
+                  !modalData?.isRoot && <div>
+                    <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
+                      Defend Required Bond
+                    </div>
+                    <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
+                      {gas.defendGas} ETH
+                    </div>
+                  </div>
+                }
+                <div>
+                  <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
+                    Attack Required Bond
+                  </div>
+                  <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
+                    {gas.attackGas} ETH
                   </div>
                 </div>
                 <div>
