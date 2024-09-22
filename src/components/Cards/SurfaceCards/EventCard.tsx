@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useContext, type FC } from "react";
 
 import dayjs from "@/utils/dayjs";
 import { Skeleton } from "@/components/Skeleton";
@@ -6,7 +6,7 @@ import { Link } from "../../Link";
 import { SurfaceCardBase } from "./SurfaceCardBase";
 import { LatestEvents } from "@/types";
 import { shortenAddress } from "@/utils";
-import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { NetworkConfigContext } from "@/components/NetworkConfigContext";
 
 type EventCardProps = {
   events: LatestEvents;
@@ -22,7 +22,7 @@ const EventCard: FC<Partial<EventCardProps>> = function ({
     tx_hash,
   } = {},
 }) {
-  const { explorer_l1: EXPLORER_L1 } = useNetworkConfig();
+  const { explorer_l1: EXPLORER_L1 } = useContext(NetworkConfigContext);
 
   return (
     <SurfaceCardBase>

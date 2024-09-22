@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useContext, type FC } from "react";
 
 import { Skeleton } from "@/components/Skeleton";
 import { Link } from "../../Link";
@@ -7,7 +7,7 @@ import { SurfaceCardBase } from "./SurfaceCardBase";
 import { Credit } from "@/types";
 import { shortenAddress } from "@/utils";
 import { EtherUnitDisplay } from "@/components/Displays/EtherUnitDisplay";
-import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { NetworkConfigContext } from "@/components/NetworkConfigContext";
 
 type CreditCardProps = {
   credit: Credit;
@@ -18,7 +18,7 @@ const CreditCard: FC<Partial<CreditCardProps>> = function ({
   credit: { address, amount } = {},
   index,
 }) {
-  const { explorer_l1: EXPLORER_L1 } = useNetworkConfig();
+  const { explorer_l1: EXPLORER_L1 } = useContext(NetworkConfigContext);
   return (
     <SurfaceCardBase>
       <div className="flex  justify-between gap-2 text-sm">
