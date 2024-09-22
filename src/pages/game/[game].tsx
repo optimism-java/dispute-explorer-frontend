@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ClaimChart from "@/components/Charts/ClaimChart";
 import { useClaimData } from "@/hooks/useClaimData";
 import { ChartSkeleton } from "@/components/ChartSkeleton";
@@ -14,7 +14,7 @@ import { ClockIcon, FlagIcon } from "@heroicons/react/24/outline";
 import { Card } from "@/components/Cards/Card";
 import ClaimCard from "@/components/Cards/SurfaceCards/ClaimCard";
 import { SlidableList } from "@/components/SlidableList";
-import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { NetworkConfigContext } from "@/components/NetworkConfigContext";
 import { useEthersProvider } from "@/hooks/useEthersProvider";
 import { getChallengeContract } from "@/service/contract";
 
@@ -27,21 +27,21 @@ const GameDetail = () => {
     q: address,
   });
   const [resolved, setResolved] = useState(false);
-  const provider = useEthersProvider()
+  const provider = useEthersProvider();
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
-    useNetworkConfig();
+    useContext(NetworkConfigContext);
 
   useEffect(() => {
     const getResolveTime = async () => {
       if (provider && address) {
-        const contract = getChallengeContract(address, provider)
-        const res = await contract.resolvedAt()
-        console.log({ res })
-        setResolved(res > 0)
+        const contract = getChallengeContract(address, provider);
+        const res = await contract.resolvedAt();
+        console.log({ res });
+        setResolved(res > 0);
       }
-    }
-    getResolveTime()
-  }, [provider, address])
+    };
+    getResolveTime();
+  }, [provider, address]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -106,7 +106,11 @@ const GameDetail = () => {
           <ChartSkeleton itemsCount={6} />
         </div>
       ) : (
-        <ClaimChart resolved={resolved} address={address} claimData={data?.data as ClaimData[]} />
+        <ClaimChart
+          resolved={resolved}
+          address={address}
+          claimData={data?.data as ClaimData[]}
+        />
       )}
       <Card
         header={

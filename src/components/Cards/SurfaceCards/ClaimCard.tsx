@@ -1,20 +1,22 @@
 import { ClaimData } from "@/types";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { SurfaceCardBase } from "./SurfaceCardBase";
 import { Link } from "@/components/Link";
 import { Skeleton } from "@/components/Skeleton";
 import { CardField } from "../Card";
 import { shortenAddress } from "@/utils";
-import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { NetworkConfigContext } from "@/components/NetworkConfigContext";
 
 type ClaimCardProps = {
   claimData: ClaimData;
 };
 
-const ClaimCard: FC<Partial<ClaimCardProps>> = ({ claimData = {} }) => {
+const ClaimCard: FC<Partial<ClaimCardProps>> = ({
+  claimData = {} as ClaimData,
+}) => {
   const { claim, claimant, output_block, event_id } = claimData;
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
-    useNetworkConfig();
+    useContext(NetworkConfigContext);
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">
