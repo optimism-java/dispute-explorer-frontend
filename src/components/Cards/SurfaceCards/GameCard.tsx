@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useContext, type FC } from "react";
 
 import dayjs from "@/utils/dayjs";
 import { Skeleton } from "@/components/Skeleton";
@@ -10,7 +10,7 @@ import { shortenAddress } from "@/utils";
 import shield from "@/icons/shield.png";
 import sword from "@/icons/sword.png";
 import Image from "next/image";
-import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { NetworkConfigContext } from "@/components/NetworkConfigContext";
 
 type GameCardProps = {
   game: Game;
@@ -27,7 +27,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
   } = {},
 }) {
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
-    useNetworkConfig();
+    useContext(NetworkConfigContext);
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">

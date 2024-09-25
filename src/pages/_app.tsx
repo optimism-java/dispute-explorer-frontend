@@ -1,7 +1,7 @@
 import "../styles/global.css";
 import "@upstash/feedback/index.css";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import type { AppProps as NextAppProps } from "next/app";
 import { ThemeProvider, useTheme } from "next-themes";
 import Head from "next/head";
@@ -10,6 +10,7 @@ import AppLayout from "@/components/AppLayout/AppLayout";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import Script from "next/script";
 import WalletProvider from "@/components/Wallet/Provider";
+import NetworkConfigProvider from "@/components/NetworkConfigContext";
 
 const App = ({ Component, pageProps }: NextAppProps) => {
   const { resolvedTheme } = useTheme();
@@ -44,7 +45,9 @@ const App = ({ Component, pageProps }: NextAppProps) => {
       </Script>
       <AppLayout>
         <WalletProvider>
-          <Component {...pageProps} />
+          <NetworkConfigProvider>
+            <Component {...pageProps} />
+          </NetworkConfigProvider>
         </WalletProvider>
       </AppLayout>
       {/* <FeedbackWidget />

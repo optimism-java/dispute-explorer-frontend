@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
 
 import { capitalize } from "@/utils";
-import { useNetworkConfig } from "@/hooks/useNetworkConfig";
+import { NetworkConfigContext } from "@/components/NetworkConfigContext";
 
 type ExplorerDetailsItemProps = {
   name: string;
@@ -31,7 +31,7 @@ function ExplorerDetailsItem({
 }
 
 export function ExplorerDetails() {
-  const { network } = useNetworkConfig();
+  const { network } = useContext(NetworkConfigContext);
   const explorerDetailsItems: ExplorerDetailsItemProps[] = useMemo(() => {
     return [{ name: "Network", value: capitalize(network!) }];
   }, [network]);

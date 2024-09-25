@@ -13,3 +13,8 @@ RUN npm install -g pnpm && export NEXT_PUBLIC_IS_BASE=${NEXT_PUBLIC_IS_BASE} && 
 
 FROM nginx
 COPY --from=builder /app/out /usr/share/nginx/html
+RUN apt-get update && apt-get install -y jq && apt-get clean
+COPY ./nginx.conf.example /etc/nginx/nginx.conf
+COPY ./start.sh /start.sh
+RUN chmod +x /start.sh
+CMD ["/bin/bash", "/start.sh"]
