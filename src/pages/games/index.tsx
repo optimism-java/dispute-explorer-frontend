@@ -49,9 +49,9 @@ const Blocks: NextPage = function () {
       ))}
       filter={
         <div className="flex gap-2 items-center">
-          <span className="text-[14px] font-semibold shadow-sm text-contentTertiary-light dark:text-contentTertiary-dark">Min ClaimDataLen:</span>
+          <span className="text-[14px] whitespace-nowrap font-semibold shadow-sm text-contentTertiary-light dark:text-contentTertiary-dark">Min ClaimDataLen:</span>
           <Input
-            className="text-sm w-16"
+            className="text-sm max-w-20"
             type="number"
             min={1}
             value={len}
