@@ -23,6 +23,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
     game_contract,
     status,
     tx_hash,
+    claim_data_len
   } = {},
 }) {
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
@@ -42,23 +43,23 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
             <Skeleton width={150} />
           )}
         </div>
-        <div className="flex items-center gap-2">
+        {block_time ? (
+          <div className="text-xs italic text-contentSecondary-light dark:text-contentSecondary-dark">
+            {dayjs(block_time * 1000).fromNow()}
+          </div>
+        ) : (
+          <Skeleton width={110} size="xs" />
+        )}
+        {/* <div className="flex items-center gap-2">
           {status === 1 && (
             <Image src={sword} width={16} height={16} alt="sword" />
           )}
           {status === 2 && (
             <Image src={shield} width={16} height={16} alt="shield" />
           )}
-        </div>
+        </div> */}
       </div>
-      {block_time ? (
-        <div className="text-xs italic text-contentSecondary-light dark:text-contentSecondary-dark">
-          {dayjs(block_time * 1000).fromNow()}
-        </div>
-      ) : (
-        <Skeleton width={110} size="xs" />
-      )}
-      <div className="mt-1.5 flex flex-col gap-1 text-xs">
+      <div className="mt-1.5 flex flex-col text-xs">
         <div className="flex w-full gap-1">
           {game_contract ? (
             <CardField
@@ -80,6 +81,18 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
               <Link href={`${EXPLORER_L1}/tx/${tx_hash}`} isExternal>
                 {shortenAddress(tx_hash as string)}
               </Link>
+            </span>
+          </div>
+        ) : (
+          <Skeleton width={170} size="xs" />
+        )}
+        {claim_data_len ? (
+          <div className="mt-1 flex gap-2">
+            <span className="text-contentTertiary-light dark:text-contentTertiary-dark">
+              claim data length{" "}
+            </span>
+            <span>
+              {claim_data_len}
             </span>
           </div>
         ) : (

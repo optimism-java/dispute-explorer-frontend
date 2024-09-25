@@ -11,7 +11,8 @@ export interface Game {
   game_type: number;
   game_contract: string;
   l2_block_number: number;
-  status: number;
+  status: number
+  claim_data_len: number
 }
 
 export interface ClaimData {

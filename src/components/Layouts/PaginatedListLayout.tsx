@@ -18,6 +18,7 @@ export type PaginatedListLayoutProps = {
   pageSize: number;
   itemSkeleton: ReactNode;
   emptyState?: ReactNode;
+  filter?: ReactNode
 };
 
 const PAGE_SIZES = [10, 25, 50, 100];
@@ -31,6 +32,7 @@ export const PaginatedListLayout: FC<PaginatedListLayoutProps> = function ({
   pageSize,
   itemSkeleton,
   emptyState = "No items",
+  filter
 }) {
   const router = useRouter();
   const pages =
@@ -82,12 +84,16 @@ export const PaginatedListLayout: FC<PaginatedListLayoutProps> = function ({
                 } md:flex-row`}
             >
               {title && <div>{title}</div>}
-              <div className="w-full self-center sm:w-auto">
-                <Pagination
+              <div className="w-full self-center sm:w-auto md:flex sm:flex-row gap-2">
+                {
+                  filter && <div>{filter}</div>
+                }
+                <div className="flex"><Pagination
                   selected={page}
                   pages={pages}
                   onChange={handlePageSelection}
-                />
+                /></div>
+
               </div>
             </div>
           ) : undefined

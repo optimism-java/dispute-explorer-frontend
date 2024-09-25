@@ -10,12 +10,14 @@ type GamesParams = {
   page?: number;
   sort?: any;
   q?: string;
+  filter?: string
 };
 
 const defaultParams: GamesParams = {
   hitsPerPage: 5,
   page: 1,
   sort: ["block_number:desc"],
+  filter: "claim_data_len > 1"
 };
 
 const getFetcher = (u: string, p: GamesParams) => {
