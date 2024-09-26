@@ -133,14 +133,21 @@ const GameDetail = () => {
         ) : (
           <SlidableList
             maxItems={data?.data.length}
-            items={(data as ListResponse<ClaimData>).data?.map((g) => ({
-              id: g.id,
-              element: (
-                <div className="sm:h-28" key={g.id}>
-                  <ClaimCard claimData={g} />
-                </div>
-              ),
-            }))}
+            items={(data as ListResponse<ClaimData>).data?.map(
+              (g, index, arr) => {
+                if (index > 30) {
+                  g.output_block = arr[30].output_block;
+                }
+                return {
+                  id: g.id,
+                  element: (
+                    <div className="sm:h-28" key={g.id}>
+                      <ClaimCard claimData={g} />
+                    </div>
+                  ),
+                };
+              }
+            )}
           />
         )}
       </Card>

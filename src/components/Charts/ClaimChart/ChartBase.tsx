@@ -7,7 +7,7 @@ type ChartBaseProps = {
   options: EChartOption;
   compact?: boolean;
   depth?: number;
-  handleClick: (e: any) => void
+  handleClick: (e: any) => void;
 };
 
 const COMMON_OPTIONS: EChartOption = {
@@ -24,7 +24,7 @@ export const ChartBase: FC<ChartBaseProps> = function ({
   options,
   compact = false,
   depth = 0,
-  handleClick
+  handleClick,
 }) {
   const processedSeries = useMemo(
     () =>
@@ -42,14 +42,13 @@ export const ChartBase: FC<ChartBaseProps> = function ({
 
   // const len = options?.series ? options?.series[0]?.data?.length || 0 : 0;
   const height = depth * 200;
+  const width = depth * 100;
 
   return (
     <EChartsReact
-      onEvents={
-        {
-          "click": handleClick
-        }
-      }
+      onEvents={{
+        click: handleClick,
+      }}
       option={{
         ...COMMON_OPTIONS,
         ...options,
@@ -66,11 +65,11 @@ export const ChartBase: FC<ChartBaseProps> = function ({
           ...(options.xAxis || {}),
           ...(compact
             ? {
-              axisLine: { show: false },
-              axisLabel: {
-                interval: 4,
-              },
-            }
+                axisLine: { show: false },
+                axisLabel: {
+                  interval: 4,
+                },
+              }
             : {}),
         },
         yAxis: {
@@ -80,7 +79,7 @@ export const ChartBase: FC<ChartBaseProps> = function ({
         },
         series: processedSeries,
       }}
-      style={{ height: `${height}px`, width: "100%" }}
+      style={{ height: `${height}px`, width: `${width}px`, minWidth: "100%" }}
     />
   );
 };

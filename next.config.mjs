@@ -6,7 +6,7 @@ const nextConfig = {
     return [
       {
         source: "/index/:path*",
-        destination: "http://65.109.69.98:7701/:path*", // Proxy to Backend, token required
+        destination: `${process.env.NEXT_PUBLIC_SEARCH_URL}/:path*`, // Proxy to Backend, token required
       },
       // {
       //   source: "/indexMain/:path*",
@@ -18,11 +18,11 @@ const nextConfig = {
       // },
       {
         source: "/api/:path*",
-        destination: "http://65.109.69.98:9002/:path*", // Proxy to Backend
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`, // Proxy to Backend
       },
       {
         source: "/docs/:path*",
-        destination: "http://65.109.69.98:9002/:path*", // Proxy to Backend, token required
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`, // Proxy to Backend, token required
       },
       // {
       //   source: "/apiMain/:path*",
