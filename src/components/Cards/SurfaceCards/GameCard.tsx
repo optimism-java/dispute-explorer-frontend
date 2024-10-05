@@ -31,7 +31,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">
-        <div className="flex gap-2 md:flex-row">
+        {/* <div className="flex gap-2 md:flex-row">
           {number ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Block{" "}
@@ -42,7 +42,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
           ) : (
             <Skeleton width={150} />
           )}
-        </div>
+        </div> */}
         {block_time ? (
           <div className="text-xs italic text-contentSecondary-light dark:text-contentSecondary-dark">
             {dayjs(block_time * 1000).fromNow()}
