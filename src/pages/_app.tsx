@@ -43,13 +43,13 @@ const App = ({ Component, pageProps }: NextAppProps) => {
           gtag('config', 'G-3NB8M7WDPX');
         `}
       </Script>
-      <AppLayout>
-        <WalletProvider>
-          <NetworkConfigProvider>
+      <NetworkConfigProvider>
+        <AppLayout>
+          <WalletProvider>
             <Component {...pageProps} />
-          </NetworkConfigProvider>
-        </WalletProvider>
-      </AppLayout>
+          </WalletProvider>
+        </AppLayout>
+      </NetworkConfigProvider>
       {/* <FeedbackWidget />
           {env.NEXT_PUBLIC_VERCEL_ANALYTICS_ENABLED && <Analytics />} */}
     </SkeletonTheme>
