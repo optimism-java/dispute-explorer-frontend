@@ -90,12 +90,12 @@ const GameDetail = () => {
           <GameItemCard
             name="Disputed L2 Block"
             content={
-              <Link
-                href={`${EXPLORER_L2}/block/${game?.hits[0].l2_block_number.toString()}`}
-                isExternal
-              >
-                {game?.hits[0].l2_block_number.toString()}
-              </Link>
+              // <Link
+              //   href={`${EXPLORER_L2}/block/${game?.hits[0].l2_block_number.toString()}`}
+              //   isExternal
+              // >
+              game?.hits[0].l2_block_number.toString()
+              // </Link>
             }
           />
         </div>
