@@ -24,9 +24,9 @@ const ClaimCard: FC<Partial<ClaimCardProps>> = ({
           {output_block ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
               Block{" "}
-              <Link href={`${EXPLORER_L2}/block/${output_block}`} isExternal>
-                {output_block}
-              </Link>
+              {/* <Link href={`${EXPLORER_L2}/block/${output_block}`} isExternal> */}
+              {output_block}
+              {/* </Link> */}
             </div>
           ) : (
             <Skeleton width={150} />

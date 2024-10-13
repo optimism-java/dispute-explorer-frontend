@@ -23,7 +23,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
     game_contract,
     status,
     tx_hash,
-    claim_data_len
+    claim_data_len,
   } = {},
 }) {
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
@@ -31,18 +31,15 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
   return (
     <SurfaceCardBase>
       <div className="flex justify-between gap-2 text-sm">
-        {/* <div className="flex gap-2 md:flex-row">
+        <div className="flex gap-2 md:flex-row">
           {number ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
-              Block{" "}
-              <Link href={`${EXPLORER_L2}/block/${number}`} isExternal>
-                {number}
-              </Link>
+              Block {number}
             </div>
           ) : (
             <Skeleton width={150} />
           )}
-        </div> */}
+        </div>
         {block_time ? (
           <div className="text-xs italic text-contentSecondary-light dark:text-contentSecondary-dark">
             {dayjs(block_time * 1000).fromNow()}
@@ -91,9 +88,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
             <span className="text-contentTertiary-light dark:text-contentTertiary-dark">
               claim data length{" "}
             </span>
-            <span>
-              {claim_data_len}
-            </span>
+            <span>{claim_data_len}</span>
           </div>
         ) : (
           <Skeleton width={170} size="xs" />
