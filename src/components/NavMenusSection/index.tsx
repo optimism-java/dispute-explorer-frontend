@@ -79,6 +79,13 @@ export const NavMenusSection: React.FC = () => {
                     handleSelectNetwork("base-sepolia");
                   },
                 },
+                {
+                  label: "base",
+                  href: "",
+                  handleClick: () => {
+                    handleSelectNetwork("base-main");
+                  },
+                },
               ]}
             />
             {/* <NavItem

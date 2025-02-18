@@ -1,6 +1,6 @@
 import { Address } from "viem";
 
-export type Network = "mainnet" | "sepolia" | "base-sepolia";
+export type Network = "mainnet" | "sepolia" | "base-sepolia" | "base-main";
 
 export const ApiDoc = process.env.NEXT_PUBLIC_API_DOC || "";
 
@@ -29,5 +29,11 @@ export const networkConfigs: Record<Network, NetworkConfig> = {
     explorer_l1: "https://sepolia.etherscan.io",
     explorer_l2: "https://sepolia.basescan.org",
     network: "base-sepolia",
+  },
+  "base-main": {
+    origin: process.env.NEXT_PUBLIC_BASE_URL || "",
+    explorer_l1: "https://etherscan.io",
+    explorer_l2: "https://basescan.org",
+    network: "base-main",
   },
 };
