@@ -59,7 +59,7 @@ export default function Page() {
     error: BoundError,
   } = useBoundProgress();
   const { data: amountData, error: amountError } = useAmountPerDay();
-  const days = amountData?.data?.slice(0, -1).map((item) => item.date);
+  const days = amountData?.data?.slice(0).map((item) => item.date);
 
   const error =
     latestGamesError ||
@@ -95,7 +95,7 @@ export default function Page() {
           <div className="col-span-2 sm:col-span-4">
             <DailyAmountChart
               days={days}
-              data={amountData?.data?.slice(0, -1).map((item) => item.amount)}
+              data={amountData?.data?.slice(0).map((item) => item.amount)}
               compact
             />
           </div>
@@ -144,8 +144,8 @@ export default function Page() {
 
           <div className="col-span-2 sm:col-span-4">
             <InprogressChart
-              days={boundData?.data?.slice(0, -1).map((item) => item.date)}
-              data={boundData?.data?.slice(0, -1).map((item) => item.amount)}
+              days={boundData?.data?.slice(0).map((item) => item.date)}
+              data={boundData?.data?.slice(0).map((item) => item.amount)}
               compact={false}
             />
           </div>
@@ -255,16 +255,16 @@ export default function Page() {
                 </div>
               ) : (
                 <SlidableList
-                  items={(credits as PageListResponse<Credit>)?.data?.slice(0, 5).map(
-                    (g, i) => ({
+                  items={(credits as PageListResponse<Credit>)?.data
+                    ?.slice(0, 5)
+                    .map((g, i) => ({
                       id: g.address,
                       element: (
                         <div className={CARD_HEIGHT} key={g.address}>
                           <CreditCard credit={g} index={i} />
                         </div>
                       ),
-                    })
-                  )}
+                    }))}
                 />
               )}
             </div>
