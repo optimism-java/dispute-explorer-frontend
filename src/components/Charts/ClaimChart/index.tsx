@@ -20,8 +20,9 @@ import { useEthersSigner } from "@/hooks/useEthersSigner";
 import { getChallengeContract } from "@/service/contract";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import useAutoSwitchNetwork from "@/hooks/useAutoSwitchNetwork";
-import { EthersError, formatUnits } from 'ethers'
+import { EthersError, formatUnits } from "ethers";
 import { useEthersProvider } from "@/hooks/useEthersProvider";
+import { useFrontendMoveMutation } from "@/hooks/useFrontendMove";
 
 const xGap = 45;
 const yGap = 50;
@@ -32,8 +33,8 @@ type Node = {
   claim: string;
   position: string;
   value: string;
-  parentIndex: number,
-  isRoot?: boolean,
+  parentIndex: number;
+  isRoot?: boolean;
   itemStyle: {
     color: string;
   };
@@ -138,9 +139,13 @@ const genNodesAndLinks = (data: ClaimData[]): any => {
   };
 };
 
-const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolean }> = ({ claimData, address, resolved }) => {
+const ClaimChart: FC<{
+  claimData: ClaimData[];
+  address: string;
+  resolved: boolean;
+}> = ({ claimData, address, resolved }) => {
   const { nodes, links, maxDepth } = genNodesAndLinks(claimData);
-  useAutoSwitchNetwork()
+  useAutoSwitchNetwork();
   const { isMutating, trigger } = useCalculateClaim();
   const options: EChartOption<EChartOption.SeriesGraph> = {
     tooltip: {
@@ -196,39 +201,41 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
     ],
   };
   const { openConnectModal } = useConnectModal();
-  const { isConnected } = useAccount()
+  const { address: addr, isConnected } = useAccount();
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState<Node>();
   const [val, setVal] = useState("");
-  const [recommendAttackClaim, setAttackClaim] = useState("")
+  const [recommendAttackClaim, setAttackClaim] = useState("");
   const [attackLoading, setAttackLoading] = useState(false);
   const [defendLoading, setDefendLoading] = useState(false);
-  const signer = useEthersSigner()
-  const provider = useEthersProvider()
+  const signer = useEthersSigner();
+  const provider = useEthersProvider();
   const [gas, setGas] = useState({
-    attackGas: '',
-    defendGas: ''
-  })
+    attackGas: "",
+    defendGas: "",
+  });
+
+  const { trigger: frontMove } = useFrontendMoveMutation();
 
   const attackPosition = useMemo(() => {
     if (modalData) {
-      return 2 * Number(modalData.position)
+      return 2 * Number(modalData.position);
     }
-  }, [modalData])
+  }, [modalData]);
   const defendPosition = useMemo(() => {
     if (modalData) {
-      return 2 * (Number(modalData.position) + 1)
+      return 2 * (Number(modalData.position) + 1);
     }
-  }, [modalData])
+  }, [modalData]);
 
   const handleClick = (e: any) => {
     if (!isConnected) {
-      openConnectModal && openConnectModal()
-      return
+      openConnectModal && openConnectModal();
+      return;
     }
     if (resolved) {
-      toast.warning('This game has already resolved!')
-      return
+      toast.warning("This game has already resolved!");
+      return;
     }
     setShowModal(true);
     setModalData(e.data);
@@ -236,71 +243,113 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
 
   useEffect(() => {
     if (attackPosition) {
-      trigger({ disputeGame: address, position: attackPosition }).then((res) => {
-        setAttackClaim(res.claims)
-      })
+      trigger({ disputeGame: address, position: attackPosition }).then(
+        (res) => {
+          setAttackClaim(res.claims);
+        }
+      );
     }
-  }, [attackPosition])
+  }, [attackPosition]);
 
   useEffect(() => {
     const getGas = async () => {
       if (attackPosition && defendPosition && provider) {
-        const contract = getChallengeContract(address, provider)
-        const attackGas = await contract.getRequiredBond(attackPosition)
-        const defendGas = await contract.getRequiredBond(defendPosition)
+        const contract = getChallengeContract(address, provider);
+        const attackGas = await contract.getRequiredBond(attackPosition);
+        const defendGas = await contract.getRequiredBond(defendPosition);
         setGas({
           attackGas: formatUnits(attackGas, 18),
-          defendGas: formatUnits(defendGas, 18)
-        })
+          defendGas: formatUnits(defendGas, 18),
+        });
       }
-    }
-    getGas()
-  }, [attackPosition, defendPosition, provider])
-
+    };
+    getGas();
+  }, [attackPosition, defendPosition, provider]);
 
   const handleAttack = async () => {
     if (!signer) return;
     if (!val) {
-      toast.error('Challenge claim required!')
-      return
-    };
-    const contract = getChallengeContract(address, signer)
+      toast.error("Challenge claim required!");
+      return;
+    }
+    const contract = getChallengeContract(address, signer);
+    const game_contract = contract.getAddress;
     try {
-      setAttackLoading(true)
-      const gas = await contract.getRequiredBond(attackPosition)
-      const tx = await contract.attack('0x' + modalData?.claim, modalData?.parentIndex, val, { value: gas })
-      const res = await tx.wait()
-      setAttackLoading(false)
+      setAttackLoading(true);
+      const gas = await contract.getRequiredBond(attackPosition);
+      const tx = await contract.attack(
+        "0x" + modalData?.claim,
+        modalData?.parentIndex,
+        val,
+        { value: gas }
+      );
+      const res = await tx.wait();
+      setAttackLoading(false);
       if (res.status === 1) {
-        toast.success('Transaction receipt!')
+        toast.success("Transaction receipt!");
+        const data = {
+          game_contract: game_contract,
+          tx_hash: tx.hash,
+          claimant: addr,
+          parent_index: modalData?.parentIndex,
+          challenge_index: modalData?.position,
+          disputed_claim: modalData?.claim,
+          claim: val,
+          is_attack: true,
+        };
+        await frontMove(data);
       }
     } catch (error: any) {
-      setAttackLoading(false)
-      toast.error(error?.shortMessage || error?.reason || 'Transaction error!')
+      setAttackLoading(false);
+      toast.error(error?.shortMessage || error?.reason || "Transaction error!");
     }
   };
 
   const handleDefend = async () => {
     if (!val) {
-      toast.error('Challenge claim required!')
-      return
-    };
-    if (!signer) return;
-    const contract = getChallengeContract(address, signer)
-    try {
-      setDefendLoading(true)
-      const gas = await contract.getRequiredBond(defendPosition)
-      const tx = await contract.defend('0x' + modalData?.claim, modalData?.parentIndex, val, { value: gas })
-      const res = await tx.wait()
-      if (res.status === 1) {
-        toast.success('Transaction receipt!')
-      }
-      setDefendLoading(false)
-    } catch (error: any) {
-      setDefendLoading(false)
-      toast.error(error?.shortMessage || error?.reason || error?.msg || error?.data || error?.message || 'Transaction error!')
+      toast.error("Challenge claim required!");
+      return;
     }
-  }
+    if (!signer) return;
+    const contract = getChallengeContract(address, signer);
+    const game_contract = contract.getAddress;
+    try {
+      setDefendLoading(true);
+      const gas = await contract.getRequiredBond(defendPosition);
+      const tx = await contract.defend(
+        "0x" + modalData?.claim,
+        modalData?.parentIndex,
+        val,
+        { value: gas }
+      );
+      const res = await tx.wait();
+      if (res.status === 1) {
+        toast.success("Transaction receipt!");
+        const data = {
+          game_contract: game_contract,
+          tx_hash: tx.hash,
+          claimant: addr,
+          parent_index: modalData?.parentIndex,
+          challenge_index: modalData?.position,
+          disputed_claim: modalData?.claim,
+          claim: val,
+          is_attack: false,
+        };
+        await frontMove(data);
+      }
+      setDefendLoading(false);
+    } catch (error: any) {
+      setDefendLoading(false);
+      toast.error(
+        error?.shortMessage ||
+          error?.reason ||
+          error?.msg ||
+          error?.data ||
+          error?.message ||
+          "Transaction error!"
+      );
+    }
+  };
 
   return (
     <>
@@ -309,8 +358,8 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
         as="div"
         className="relative z-10 focus:outline-none"
         onClose={() => {
-          setShowModal(false)
-          setVal('')
+          setShowModal(false);
+          setVal("");
         }}
       >
         <DialogBackdrop
@@ -323,9 +372,15 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
               transition
               className="w-full max-w-md rounded-xl dark:bg-surface-dark bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
             >
-              <DialogTitle as="h3" className="text-base/7 font-medium flex justify-between">
+              <DialogTitle
+                as="h3"
+                className="text-base/7 font-medium flex justify-between"
+              >
                 Challenge
-                <XMarkIcon onClick={() => setShowModal(false)} className="w-6 cursor-pointer" />
+                <XMarkIcon
+                  onClick={() => setShowModal(false)}
+                  className="w-6 cursor-pointer"
+                />
               </DialogTitle>
               <div className="mt-4 text-sm/6 text-white/50">
                 <div>
@@ -333,7 +388,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
                     Claim:
                   </div>
                   <div className="text-sm text-contentSecondary-light dark:text-warmGray-300 mb-2 break-all">
-                    {'0x' + modalData?.claim}
+                    {"0x" + modalData?.claim}
                   </div>
                 </div>
                 <div>
@@ -345,8 +400,8 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
                   </div>
                 </div>
 
-                {
-                  !modalData?.isRoot && <div>
+                {!modalData?.isRoot && (
+                  <div>
                     <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
                       Defend Required Bond
                     </div>
@@ -354,7 +409,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
                       {gas.defendGas} ETH
                     </div>
                   </div>
-                }
+                )}
                 <div>
                   <div className="text-sm font-semibold text-contentSecondary-light dark:text-warmGray-300 mb-1">
                     Attack Required Bond
@@ -373,20 +428,22 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
                     id="search"
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
-                    className={"rounded-none rounded-l-md text-black  dark:text-warmGray-300 h-10 "}
+                    className={
+                      "rounded-none rounded-l-md text-black  dark:text-warmGray-300 h-10 "
+                    }
                     placeholder={"challenge string"}
                   />
                 </div>
               </div>
               <div className="mt-4 flex justify-end gap-4">
-                {
-                  !modalData?.isRoot && <Button
+                {!modalData?.isRoot && (
+                  <Button
                     label="defend"
                     variant="outline"
                     icon={defendLoading ? <Spinner /> : undefined}
                     onClick={handleDefend}
                   ></Button>
-                }
+                )}
                 <Button
                   icon={attackLoading ? <Spinner /> : undefined}
                   label="attack"
@@ -402,7 +459,7 @@ const ClaimChart: FC<{ claimData: ClaimData[], address: string, resolved: boolea
         title={
           <div className="flex items-center gap-10">
             <div>Fault Dispute Game Graph</div>
-            <ConnectButton chainStatus={'none'} showBalance={false} />
+            <ConnectButton chainStatus={"none"} showBalance={false} />
           </div>
         }
         handleClick={handleClick}
