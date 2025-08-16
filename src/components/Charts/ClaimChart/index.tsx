@@ -273,7 +273,7 @@ const ClaimChart: FC<{
       return;
     }
     const contract = getChallengeContract(address, signer);
-    const game_contract = contract.getAddress;
+    const game_contract = await contract.getAddress();
     try {
       setAttackLoading(true);
       const gas = await contract.getRequiredBond(attackPosition);
@@ -291,7 +291,7 @@ const ClaimChart: FC<{
           game_contract: game_contract,
           tx_hash: tx.hash,
           claimant: addr,
-          parent_index: modalData?.parentIndex,
+          parent_index: modalData?.parentIndex + "",
           challenge_index: modalData?.position,
           disputed_claim: modalData?.claim,
           claim: val,
@@ -312,7 +312,7 @@ const ClaimChart: FC<{
     }
     if (!signer) return;
     const contract = getChallengeContract(address, signer);
-    const game_contract = contract.getAddress;
+    const game_contract = await contract.getAddress();
     try {
       setDefendLoading(true);
       const gas = await contract.getRequiredBond(defendPosition);
@@ -329,7 +329,7 @@ const ClaimChart: FC<{
           game_contract: game_contract,
           tx_hash: tx.hash,
           claimant: addr,
-          parent_index: modalData?.parentIndex,
+          parent_index: modalData?.parentIndex + "",
           challenge_index: modalData?.position,
           disputed_claim: modalData?.claim,
           claim: val,
