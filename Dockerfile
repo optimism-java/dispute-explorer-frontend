@@ -1,10 +1,10 @@
-FROM node:20.16.0-alpine AS deps
+FROM node:24.6.0-alpine AS deps
 RUN apk update && apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install
 
-FROM node:20.16.0-alpine AS builder
+FROM node:24.6.0-alpine AS builder
 ARG NEXT_PUBLIC_IS_BASE="false"
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
