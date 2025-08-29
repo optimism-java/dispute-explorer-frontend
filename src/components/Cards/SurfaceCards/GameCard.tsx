@@ -11,6 +11,7 @@ import shield from "@/icons/shield.png";
 import sword from "@/icons/sword.png";
 import Image from "next/image";
 import { NetworkConfigContext } from "@/components/NetworkConfigContext";
+import PartLogo from "@/components/PartLogo";
 
 type GameCardProps = {
   game: Game;
@@ -24,6 +25,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
     status,
     tx_hash,
     claim_data_len,
+    has_frontend_move,
   } = {},
 }) {
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
@@ -41,8 +43,13 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
           )}
         </div>
         {block_time ? (
-          <div className="text-xs italic text-contentSecondary-light dark:text-contentSecondary-dark">
+          <div className="relative text-xs italic text-contentSecondary-light dark:text-contentSecondary-dark">
             {dayjs(block_time * 1000).fromNow()}
+            {has_frontend_move ? (
+              <div className="absolute left-3 top-full">
+                <PartLogo />
+              </div>
+            ) : null}
           </div>
         ) : (
           <Skeleton width={110} size="xs" />

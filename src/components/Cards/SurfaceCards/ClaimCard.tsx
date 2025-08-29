@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/Skeleton";
 import { CardField } from "../Card";
 import { shortenAddress } from "@/utils";
 import { NetworkConfigContext } from "@/components/NetworkConfigContext";
+import PartLogo from "@/components/PartLogo";
 
 type ClaimCardProps = {
   claimData: ClaimData;
@@ -14,12 +15,18 @@ type ClaimCardProps = {
 const ClaimCard: FC<Partial<ClaimCardProps>> = ({
   claimData = {} as ClaimData,
 }) => {
-  const { claim, claimant, output_block, event_id } = claimData;
+  const { claim, claimant, output_block, event_id, is_from_frontend } =
+    claimData;
   const { explorer_l1: EXPLORER_L1, explorer_l2: EXPLORER_L2 } =
     useContext(NetworkConfigContext);
   return (
     <SurfaceCardBase>
-      <div className="flex justify-between gap-2 text-sm">
+      <div className="relative flex justify-between gap-2 text-sm">
+        {is_from_frontend ? (
+          <div className="absolute right-3 top-full">
+            <PartLogo />
+          </div>
+        ) : null}
         <div className="flex gap-2 md:flex-row">
           {output_block ? (
             <div className="flex gap-1 text-contentSecondary-light dark:text-contentSecondary-dark">
