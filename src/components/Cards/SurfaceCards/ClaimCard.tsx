@@ -23,7 +23,7 @@ const ClaimCard: FC<Partial<ClaimCardProps>> = ({
     <SurfaceCardBase>
       <div className="relative flex justify-between gap-2 text-sm">
         {is_from_frontend ? (
-          <div className="absolute right-3 top-full">
+          <div className="absolute right-1 top-full">
             <PartLogo />
           </div>
         ) : null}

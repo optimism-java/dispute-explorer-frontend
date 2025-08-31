@@ -46,7 +46,7 @@ const GameCard: FC<Partial<GameCardProps>> = function ({
           <div className="relative text-xs italic text-contentSecondary-light dark:text-contentSecondary-dark">
             {dayjs(block_time * 1000).fromNow()}
             {has_frontend_move ? (
-              <div className="absolute left-3 top-full">
+              <div className="absolute right-1 top-full">
                 <PartLogo />
               </div>
             ) : null}
